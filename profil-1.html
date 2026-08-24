@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mon profil</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f6f9; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+  .box { background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:320px; text-align:center; }
+  h2 { margin-top:0; }
+  button { padding:10px 20px; background:#e63946; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold; margin-top:15px; }
+</style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Mon profil</h2>
+  <p id="userInfo">Chargement...</p>
+  <div id="progressSection" style="display:none; text-align:left; margin-top:20px;">
+    <h3 style="font-size:16px;">Ma progression</h3>
+    <div style="background:#eee; border-radius:8px; overflow:hidden; height:16px; margin:10px 0;">
+      <div id="progressBar" style="background:#2b7de9; height:100%; width:0%; transition:width 0.3s;"></div>
+    </div>
+    <p id="progressText" style="font-size:13px; color:#555;"></p>
+    <ul id="progressList" style="font-size:13px; padding-left:20px; color:#333;"></ul>
+  </div>
+  <button id="logoutBtn">Se déconnecter</button>
+</div>
+
+<script type="module" src="/firebase-config.js"></script>
+<script type="module">
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  // Liste de TOUS les cours/exercices de votre site.
+  // Ajoutez ici chaque ID que vous utilisez avec markItemComplete()
+  // ailleurs sur le site, avec un nom lisible pour l'affichage.
+  const TOUS_LES_CONTENUS = {
+    "cours-html-1": "Cours : Introduction au HTML",
+    "cours-css-1": "Cours : Introduction au CSS",
+    "exercice-html-1": "Exercice : Ma première page HTML"
+    // Ajoutez vos autres cours/exercices ici...
+  };
+
+  // Protection de la page : si personne n'est connecté, on renvoie vers la connexion
+  onAuthStateChanged(window.firebaseAuth, async (user) => {
+    if (!user) {
+      window.location.href = "/connexion.html";
+      return;
+    }
+    document.getElementById('userInfo').textContent = "Connecté en tant que : " + user.email;
+
+    const progress = await window.getUserProgress();
+    const total = Object.keys(TOUS_LES_CONTENUS).length;
+    const termines = Object.keys(progress).filter(id => progress[id]).length;
+    const pourcentage = total > 0 ? Math.round((termines / total) * 100) : 0;
+
+    document.getElementById('progressSection').style.display = 'block';
+    document.getElementById('progressBar').style.width = pourcentage + '%';
+    document.getElementById('progressText').textContent =
+      `${termines} / ${total} terminés (${pourcentage}%)`;
+
+    const list = document.getElementById('progressList');
+    Object.entries(TOUS_LES_CONTENUS).forEach(([id, label]) => {
+      const li = document.createElement('li');
+      li.textContent = (progress[id] ? "✅ " : "⬜ ") + label;
+      list.appendChild(li);
+    });
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await window.signOutUser();
+    window.location.href = "/";
+  });
+</script>
+</body>
+</html>

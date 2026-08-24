@@ -16,8 +16,15 @@
             <li><a href="Cours.html" target="_blank"><i class="fas fa-book"></i> Cours</a></li>
             <li><a href="Exercices.html" target="_blank"><i class="fas fa-tasks"></i> Exercices</a></li>
         </ul>
-        <div class="contact">
-            <a href="Contacts.html" target="_blank" class="btn-contact"><i class="fa-solid fa-envelope"></i> CONTACT</a>
+        <div class="account-dropdown">
+            <button class="account-btn" onclick="document.getElementById('accountMenu').classList.toggle('show')">
+                <i class="fa fa-user"></i> COMPTE
+            </button>
+            <div id="accountMenu" class="account-menu">
+                <a href="/connexion.html">Connexion</a>
+                <a href="/inscription.html">Inscription</a>
+                <a href="/profil.html">Mon profil</a>
+            </div>
         </div>
     </nav>
     <hr/>
@@ -339,3 +346,46 @@
         height: 180px;
         border-radius: 8px;
     }
+
+    .account-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.account-btn {
+  background-color: #2b7de9;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.account-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.account-menu a {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+}
+
+.account-menu a:hover {
+  background-color: #f0f0f0;
+}
+
+.account-menu.show {
+  display: block;
+}

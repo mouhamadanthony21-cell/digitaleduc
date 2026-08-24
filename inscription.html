@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Inscription</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f6f9; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+  .box { background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:300px; }
+  h2 { text-align:center; margin-top:0; }
+  input { width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; }
+  button { width:100%; padding:10px; background:#2b7de9; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold; margin-top:10px; }
+  button:hover { background:#1e63c4; }
+  .msg { text-align:center; color:red; font-size:14px; min-height:18px; }
+  a { display:block; text-align:center; margin-top:10px; color:#2b7de9; text-decoration:none; }
+</style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Créer un compte</h2>
+  <form id="signupForm">
+    <input type="email" id="email" placeholder="Adresse email" required>
+    <input type="password" id="password" placeholder="Mot de passe (6 caractères min.)" required minlength="6">
+    <p class="msg" id="errorMsg"></p>
+    <button type="submit">S'inscrire</button>
+  </form>
+  <a href="/connexion.html">Déjà un compte ? Se connecter</a>
+</div>
+
+<script type="module" src="/firebase-config.js"></script>
+<script type="module">
+  document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const errorMsg = document.getElementById('errorMsg');
+    errorMsg.textContent = "";
+
+    try {
+      await window.createUserWithEmailAndPassword(email, password);
+      window.location.href = "/profil.html";
+    } catch (err) {
+      // Messages d'erreur traduits pour l'utilisateur
+      if (err.code === "auth/email-already-in-use") {
+        errorMsg.textContent = "Cet email est déjà utilisé.";
+      } else if (err.code === "auth/invalid-email") {
+        errorMsg.textContent = "Email invalide.";
+      } else if (err.code === "auth/weak-password") {
+        errorMsg.textContent = "Mot de passe trop faible.";
+      } else {
+        errorMsg.textContent = "Erreur : " + err.message;
+      }
+    }
+  });
+</script>
+</body>
+</html>
