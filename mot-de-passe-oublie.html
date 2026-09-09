@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="fr" translate="no">
+<head>
+    <meta name="google" content="notranslate">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mot de passe oublié | DigitalEduc</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="theme-techno.css">
+</head>
+<body>
+<div class="box">
+  <i class="fa-solid fa-user-lock invite-icone"></i>
+  <h2><i class="fa-solid fa-key"></i> <span>Mot de passe oublié</span></h2>
+  <p class="sous-titre">Saisissez l'adresse email de votre compte pour recevoir un lien de réinitialisation.</p>
+
+  <!-- Formulaire : envoi de l'email de réinitialisation -->
+  <form id="resetForm">
+    <input type="email" id="email" placeholder="Adresse email" required autocomplete="email">
+    <p class="msg" id="msg"></p>
+    <button type="submit" id="btn">Envoyer le lien de réinitialisation</button>
+  </form>
+
+  <!-- Email envoyé -->
+  <div id="emailEnvoyeSection" style="display:none;">
+    <p class="msg msg-succes"><i class="fa-solid fa-envelope-circle-check"></i> Un email de réinitialisation a été envoyé à <strong id="emailEnvoyeAdresse"></strong>.</p>
+    <p class="sous-titre">Pensez aussi à consulter le dossier <strong>Spams / Courrier indésirable</strong> de votre compte mail : l'email peut y arriver. Cliquez ensuite sur le lien qu'il contient pour redéfinir votre mot de passe.</p>
+    <div class="centre" style="margin-top:14px;">
+      <a href="connexion.html" class="bouton-lien">Se connecter</a>
+    </div>
+  </div>
+
+  <a href="connexion.html" style="display:block; margin-top:18px;">Retour à la connexion</a>
+</div>
+
+<script type="module" src="firebase-config-1.js"></script>
+<script type="module">
+  const resetForm = document.getElementById('resetForm');
+  const msg = document.getElementById('msg');
+  const btn = document.getElementById('btn');
+
+  function afficherErreur(texte) {
+    msg.className = "msg msg-erreur";
+    msg.textContent = texte;
+  }
+
+  resetForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.className = "msg";
+    msg.textContent = "";
+
+    const email = document.getElementById('email').value;
+
+    btn.disabled = true;
+    btn.textContent = "Envoi de l'email...";
+
+    try {
+      await window.envoyerEmailResetStandard(email);
+      document.getElementById('emailEnvoyeAdresse').textContent = String(email || "").trim();
+      resetForm.style.display = 'none';
+      document.getElementById('emailEnvoyeSection').style.display = 'block';
+    } catch (erreur) {
+      if (erreur.code === "auth/user-not-found") {
+        afficherErreur("Aucun compte n'est associé à cette adresse email.");
+      } else if (erreur.code === "auth/too-many-requests") {
+        afficherErreur("Trop d'emails de réinitialisation envoyés. Réessayez plus tard.");
+      } else if (erreur.code === "auth/invalid-email") {
+        afficherErreur("Adresse email invalide.");
+      } else {
+        afficherErreur("Erreur : " + (erreur.message || "réessayez plus tard."));
+      }
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Envoyer le lien de réinitialisation";
+    }
+  });
+</script>
+</body>
+</html>

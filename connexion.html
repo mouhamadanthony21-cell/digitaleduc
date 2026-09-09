@@ -1,67 +1,81 @@
+﻿
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" translate="no">
 <head>
+    <meta name="google" content="notranslate">
 <meta charset="UTF-8">
-<title>Connexion</title>
-<style>
-  body { font-family: Arial, sans-serif; background:#f4f6f9; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
-  .box { background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:300px; }
-  h2 { text-align:center; margin-top:0; }
-  input { width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; }
-  button { width:100%; padding:10px; background:#2b7de9; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold; margin-top:10px; }
-  button:hover { background:#1e63c4; }
-  .msg { text-align:center; color:red; font-size:14px; min-height:18px; }
-  a { display:block; text-align:center; margin-top:10px; color:#2b7de9; text-decoration:none; font-size:14px; }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion | DigitalEduc</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="theme-techno.css">
 </head>
 <body>
-
 <div class="box">
-  <h2>Connexion</h2>
+  <h2><i class="fa-solid fa-right-to-bracket"></i> <span>Connexion</span></h2>
   <form id="loginForm">
-    <input type="email" id="email" placeholder="Adresse email" required>
-    <input type="password" id="password" placeholder="Mot de passe" required>
+    <input type="email" id="email" placeholder="Adresse email" required autocomplete="email">
+    <div class="champ-password">
+      <input type="password" id="password" placeholder="Mot de passe" required autocomplete="current-password">
+      <i class="fa-regular fa-eye bascule-password" title="Afficher / masquer le mot de passe"></i>
+    </div>
     <p class="msg" id="errorMsg"></p>
-    <button type="submit">Se connecter</button>
+    <button type="submit" id="submitBtn">Se connecter</button>
   </form>
-  <a href="#" id="forgotLink">Mot de passe oublié ?</a>
-  <a href="/inscription.html">Pas encore de compte ? S'inscrire</a>
+  <a href="#" id="forgotLink"><i class="fa-solid fa-key"></i> <span>Mot de passe oublié ?</span></a>
+  <a href="inscription.html"><span>Pas encore de compte ? S'inscrire</span></a>
 </div>
 
-<script type="module" src="/firebase-config.js"></script>
+<script type="module" src="firebase-config-1.js"></script>
 <script type="module">
+  // Oeil : afficher / masquer le mot de passe
+  document.querySelectorAll('.bascule-password').forEach((icone) => {
+    icone.addEventListener('click', () => {
+      const champ = icone.parentElement.querySelector('input');
+      const montre = champ.type === 'text';
+      champ.type = montre ? 'password' : 'text';
+      icone.classList.toggle('fa-eye', montre);
+      icone.classList.toggle('fa-eye-slash', !montre);
+    });
+  });
+
+  const errorMsg = document.getElementById('errorMsg');
+
+  function afficherSucces(texte) {
+    errorMsg.className = "msg msg-succes";
+    errorMsg.textContent = texte;
+  }
+
+  function afficherErreur(texte) {
+    errorMsg.className = "msg msg-erreur";
+    errorMsg.textContent = texte;
+  }
+
   document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const errorMsg = document.getElementById('errorMsg');
+    errorMsg.className = "msg";
     errorMsg.textContent = "";
 
     try {
       await window.signInWithEmailAndPassword(email, password);
-      window.location.href = "/profil.html";
+      window.location.href = "profil-1.html";
     } catch (err) {
       if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
-        errorMsg.textContent = "Email ou mot de passe incorrect.";
+        afficherErreur("Email ou mot de passe incorrect.");
+      } else if (err.code === "auth/too-many-requests") {
+        afficherErreur("Trop de tentatives. Réessayez plus tard.");
       } else {
-        errorMsg.textContent = "Erreur : " + err.message;
+        afficherErreur("Erreur : " + err.message);
       }
     }
   });
 
-  document.getElementById('forgotLink').addEventListener('click', async (e) => {
+  const forgotLink = document.getElementById('forgotLink');
+  forgotLink.addEventListener('click', (e) => {
     e.preventDefault();
-    const email = document.getElementById('email').value;
-    if (!email) {
-      alert("Entrez d'abord votre email dans le champ ci-dessus.");
-      return;
-    }
-    try {
-      await window.sendPasswordResetEmail(email);
-      alert("Un email de réinitialisation a été envoyé.");
-    } catch (err) {
-      alert("Erreur : " + err.message);
-    }
+    // Réinitialisation du mot de passe par email : direction la page dédiée.
+    window.location.href = "mot-de-passe-oublie.html";
   });
 </script>
 </body>

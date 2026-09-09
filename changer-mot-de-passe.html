@@ -1,0 +1,104 @@
+﻿
+<!DOCTYPE html>
+<html lang="fr" translate="no">
+<head>
+    <meta name="google" content="notranslate">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réinitialiser mon mot de passe | DigitalEduc</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="theme-techno.css">
+</head>
+<body>
+<div class="box">
+  <h2><i class="fa-solid fa-key"></i> <span>Réinitialiser votre mot de passe</span></h2>
+  <p class="sous-titre">Entrez votre nouveau mot de passe puis confirmez-le.</p>
+
+  <!-- Formulaire : nouveau mot de passe + confirmation -->
+  <div id="formSection">
+    <div class="champ-password">
+      <input type="password" id="nouveauMotDePasse" placeholder="Nouveau mot de passe (6 caractères min.)" required minlength="6" autocomplete="new-password">
+      <i class="fa-regular fa-eye bascule-password" title="Afficher / masquer le mot de passe"></i>
+    </div>
+    <div class="champ-password">
+      <input type="password" id="confirmationMotDePasse" placeholder="Confirmer le nouveau mot de passe" required minlength="6" autocomplete="new-password">
+      <i class="fa-regular fa-eye bascule-password" title="Afficher / masquer le mot de passe"></i>
+    </div>
+    <p class="msg msg-erreur" id="msg"></p>
+    <button type="submit" id="boutonReinit">Réinitialiser mon mot de passe</button>
+  </div>
+
+  <!-- Succès -->
+  <div id="succesSection" style="display:none;">
+    <p class="msg msg-succes"><i class="fa-solid fa-circle-check"></i> Votre mot de passe a bien été réinitialisé. Connectez-vous avec votre nouveau mot de passe.</p>
+    <div class="actions">
+      <a href="connexion.html" class="bouton bouton-connexion">Se connecter</a>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="firebase-config-1.js"></script>
+<script type="module">
+  const message = document.getElementById('msg');
+  const boutonReinit = document.getElementById('boutonReinit');
+  const formSection = document.getElementById('formSection');
+  const succesSection = document.getElementById('succesSection');
+
+  // Oeil : afficher / masquer le mot de passe
+  document.querySelectorAll('.bascule-password').forEach((icone) => {
+    icone.addEventListener('click', () => {
+      const champ = icone.parentElement.querySelector('input');
+      const montre = champ.type === 'text';
+      champ.type = montre ? 'password' : 'text';
+      icone.classList.toggle('fa-eye', montre);
+      icone.classList.toggle('fa-eye-slash', !montre);
+    });
+  });
+
+  boutonReinit.addEventListener('click', async (e) => {
+    e.preventDefault();
+    message.className = "msg msg-erreur";
+    message.textContent = "";
+    boutonReinit.disabled = true;
+
+    const nouveau = document.getElementById('nouveauMotDePasse').value;
+    const confirmation = document.getElementById('confirmationMotDePasse').value;
+
+    if (nouveau.length < 6) {
+      message.textContent = "Le nouveau mot de passe doit contenir au moins 6 caractères.";
+      boutonReinit.disabled = false;
+      return;
+    }
+    if (nouveau !== confirmation) {
+      message.textContent = "Les deux mots de passe ne correspondent pas.";
+      boutonReinit.disabled = false;
+      return;
+    }
+
+    try {
+      await window.modifierMotDePasse(nouveau);
+      await window.signOutUser();
+      formSection.style.display = 'none';
+      succesSection.style.display = 'block';
+    } catch (erreur) {
+      if (erreur.code === "auth/requires-recent-login") {
+        message.textContent = "Votre session est trop ancienne : reconnectez-vous, puis réessayez.";
+      } else if (erreur.code === "auth/no-user") {
+        // Non connecté : on le dirige vers la connexion pour qu'il
+        // se connecte d'abord (sans email, une session est obligatoire).
+        window.location.href = "connexion.html";
+        return;
+      } else if (erreur.code === "auth/weak-password") {
+        message.textContent = "Nouveau mot de passe trop faible (6 caractères minimum).";
+      } else if (erreur.code === "auth/too-many-requests") {
+        message.textContent = "Trop de tentatives. Réessayez plus tard.";
+      } else {
+        message.textContent = "Erreur : " + erreur.message;
+      }
+    } finally {
+      boutonReinit.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

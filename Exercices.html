@@ -1,412 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="fr" translate="no">
 <head>
+    <meta name="google" content="notranslate">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exercices</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-     <nav>
-        <div class="logo">
-            <img src="logo DE.png" alt="Logo de DigitalEduc" class="DE" width="130px" height="100px">
-        </div>
-        <ul>
-            <li><a href="index.html" target="_blank" class="active"><i class="fas fa-home"></i> Accueil</a></li>
-            <li><a href="Cours.html" target="_blank"><i class="fas fa-book"></i> Cours</a></li>
-            <li><a href="Exercices.html" target="_blank"><i class="fas fa-tasks"></i> Exercices</a></li>
-        </ul>
-        <div class="account-dropdown">
-            <button class="account-btn" onclick="document.getElementById('accountMenu').classList.toggle('show')">
-                <i class="fa fa-user"></i> COMPTE
-            </button>
-            <div id="accountMenu" class="account-menu">
-                <a href="/connexion.html">Connexion</a>
-                <a href="/inscription.html">Inscription</a>
-                <a href="/profil.html">Mon profil</a>
-            </div>
-        </div>
-    </nav>
-    <div class="card-banner">
-  <div class="banner-content">
-    <h1 class="banner-title">Exercices par module</h1>
-    <p class="banner-description">
-      Entraînez-vous et testez vos connaissances avec des exercices<br class="desktop-only">
-      adaptés à chaque module.
-    </p>
-  </div>
-  <div class="banner-illustration">
-    <!-- Remplacez src par le chemin de votre image d'illustration -->
-    <img src="computerman.jpeg" alt="Illustration exercices par module">
-  </div>
-</div>
-  <div class="modules-grid">
-
-    <!-- 1. Maths -->
-    <div class="module-card">
-      <div class="card-header bg-maths">
-        <div class="header-icon"><i class="fa-solid fa-calculator"></i></div>
-        <h2>Module 1 — Maths</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="corrections_mathematiques.pdf" class ="Corrigé">TD Mathématiques</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="exercices_mathematiques.pdf" class="Exo">TD Mathématiques</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Maths.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 2. Culture Digitale -->
-    <div class="module-card">
-      <div class="card-header bg-culture">
-        <div class="header-icon"><i class="fa-solid fa-globe"></i></div>
-        <h2>Module 2 — Culture Digitale</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="corrections_culture_digitale.pdf" class ="Corrigé">TD Culture Digitale</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="exercices_culture_digitale.pdf" class ="Exo">TD Culture Digitale</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Digitale.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 3. Bureautique -->
-    <div class="module-card">
-      <div class="card-header bg-bureautique">
-        <div class="header-icon"><i class="fa-solid fa-folder"></i></div>
-        <h2>Module 3 — Bureautique</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction 365.pdf" class ="Corrigé">TD Bureautique</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="exercice 365.pdf" class ="Exo">TD Bureautique</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Bureautique.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 4. Infographie -->
-    <div class="module-card">
-      <div class="card-header bg-infographie">
-        <div class="header-icon"><i class="fa-solid fa-palette"></i></div>
-        <h2>Module 4 — Infographie</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="corrections_infographie.pdf" class ="Corrigé">TD Infographie</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="exercices_infographie.pdf" class ="Exo">TD Infographie</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Infographie.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 5. Initiation WordPress -->
-    <div class="module-card">
-      <div class="card-header bg-wordpress">
-        <div class="header-icon"><i class="fa-brands fa-wordpress"></i></div>
-        <h2>Module 5 — Initiation WordPress</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_td_wordpress.pdf" class ="Corrigé">TD WordPress</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_wordpress.pdf" class ="Exo">TD WordPress</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="WordPress.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 6. Algorithmique -->
-    <div class="module-card">
-      <div class="card-header bg-algo">
-        <div class="header-icon"><i class="fa-solid fa-gears"></i></div>
-        <h2>Module 6 — Algorithmique</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_algorithmique.pdf" class ="Corrigé">TD Algorithmique</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_algorithmique.pdf" class ="Exo">TD Algorithmique</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Algorithmique.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 7. Programmation -->
-    <div class="module-card">
-      <div class="card-header bg-prog">
-        <div class="header-icon"><i class="fa-solid fa-code"></i></div>
-        <h2>Module 7 — Programmation</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_programmation.pdf" class ="Corrigé">TD Progammation</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_programmation.pdf" class ="Exo">TD Progammation</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Programmation.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 8. Architecture des Ordinateurs -->
-    <div class="module-card">
-      <div class="card-header bg-archi-oril">
-        <div class="header-icon"><i class="fa-solid fa-microchip"></i></div>
-        <h2>Module 8 — Architecture des Ordinateurs</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_ATO.pdf" class ="Corrigé">TD Ordinateurs</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_ATO.pdf" class ="Exo">TD Ordinateurs</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Ordinateurs.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 9. Administration Windows -->
-    <div class="module-card">
-      <div class="card-header bg-win">
-        <div class="header-icon"><i class="fa-brands fa-windows"></i></div>
-        <h2>Module 9 — Administration Windows</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_windows.pdf" class ="Corrigé">TD Admin Windows</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_windows.pdf" class ="Exo">TD Admin Windows</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Windows.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 10. Introduction au Système Linux -->
-    <div class="module-card">
-      <div class="card-header bg-linux">
-        <div class="header-icon"><i class="fa-brands fa-linux"></i></div>
-        <h2>Module 10 — Intro Système Linux</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_linux.pdf" class ="Corrigé">TD Système Linux</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_linux.pdf" class ="Exo">TD Système Linux</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Linux.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 11. Système d'Information -->
-    <div class="module-card">
-      <div class="card-header bg-si">
-        <div class="header-icon"><i class="fa-solid fa-equals"></i></div>
-        <h2>Module 11 — Système d'Informations</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_si.pdf" class ="Corrigé">TD Système d'Informations</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_si.pdf" class ="Exo">TD Système d'Informations</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="SI.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 12. MERISE -->
-    <div class="module-card">
-      <div class="card-header bg-merise">
-        <div class="header-icon"><i class="fa-solid fa-sitemap"></i></div>
-        <h2>Module 12 — MERISE</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_merise.pdf" class ="Corrigé">TD MERISE</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_merise.pdf" class ="Exo">TD MERISE</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Merise.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 13. Gestion d'une BD avec SQL -->
-    <div class="module-card">
-      <div class="card-header bg-sql">
-        <div class="header-icon"><i class="fa-solid fa-database"></i></div>
-        <h2>Module 13 — Gestion BDD avec SQL</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_bdd.pdf" class ="Corrigé">TD Base de Données</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_bdd.pdf" class ="Exo">TD Base de Données</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="BDD-SQL.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 14. Architecture des Réseaux -->
-    <div class="module-card">
-      <div class="card-header bg-reseaux">
-        <div class="header-icon"><i class="fa-solid fa-network-wired"></i></div>
-        <h2>Module 14 — Architecture des Réseaux</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_reseaux.pdf" class ="Corrigé">TD Réseaux</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_reseaux.pdf" class ="Exo">TD Réseaux</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Réseaux.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 15. CCNA -->
-    <div class="module-card">
-      <div class="card-header bg-ccna">
-        <div class="header-icon"><i class="fa-solid fa-server"></i></div>
-        <h2>Module 15 — CCNA</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_ccna.pdf" class ="Corrigé">TD CCNA</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_ccna.pdf" class ="Exo">TD CCNA</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="CCNA.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-    <!-- 16. Cybersécurité -->
-    <div class="module-card">
-      <div class="card-header bg-cyber">
-        <div class="header-icon"><i class="fa-solid fa-shield-halved"></i></div>
-        <h2>Module 16 — Cybersécurité</h2>
-      </div>
-      <div class="card-body">
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_cybersecurite.pdf" class ="Corrigé">TD Cybersécurité</a></span></div>
-          <span class="status-tag status-corrige">Corrigé</span>
-        </div>
-        <div class="exercise-item">
-          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_cybersecurite.pdf" class ="Exo">TD Cybersécurité</a></span></div>
-          <span class="status-tag status-afaire">À faire</span>
-        </div>
-        <a href="Cybersécurité.html" class="course-link">Revoir les cours &rarr;</a>
-      </div>
-    </div>
-
-  </div>
-<div class="underlinex"></div>
-<hr width="1475px" size="0px" color="#0f172a" style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; margin-right: 20px;">
-    <footer>
-        <div class="colonne1">
-            <h3><i class="fa-solid fa-book"></i> Ressources</h3>
-            <ul>
-                <li><a href="https://openlibrary.org/" target="_blank"><i class="fa-solid fa-angle-right"></i> Documentation</a></li>
-                <li><a href="https://www.zdnet.fr" target="_blank"><i class="fa-solid fa-angle-right"></i> Actualités du numérique</a></li>
-                <li><a href="https://openclassrooms.com/forum/" target="_blank"><i class="fa-solid fa-angle-right"></i> Forum d'OpenClassrooms</a></li>
-            </ul>
-        </div>
-        <div class="colonne2">
-            <h3><i class="fa-solid fa-tools"></i> Outils nécessaires</h3>
-            <ul>
-                <li><a href="https://www.xm1math.net/algobox/" target="_blank"><i class="fa-solid fa-angle-right"></i> Algobox</a></li>
-                <li><a href="https://code.visualstudio.com/download" target="_blank"><i class="fa-solid fa-angle-right"></i> Visual Studio Code</a></li>
-                <li><a href="https://skillsforall.com/resources/cisco-packet-tracer" target="_blank"><i class="fa-solid fa-angle-right"></i> Cisco Packet Tracer</a></li>
-                <li><a href="https://www.apachefriends.org/download.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Xampp</a></li>
-                <li><a href="https://www.virtualbox.org/wiki/Downloads" target="_blank"><i class="fa-solid fa-angle-right"></i> VirtualBox</a></li>
-            </ul>
-        </div>
-        <div class="colonne3">
-            <h3><i class="fa-solid fa-info-circle"></i> A propos</h3>
-            <ul>
-                <li><a href="Chiffres.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Nos chiffres</a></li>
-                <li><a href="Mission.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Notre mission</a></li>
-                <li><a href="Contacts.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Contacts</a></li>
-            </ul>
-        </div>
-        <div class="colonne4">
-            <h3><i class="fa-solid fa-graduation-cap"></i>Envie d'une formation professionnelle ?</h3>
-            <div class="les-logos">
-                <a href="https://dit.sn" target="_blank">
-                    <img src="icône DIT.png" alt="icône du site officiel de DIT" width="60px" height="60px">
-                </a>
-                <a href="https://www.estm.sn" target="_blank">
-                    <img src="icône ESTM.png" alt="icône du site officiel de l'ESTM" width="60px" height="60px">
-                </a>
-                <a href="https://www.groupeisi.com" target="_blank">
-                    <img src="icône ISI.jpg" alt="icône du site officiel de l'ISI" width="60px" height="60px">
-                </a>
-                <a href="https://www.supinfo.sn" target="_blank">
-                    <img src="icône SUPINFO.jpg" alt="icône du site officiel de SUPINFO" width="60px" height="60px">
-                </a>
-                <a href="https://www.dakartech.sn" target="_blank">
-                    <img src="icône Dakartech.jpg" alt="icône du site dakartech.sn" width="60px" height="60px">
-                </a>
-                <a href="https://www.groupeism.sn/" target="_blank">
-                    <img src="ISM.jpg" alt="icône du site officiel de l'ISM" width="60px" height="60px">
-                </a>
-            </div>
-        </div>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <h3 class="titre-footer">Copyright DigitalEduc - 2026 - Developed By MADtech
-</body>
-</html>
-
+    <link rel="stylesheet" href="design-navbar-footer.css">
 <style>
     body {
         min-height: 1500px;
@@ -445,8 +45,7 @@
         padding: 30px 20px 70px 20px;
         position: relative;
         text-align: center;
-        margin: 10px;
-        width: auto;
+        margin: 10px 0;
     }
 
     .colonne1, .colonne2, .colonne3{
@@ -667,37 +266,37 @@
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
     }
 
-    .maths { background-color: #34495e;}
-    
-    .CD { background-color: #2980b9;}
-    
-    .bureautique { background-color: #27ae60;}
+    .maths { background-color: #ffffff;}
 
-    .infographie { background-color: #8e44ad;}
+    .CD { background-color: #ffffff;}
 
-    .iw { background-color: #21759b;}
+    .bureautique { background-color: #ffffff;}
 
-    .algorithmique { background-color: #d35400;}
+    .infographie { background-color: #ffffff;}
 
-    .programmation { background-color: #2c3e50;}
+    .iw { background-color: #ffffff;}
 
-    .ATO { background-color: #4682b4;}
+    .algorithmique { background-color: #ffffff;}
 
-    .aw { background-color: #0078d4;}
+    .programmation { background-color: #ffffff;}
 
-    .linux { background-color: #e67e22;}
+    .ATO { background-color: #ffffff;}
 
-    .SI { background-color: #16a085;}
+    .aw { background-color: #ffffff;}
 
-    .merise { background-color: #6c5ce7;}
+    .linux { background-color: #ffffff;}
 
-    .bdd { background-color: #008080;}
+    .SI { background-color: #ffffff;}
 
-    .reseaux { background-color: #0284c7;}
+    .merise { background-color: #ffffff;}
 
-    .CCNA { background-color: #0288d1;}
+    .bdd { background-color: #ffffff;}
 
-    .Cybersécurité { background-color: #c0392b;}
+    .reseaux { background-color: #ffffff;}
+
+    .CCNA { background-color: #ffffff;}
+
+    .Cybersécurité { background-color: #ffffff;}
 
 
     .modules h2 {
@@ -719,8 +318,8 @@
     
     .underline2 {
         display: block;
-        width: 350px;
-        height: 5px;
+        width: 150px;
+        height: 4px;
         background-color: #00a2ff;
         margin: 50px auto;
         border-radius: 2px;
@@ -730,7 +329,8 @@
     }
 
     .underlinex {
-        width: 1475px;
+        width: calc(100% - 35px);
+        max-width: 1475px;
         height: 4px;
         margin-top: 100px;
         margin-bottom: 10px;
@@ -779,7 +379,6 @@
 
 /* Section Illustration */
 .banner-illustration {
-  flex: 1;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
@@ -832,12 +431,11 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 40px auto 0 auto;
 }
 
 /* Carte de module */
 .module-card {
-  background-color: #ffffff;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -954,6 +552,30 @@
   text-decoration: underline;
 }
 
+.exercise-done-btn {
+  margin-top: 8px;
+  background-color: #eaf2fd;
+  color: #2b7de9;
+  border: 1.5px solid #2b7de9;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.exercise-done-btn:hover {
+  background-color: #2b7de9;
+  color: #ffffff;
+}
+
+.exercise-done-btn.fait {
+  background-color: #1e8e3e;
+  border-color: #1e8e3e;
+  color: #ffffff;
+}
+
 .Corrigé {
   text-decoration: none;
   color: #0d172a;
@@ -1015,4 +637,424 @@
 
 .account-menu.show {
   display: block;
-}
+}</style>
+    <link rel="stylesheet" href="responsive.css">    <link rel="stylesheet" href="theme-techno.css">
+</head>
+<body>
+     <nav>
+        <div class="logo">
+            <img src="logo DE.png" alt="Logo de DigitalEduc" class="DE" width="130px" height="100px">
+        </div>
+        <ul>
+            <li><a href="index.html" target="_blank" class="active"><i class="fas fa-home"></i> <span>Accueil</span></a></li>
+            <li><a href="Cours.html" target="_blank"><i class="fas fa-book"></i> <span>Cours</span></a></li>
+            <li><a href="Exercices.html" target="_blank"><i class="fas fa-tasks"></i> <span>Exercices</span></a></li>
+        </ul>
+        <div class="account-dropdown">
+            <button class="account-btn" onclick="document.getElementById('accountMenu').classList.toggle('show')">
+                <i class="fa fa-user"></i> <span>COMPTE</span>
+            </button>
+            <div id="accountMenu" class="account-menu">
+                <a href="connexion.html">Connexion</a>
+                <a href="inscription.html">Inscription</a>
+                <a href="profil-1.html">Mon profil</a>
+            </div>
+        </div>
+    </nav>
+    <div class="card-banner">
+  <div class="banner-content">
+    <h1 class="banner-title">Exercices par module</h1>
+    <p class="banner-description">
+      Entraînez-vous et testez vos connaissances avec des exercices<br class="desktop-only">
+      adaptés à chaque module.
+    </p>
+  </div>
+  <div class="banner-illustration">
+    <img src="computerman.jpeg" alt="Illustration exercices par module">
+  </div>
+</div>
+  <div class="modules-grid">
+
+    <!-- 1. Maths -->
+    <div class="module-card">
+      <div class="card-header bg-maths">
+        <div class="header-icon"><i class="fa-solid fa-calculator"></i></div>
+        <h2>Module 1 — <span>Maths</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="corrections_mathematiques.pdf" class ="Corrigé"><span>TD</span> <span>Mathématiques</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="exercices_mathematiques.pdf" class="Exo"><span>TD</span> <span>Mathématiques</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="maths">Marquer comme fait</button>
+        <a href="Maths.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 2. Culture Digitale -->
+    <div class="module-card">
+      <div class="card-header bg-culture">
+        <div class="header-icon"><i class="fa-solid fa-globe"></i></div>
+        <h2>Module 2 — <span>Culture Digitale</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="corrections_culture_digitale.pdf" class ="Corrigé"><span>TD</span> <span>Culture Digitale</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="exercices_culture_digitale.pdf" class ="Exo"><span>TD</span> <span>Culture Digitale</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="digitale">Marquer comme fait</button>
+        <a href="Digitale.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 3. Bureautique -->
+    <div class="module-card">
+      <div class="card-header bg-bureautique">
+        <div class="header-icon"><i class="fa-solid fa-folder"></i></div>
+        <h2>Module 3 — <span>Bureautique</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction 365.pdf" class ="Corrigé"><span>TD</span> <span>Bureautique</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="exercice 365.pdf" class ="Exo"><span>TD</span> <span>Bureautique</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="bureautique">Marquer comme fait</button>
+        <a href="Bureautique.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 4. Infographie -->
+    <div class="module-card">
+      <div class="card-header bg-infographie">
+        <div class="header-icon"><i class="fa-solid fa-palette"></i></div>
+        <h2>Module 4 — <span>Infographie</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="corrections_infographie.pdf" class ="Corrigé"><span>TD</span> <span>Infographie</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="exercices_infographie.pdf" class ="Exo"><span>TD</span> <span>Infographie</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="infographie">Marquer comme fait</button>
+        <a href="Infographie.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 5. Initiation WordPress -->
+    <div class="module-card">
+      <div class="card-header bg-wordpress">
+        <div class="header-icon"><i class="fa-brands fa-wordpress"></i></div>
+        <h2>Module 5 — <span>Initiation WordPress</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_td_wordpress.pdf" class ="Corrigé"><span>TD</span> <span>WordPress</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_wordpress.pdf" class ="Exo"><span>TD</span> <span>WordPress</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="wordpress">Marquer comme fait</button>
+        <a href="WordPress.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 6. Algorithmique -->
+    <div class="module-card">
+      <div class="card-header bg-algo">
+        <div class="header-icon"><i class="fa-solid fa-gears"></i></div>
+        <h2>Module 6 — <span>Algorithmique</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_algorithmique.pdf" class ="Corrigé"><span>TD</span> <span>Algorithmique</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_algorithmique.pdf" class ="Exo"><span>TD</span> <span>Algorithmique</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="algorithmique">Marquer comme fait</button>
+        <a href="Algorithmique.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 7.  -->
+    <div class="module-card">
+      <div class="card-header bg-prog">
+        <div class="header-icon"><i class="fa-solid fa-code"></i></div>
+        <h2>Module 7 — <span>Programmation</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_programmation.pdf" class ="Corrigé"><span>TD</span> <span>Programmation</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_programmation.pdf" class ="Exo"><span>TD</span> <span>Programmation</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="programmation">Marquer comme fait</button>
+        <a href="Programmation.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 8. Architecture des Ordinateurs -->
+    <div class="module-card">
+      <div class="card-header bg-archi-oril">
+        <div class="header-icon"><i class="fa-solid fa-microchip"></i></div>
+        <h2>Module 8 — <span>Architecture des Ordinateurs</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_ATO.pdf" class ="Corrigé"><span>TD</span> <span>Ordinateurs</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_ATO.pdf" class ="Exo"><span>TD</span> <span>Ordinateurs</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="ordinateurs">Marquer comme fait</button>
+        <a href="Ordinateurs.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 9. Administration Windows -->
+    <div class="module-card">
+      <div class="card-header bg-win">
+        <div class="header-icon"><i class="fa-brands fa-windows"></i></div>
+        <h2>Module 9 — <span>Administration Windows</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_windows.pdf" class ="Corrigé"><span>TD</span> <span>Admin Windows</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_windows.pdf" class ="Exo"><span>TD</span> <span>Admin Windows</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="windows">Marquer comme fait</button>
+        <a href="Windows.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 10. Introduction au Système Linux -->
+    <div class="module-card">
+      <div class="card-header bg-linux">
+        <div class="header-icon"><i class="fa-brands fa-linux"></i></div>
+        <h2>Module 10 — <span>Intro Système Linux</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_linux.pdf" class ="Corrigé"><span>TD</span> <span>Système Linux</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_linux.pdf" class ="Exo"><span>TD</span> <span>Système Linux</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="linux">Marquer comme fait</button>
+        <a href="Linux.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 11. Système d'Information -->
+    <div class="module-card">
+      <div class="card-header bg-si">
+        <div class="header-icon"><i class="fa-solid fa-equals"></i></div>
+        <h2>Module 11 — <span>Système d'Informations</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_si.pdf" class ="Corrigé"><span>TD</span> <span>SI</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_si.pdf" class ="Exo"><span>TD</span> <span>SI</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="si">Marquer comme fait</button>
+        <a href="SI.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 12. MERISE -->
+    <div class="module-card">
+      <div class="card-header bg-merise">
+        <div class="header-icon"><i class="fa-solid fa-sitemap"></i></div>
+        <h2>Module 12 — <span>MERISE</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_merise.pdf" class ="Corrigé"><span>TD</span> <span>MERISE</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_merise.pdf" class ="Exo"><span>TD</span> <span>MERISE</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="merise">Marquer comme fait</button>
+        <a href="Merise.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 13. Gestion d'une BD avec SQL -->
+    <div class="module-card">
+      <div class="card-header bg-sql">
+        <div class="header-icon"><i class="fa-solid fa-database"></i></div>
+        <h2>Module 13 — <span>Gestion BDD avec SQL</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_bdd.pdf" class ="Corrigé"><span>TD</span> <span>Base de Données</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_bdd.pdf" class ="Exo"><span>TD</span> <span>Base de Données</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="bdd-sql">Marquer comme fait</button>
+        <a href="BDD-SQL.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 14. Architecture des Réseaux -->
+    <div class="module-card">
+      <div class="card-header bg-reseaux">
+        <div class="header-icon"><i class="fa-solid fa-network-wired"></i></div>
+        <h2>Module 14 — <span>Architecture des Réseaux</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_reseaux.pdf" class ="Corrigé"><span>TD</span> <span>Réseaux</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_reseaux.pdf" class ="Exo"><span>TD</span> <span>Réseaux</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="reseaux">Marquer comme fait</button>
+        <a href="Réseaux.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 15. CCNA -->
+    <div class="module-card">
+      <div class="card-header bg-ccna">
+        <div class="header-icon"><i class="fa-solid fa-server"></i></div>
+        <h2>Module 15 — <span>CCNA</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_ccna.pdf" class ="Corrigé"><span>TD</span> <span>CCNA</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_ccna.pdf" class ="Exo"><span>TD</span> <span>CCNA</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="ccna">Marquer comme fait</button>
+        <a href="CCNA.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 16. Cybersécurité -->
+    <div class="module-card">
+      <div class="card-header bg-cyber">
+        <div class="header-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h2>Module 16 — <span>Cybersécurité</span></h2>
+      </div>
+      <div class="card-body">
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="correction_cybersecurite.pdf" class ="Corrigé"><span>TD</span> <span>Cybersécurité</span></a></span></div>
+          <span class="status-tag status-corrige">Corrigé</span>
+        </div>
+        <div class="exercise-item">
+          <div class="exercise-left"><span class="badge-pdf">PDF</span><span class="exercise-title"><a href="td_cybersecurite.pdf" class ="Exo"><span>TD</span> <span>Cybersécurité</span></a></span></div>
+          <span class="status-tag status-afaire">À faire</span>
+        </div>
+        <button type="button" class="exercise-done-btn" data-module="cybersecurite">Marquer comme fait</button>
+        <a href="Cybersécurité.html" class="course-link">Revoir les cours &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+<div class="underlinex"></div>
+<hr style="margin-top: 10px; margin-bottom: 10px; margin-left: 15px; margin-right: 20px;">
+    <footer>
+        <div class="colonne1">
+            <h3><i class="fa-solid fa-book"></i> Ressources</h3>
+            <ul>
+                <li><a href="https://openlibrary.org/" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Documentation</span></a></li>
+                <li><a href="https://www.zdnet.fr" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Actualités du numérique</span></a></li>
+                <li><a href="https://openclassrooms.com/forum/" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Forum d'OpenClassrooms</span></a></li>
+            </ul>
+        </div>
+        <div class="colonne2">
+            <h3><i class="fa-solid fa-tools"></i> Outils nécessaires</h3>
+            <ul>
+                <li><a href="https://www.xm1math.net/algobox/" target="_blank"><i class="fa-solid fa-angle-right"></i> Algobox</a></li>
+                <li><a href="https://code.visualstudio.com/download" target="_blank"><i class="fa-solid fa-angle-right"></i> Visual Studio Code</a></li>
+                <li><a href="https://skillsforall.com/resources/cisco-packet-tracer" target="_blank"><i class="fa-solid fa-angle-right"></i> Cisco Packet Tracer</a></li>
+                <li><a href="https://www.apachefriends.org/download.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Xampp</a></li>
+                <li><a href="https://www.virtualbox.org/wiki/Downloads" target="_blank"><i class="fa-solid fa-angle-right"></i> VirtualBox</a></li>
+            </ul>
+        </div>
+        <div class="colonne3">
+            <h3><i class="fa-solid fa-info-circle"></i> A propos</h3>
+            <ul>
+                <li><a href="Chiffres.html" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Nos chiffres</span></a></li>
+                <li><a href="Mission.html" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Notre mission</span></a></li>
+                <li><a href="Contacts.html" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Contacts</span></a></li>
+            </ul>
+        </div>
+        <div class="colonne4">
+            <h3><i class="fa-solid fa-graduation-cap"></i>Envie d'une formation professionnelle ?</h3>
+            <div class="les-logos">
+                <a href="https://dit.sn" target="_blank">
+                    <img src="icône DIT.png" alt="icône du site officiel de DIT" width="60px" height="60px">
+                </a>
+                <a href="https://www.estm.sn" target="_blank">
+                    <img src="icône ESTM.png" alt="icône du site officiel de l'ESTM" width="60px" height="60px">
+                </a>
+                <a href="https://www.groupeisi.com" target="_blank">
+                    <img src="icône ISI.jpg" alt="icône du site officiel de l'ISI" width="60px" height="60px">
+                </a>
+                <a href="https://www.supinfo.sn" target="_blank">
+                    <img src="icône SUPINFO.jpg" alt="icône du site officiel de SUPINFO" width="60px" height="60px">
+                </a>
+                <a href="https://www.dakartech.sn" target="_blank">
+                    <img src="icône Dakartech.jpg" alt="icône du site dakartech.sn" width="60px" height="60px">
+                </a>
+                <a href="https://www.groupeism.sn/" target="_blank">
+                    <img src="ISM.jpg" alt="icône du site officiel de l'ISM" width="60px" height="60px">
+                </a>
+            </div>
+        </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+<h3 class="titre-footer">Copyright DigitalEduc - 2026 - Developed By MADtech</h3>
+    </footer>
+<script type="module" src="firebase-config-1.js"></script>
+<script type="module" src="suivi-progression.js"></script>
+</body>
+</html>

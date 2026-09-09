@@ -1,31 +1,195 @@
+﻿
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" translate="no">
 <head>
+    <meta name="google" content="notranslate">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacts</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="design-navbar-footer.css">
+<link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="theme-techno.css">
+    <style>
+        /* Centrage global de la page */
+        body {
+            text-align: center;
+        }
+
+        /* Titre "Contactez-nous" : bleu et centré */
+        body h1 {
+            text-align: center;
+            color: #00a2ff;
+            margin: 50px 20px 28px 20px;
+            font-size: 2.4rem;
+            font-weight: 700;
+        }
+
+        /* Trait de soulignement : centré, séparé du titre et du formulaire */
+        body .underline {
+            width: 150px;
+            margin: 0 auto 40px auto;
+        }
+
+        /* Formulaire : carte centrée avec espacement entre les champs */
+        .contact-form {
+            max-width: 560px;
+            margin: 0 auto 60px auto;
+            padding: 36px 32px;
+            background: linear-gradient(165deg, #ffffff, #f2f8ff);
+            border: 1px solid rgba(0, 162, 255, 0.22);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(2, 8, 20, 0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            text-align: left;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #00a2ff;
+        }
+
+        .contact-form button {
+            padding: 13px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .contact-form .disclaimer {
+            font-size: 0.8rem;
+            color: #6b7280;
+            text-align: center;
+            margin: 0;
+        }
+
+        .section-divider {
+            width: 80%;
+            max-width: 800px;
+            border: 0;
+            border-top: 1px solid rgba(2, 8, 20, 0.12);
+            margin: 20px auto 50px auto;
+        }
+
+        /* Section Informations de Contact : centrée */
+        .contact-info-section {
+            max-width: 1100px;
+            margin: 0 auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .contact-info-section .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0a5db8;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+
+        .info-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .info-card {
+            flex: 1 1 240px;
+            max-width: 300px;
+            padding: 28px 24px;
+            background: linear-gradient(165deg, #ffffff, #f2f8ff);
+            border: 1px solid rgba(0, 162, 255, 0.22);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(2, 8, 20, 0.12);
+        }
+
+        .info-card .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #004e9e;
+            margin: 0 0 14px 0;
+        }
+
+        .info-card p {
+            color: #3a4658;
+            line-height: 1.7;
+            margin: 4px 0;
+        }
+    </style>
 </head>
-<body>
+
      <h1>Contactez-nous</h1>
      <div class="underline"></div>
 
-<form class="contact-form" action="send_mail.php" method="post">
+<form class="contact-form" id="contact-form" action="https://formspree.io/f/xvkodobp" method="POST">
 
-<input type="text" name="nom" placeholder="Nom" required>
+<input type="text" id="cf-nom" name="nom" placeholder="Nom" required>
 
-<input type="email" name="email" placeholder="Adresse e-mail" required>
+<input type="email" id="cf-email" name="email" placeholder="Adresse e-mail" required>
 
-<input type="text" name="sujet" placeholder="Sujet">
+<input type="text" id="cf-sujet" name="sujet" placeholder="Sujet">
 
-<textarea name="message" placeholder="Votre message" rows="6"></textarea>
+<textarea id="cf-message" name="message" placeholder="Votre message" rows="6" required></textarea>
 
-<button type="submit">Envoyer</button>
+<button type="submit" id="cf-bouton">Envoyer</button>
+
+<div id="cf-statut" style="display:none;font-family:sans-serif;text-align:center;padding:10px;border-radius:8px;"></div>
 
 <p class="disclaimer">
     En soumettant ce formulaire, vous acceptez notre politique de confidentialité.
 </p>
 </form>
+<script>
+document.getElementById("contact-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    var statut = document.getElementById("cf-statut");
+    var bouton = document.getElementById("cf-bouton");
+    statut.style.display = "block";
+    bouton.disabled = true;
+
+    try {
+        var rep = await fetch("https://formspree.io/f/xvkodobp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nom: document.getElementById("cf-nom").value,
+                email: document.getElementById("cf-email").value,
+                sujet: document.getElementById("cf-sujet").value,
+                message: document.getElementById("cf-message").value
+            })
+        });
+        if (rep.ok) {
+            statut.style.background = "#d9f7e6";
+            statut.style.color = "#0a6b2f";
+            statut.textContent = "Message envoyé avec succès ! Merci.";
+            document.getElementById("contact-form").reset();
+        } else {
+            statut.style.background = "#fdecec";
+            statut.style.color = "#b42318";
+            statut.textContent = "Une erreur est survenue. Réessayez.";
+        }
+    } catch (erreur) {
+        statut.style.background = "#fdecec";
+        statut.style.color = "#b42318";
+        statut.textContent = "Erreur réseau. Vérifiez votre connexion.";
+    } finally {
+        bouton.disabled = false;
+    }
+});
+</script>
 
   <hr class="section-divider">
 
@@ -52,7 +216,7 @@
       <!-- Carte Email -->
       <div class="info-card">
         <h3 class="card-title">Email</h3>
-        <p>digitaleduc@gmail.com</p>
+        <p>digitaleducsn@gmail.com</p>
       </div>
 
     </div>
@@ -63,15 +227,15 @@
     <hr/>
     <footer>
     <div class="colonne1">
-            <h3><i class="fa-solid fa-book"></i> Ressources</h3>
+            <h3><i class="fa-solid fa-book"></i> <span>Ressources</span></h3>
             <ul>
-                <li><a href="https://openlibrary.org/" target="_blank"><i class="fa-solid fa-angle-right"></i> Documentation</a></li>
-                <li><a href="https://www.zdnet.fr" target="_blank"><i class="fa-solid fa-angle-right"></i> Actualités du numérique</a></li>
-                <li><a href="https://openclassrooms.com/forum/" target="_blank"><i class="fa-solid fa-angle-right"></i> Forum d'OpenClassrooms</a></li>
+                <li><a href="https://openlibrary.org/" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Documentation</span></a></li>
+                <li><a href="https://www.zdnet.fr" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Actualités du numérique</span></a></li>
+                <li><a href="https://openclassrooms.com/forum/" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Forum d'OpenClassrooms</span></a></li>
             </ul>
         </div>
         <div class="colonne2">
-            <h3><i class="fa-solid fa-tools"></i> Outils nécessaires</h3>
+            <h3><i class="fa-solid fa-tools"></i> <span>Outils nécessaires</span></h3>
             <ul>
                 <li><a href="https://www.xm1math.net/algobox/" target="_blank"><i class="fa-solid fa-angle-right"></i> Algobox</a></li>
                 <li><a href="https://code.visualstudio.com/download" target="_blank"><i class="fa-solid fa-angle-right"></i> Visual Studio Code</a></li>
@@ -81,15 +245,15 @@
             </ul>
         </div>
         <div class="colonne3">
-            <h3><i class="fa-solid fa-info-circle"></i> A propos</h3>
+            <h3><i class="fa-solid fa-info-circle"></i> <span>A propos</span></h3>
             <ul>
-                <li><a href="Chiffres.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Nos chiffres</a></li>
-                <li><a href="Mission.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Notre mission</a></li>
-                <li><a href="Contacts.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Contacts</a></li>
+                <li><a href="Chiffres.html" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Nos chiffres</span></a></li>
+                <li><a href="Mission.html" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Notre mission</span></a></li>
+                <li><a href="Contacts.html" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Contacts</span></a></li>
             </ul>
         </div>
         <div class="colonne4">
-            <h3><i class="fa-solid fa-graduation-cap"></i>Envie d'une formation professionnelle ?</h3>
+            <h3><i class="fa-solid fa-graduation-cap"></i> <span>Envie d'une formation professionnelle ?</span></h3>
             <div class="les-logos">
                 <a href="https://dit.sn" target="_blank">
                     <img src="icône DIT.png" alt="icône du site officiel de DIT" width="60px" height="60px">
@@ -117,289 +281,7 @@
             <br/>
             <h3 class="titre-footer">Copyright DigitalEduc - 2026 - Developed By MADtech
     </footer>
+<script type="module" src="firebase-config-1.js"></script>
+<script type="module" src="suivi-progression.js"></script>
 </body>
 </html>
-
-<style>
-    body {
-        min-height:  1300px;
-        background-color: #f0f0f0;
-        font-family: 'Arial', 'Helvetica', sans-serif;
-    }
-
-    form {
-        text-align: center;
-        margin-top: 50px;
-    }
-
-    button {
-        background-color: #00a2ff;
-        color: #ffffff;
-        font-family: 'Arial', 'Helvetica', sans-serif;
-        font-weight: bold;
-        border: none;
-        border-radius: 6px;
-        padding: 12px 24px;
-        font-size: 16px;
-        cursor: pointer;
-        box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.2);
-    }
-
-    footer {
-        background-color: #2f3640;
-        color: #ffffff;
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        padding: 30px 20px 70px 20px;
-        position: relative;
-        text-align: center;
-    }
-
-    .colonne1, .colonne2, .colonne3{
-        display: flex;
-        flex-direction: column;
-        flex: 0 1 auto;
-        min-width: 220px;
-        margin: 5px;
-    }
-
-    .colonne4 {
-        display: flex;
-        flex-direction: column;
-        flex: 0 1 auto;
-        min-width: 250px;
-        margin: 5px;
-        margin-left: 70px;
-    }
-
-    .colonne1 ul, .colonne2 ul, .colonne3 ul {
-        list-style-type: none;
-        padding: 0;
-        margin: -5px 0 0 0;
-    }
-
-    .colonne1 ul li, .colonne2 ul li, .colonne3 ul li {
-        margin-bottom: 12px;
-    }
-
-    .colonne1 ul li a, .colonne2 ul li a, .colonne3 ul li a {
-        color: #e1e1e1;
-        text-decoration: none;
-        font-size: 15px;
-    }
-
-    .colonne1 ul li a:hover, .colonne2 ul li a:hover, .colonne3 ul li a:hover {
-        text-decoration: none;
-        color: #00a2ff;
-    
-    }
-
-    footer h3 {
-        margin-bottom: 20px;
-        font-size: 22px;
-        font-weight: bold;
-        color: #00a2ff;
-    }
-
-    .les-logos {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        gap: 12px;
-        margin-top: 5px;
-    }
-
-    .les-logos img {
-        width: 60px;
-        height: 60px;
-        border-radius: 80%;
-        object-fit: contain;
-        padding: 4px;
-
-    }
-
-    .titre-footer {
-        position: absolute;
-        bottom: 10px;
-        left: 0;
-        right: 0;
-        text-align: center;
-        font-size: 14px;
-        font-weight: bold;
-        color: #ffffff;
-    }
-
-    .underlinex {
-        width: 1502px;
-        height: 4px;
-        margin-top: 50px;
-        margin-bottom: 10px;
-        background-color: #00a2ff;
-    }
-
-    .underline {
-        display: block;
-        width: 150px;
-        height: 4px;
-        background-color: #00a2ff;
-        margin: 10px auto auto auto;
-        border-radius: 2px;
-    }
-
-
-    body .contact-form{
-    width:500px;
-    margin:40px auto;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-}
-
-    body h1 {
-        text-align:center;
-        color: #2f3640;
-        font-size:50px;
-    }
-
-    .contact-form input,
-    .contact-form textarea{
-
-        padding:15px;
-        border:1px solid #ccc;
-        border-radius:8px;
-        font-size:16px;
-
-    }
-
-    .contact-form button{
-
-        background:#00a2ff;
-        color:white;
-        border:none;
-        padding:15px;
-        border-radius:8px;
-        cursor:pointer;
-
-    }
-
-    /* Variables de couleurs */
-:root {
-  --primary-blue: #223e63; /* Couleur bleue originale des titres */
-  --button-blue: #2a96e8;  /* Couleur bleue du bouton Envoyer */
-  --bg-light: #f4f6f8;      /* Fond léger des cartes */
-  --text-dark: #333333;
-}
-
-.contact-page-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  font-family: Arial, sans-serif;
-}
-
-/* Titre principal et séparation */
-.main-title {
-  text-align: center;
-  color: var(--primary-blue);
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.title-underline {
-  width: 120px;
-  height: 3px;
-  background-color: var(--button-blue);
-  margin: 0 auto 30px auto;
-}
-
-/* Style du Formulaire */
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 14px 18px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  background-color: #f9fafb;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-.submit-btn {
-  background-color: var(--button-blue);
-  color: white;
-  border: none;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.submit-btn:hover {
-  background-color: #1d7ec4;
-}
-
-.disclaimer {
-  text-align: center;
-  font-size: 0.85rem;
-  color: #666666;
-  margin-top: 5px;
-}
-
-.section-divider {
-  border: none;
-  border-top: 1px solid #e0e0e0;
-  margin: 40px 0;
-}
-
-/* Section Informations de Contact */
-.section-title {
-  text-align: center;
-  color: var(--primary-blue); /* Mente couleur bleue que le titre principal */
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 25px;
-}
-
-.info-cards-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.info-card {
-  background-color: var(--bg-light);
-  border-radius: 16px;
-  padding: 24px;
-  flex: 1;
-  min-width: 220px;
-  max-width: 280px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-}
-
-.card-title {
-  color: var(--primary-blue); /* Application de la même couleur pour Adresse, Téléphone et Email */
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 12px;
-  margin-top: 0;
-}
-
-.info-card p {
-  color: var(--text-dark);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin: 4px 0;
-}

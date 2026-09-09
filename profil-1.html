@@ -1,74 +1,317 @@
+﻿
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" translate="no">
 <head>
+    <meta name="google" content="notranslate">
 <meta charset="UTF-8">
-<title>Mon profil</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon profil | DigitalEduc</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="design-navbar-footer.css">
 <style>
-  body { font-family: Arial, sans-serif; background:#f4f6f9; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
-  .box { background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:320px; text-align:center; }
-  h2 { margin-top:0; }
-  button { padding:10px 20px; background:#e63946; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold; margin-top:15px; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    background: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px; }
+  .boite {
+    background: #ffffff; border-radius: 16px; box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    width: 100%; max-width: 760px; padding: 32px;
+  }
+  .boite h1 { margin: 0 0 6px 0; color: #2f3640; font-size: 26px; }
+  .sous-titre { color: #666; font-size: 14px; margin: 0 0 24px 0; }
+
+  .carte-identite {
+    background: #f0f7ff; border: 1px solid #cfe0f7; border-radius: 10px;
+    padding: 16px 18px; margin-bottom: 24px; text-align: center;
+  }
+  .carte-identite .nom-prenom {
+    font-size: 20px; font-weight: bold; color: #1e5a9b; margin: 0 0 6px 0;
+  }
+  .carte-identite .carte-email {
+    background: #eaf2fd; border: 1px solid #cfe0f7; border-radius: 10px;
+    padding: 10px 14px; font-size: 14px; color: #1e5a9b; word-break: break-all; margin-bottom: 0;
+  }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .stat {
+    background: #f7f9fc; border: 1px solid #e3e8ef; border-radius: 12px; padding: 18px;
+  }
+  .stat .valeur { font-size: 28px; font-weight: bold; color: #2b7de9; }
+  .stat .libelle { font-size: 13px; color: #666; margin-top: 4px; }
+  .stat .barre { background: #e3e8ef; border-radius: 8px; overflow: hidden; height: 10px; margin-top: 12px; }
+  .stat .remplissage { background: #2b7de9; height: 100%; transition: width 0.4s ease; }
+
+  .titre-section { font-size: 16px; color: #2f3640; margin: 26px 0 12px 0; border-top: 1px solid #eee; padding-top: 18px; }
+
+  .module-item { background: #fbfcfe; border: 1px solid #e9eef5; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .module-entete { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .module-nom { font-size: 14px; font-weight: bold; color: #2f3640; }
+  .module-compte { font-size: 13px; color: #2b7de9; font-weight: bold; white-space: nowrap; }
+  .module-barre { background: #e3e8ef; border-radius: 6px; overflow: hidden; height: 8px; margin: 8px 0; }
+  .module-remplissage { background: #00a2ff; height: 100%; transition: width 0.4s ease; }
+  .module-exo { font-size: 12.5px; color: #666; }
+  .module-exo .fait { color: #1e8e3e; font-weight: bold; }
+  .module-exo .a-faire { color: #b3261e; font-weight: bold; }
+
+  .champs-nom { display: flex; gap: 12px; }
+  .champs-nom > div { flex: 1; }
+  .champs-nom label { display: block; font-size: 12.5px; color: #666; margin-bottom: 4px; font-weight: bold; }
+  .champs-nom input {
+    width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px;
+    font-size: 14px; box-sizing: border-box; background: #f8fafc;
+  }
+  .champs-nom input:focus { outline: none; border-color: #2b7de9; box-shadow: 0 0 0 3px rgba(43,125,233,0.2); background: #fff; }
+  .msg-identite-succes { color: #1e8e3e; font-size: 13.5px; margin-top: 10px; }
+  .msg-identite-erreur { color: #b3261e; font-size: 13.5px; margin-top: 10px; }
+
+  .bouton { display: inline-block; padding: 11px 22px; border-radius: 8px; font-weight: bold; font-size: 15px; text-decoration: none; border: none; cursor: pointer; }
+  .bouton-connexion { background: #2b7de9; color: #fff; }
+  .bouton-connexion:hover { background: #1e63c4; }
+  .bouton-inscription { background: #00a2ff; color: #fff; }
+  .bouton-inscription:hover { background: #0087d4; }
+  .bouton-deconnexion { background: #e63946; color: #fff; }
+  .bouton-deconnexion:hover { background: #c62c38; }
+
+  .centre { text-align: center; }
+  .invite-icone { font-size: 52px; color: #2b7de9; margin-bottom: 10px; }
+  .invite-texte { color: #666; font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+  .invite-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .note-invite { margin-top: 18px; font-size: 12.5px; color: #999; }
+
+  footer {
+    background-color: #2f3640; color: #ffffff; padding: 30px 20px 70px 20px;
+    text-align: center; margin-top: auto;
+  }
+  footer p { margin: 5px 0; font-size: 13px; color: #cfd4dc; }
+  footer .copyright { font-size: 14px; font-weight: bold; color: #ffffff; margin-top: 14px; }
+
+  @media (max-width: 700px) {
+    .stats { grid-template-columns: 1fr; }
+    .champs-nom { flex-direction: column; }
+    nav ul { gap: 15px; }
+    nav a { font-size: 14px; }
+  }
 </style>
+    <link rel="stylesheet" href="responsive.css">    <link rel="stylesheet" href="theme-techno.css">
 </head>
 <body>
 
-<div class="box">
-  <h2>Mon profil</h2>
-  <p id="userInfo">Chargement...</p>
-  <div id="progressSection" style="display:none; text-align:left; margin-top:20px;">
-    <h3 style="font-size:16px;">Ma progression</h3>
-    <div style="background:#eee; border-radius:8px; overflow:hidden; height:16px; margin:10px 0;">
-      <div id="progressBar" style="background:#2b7de9; height:100%; width:0%; transition:width 0.3s;"></div>
-    </div>
-    <p id="progressText" style="font-size:13px; color:#555;"></p>
-    <ul id="progressList" style="font-size:13px; padding-left:20px; color:#333;"></ul>
+<nav>
+  <div class="logo">
+    <img src="logo DE.png" alt="Logo de DigitalEduc" class="DE" width="130" height="100">
   </div>
-  <button id="logoutBtn">Se déconnecter</button>
-</div>
+  <ul>
+    <li><a href="index.html" target="_blank" class="active"><i class="fas fa-home"></i> <span>Accueil</span></a></li>
+    <li><a href="Cours.html"><i class="fas fa-book"></i> <span>Cours</span></a></li>
+    <li><a href="Exercices.html"><i class="fas fa-tasks"></i> <span>Exercices</span></a></li>
+  </ul>
+  <div class="account-dropdown">
+    <button class="account-btn" onclick="document.getElementById('accountMenu').classList.toggle('show')">
+      <i class="fa fa-user"></i> <span>COMPTE</span>
+    </button>
+    <div id="accountMenu" class="account-menu">
+      <a href="connexion.html">Connexion</a>
+      <a href="inscription.html">Inscription</a>
+      <a href="profil-1.html">Mon profil</a>
+    </div>
+  </div>
+</nav>
 
-<script type="module" src="/firebase-config.js"></script>
+<main>
+  <div class="boite">
+    <h1><i class="fa-solid fa-user-circle"></i> <span>Mon profil</span></h1>
+    <p class="sous-titre">Suivez votre progression sur DigitalEduc.</p>
+
+    <!-- Par quoi on remplace le "chargement..." -->
+    <div id="chargement">Chargement...</div>
+
+    <div id="inviteSection" style="display:none;" class="centre">
+      <div class="invite-icone"><i class="fa-solid fa-chart-line"></i></div>
+      <p class="invite-texte">
+        Vous devez être <strong>connecté</strong> pour voir votre progression :
+        les cours que vous avez suivis et les exercices que vous avez réalisés
+        sont enregistrés sur votre compte.
+      </p>
+      <div class="invite-actions">
+        <a href="connexion.html" class="bouton bouton-connexion">Se connecter</a>
+        <a href="inscription.html" class="bouton bouton-inscription">Créer un compte</a>
+      </div>
+      <p class="note-invite">
+        <i class="fa-solid fa-circle-info"></i> La création d'un compte est gratuite et ne prend que quelques secondes.
+      </p>
+    </div>
+
+    <div id="connecteSection" style="display:none;">
+      <h3 class="titre-section">Mes informations</h3>
+      <div class="carte-identite">
+        <p class="nom-prenom" id="nomPrenomAffiche"></p>
+        <div class="carte-email">
+          <i class="fa-solid fa-envelope"></i> <span id="emailAffiche"></span>
+        </div>
+      </div>
+      <div class="champs-nom">
+        <div>
+          <label for="prenomInput">Prénom</label>
+          <input type="text" id="prenomInput" placeholder="Prénom" autocomplete="given-name">
+        </div>
+        <div>
+          <label for="nomInput">Nom</label>
+          <input type="text" id="nomInput" placeholder="Nom" autocomplete="family-name">
+        </div>
+      </div>
+      <p class="msg-identite-erreur" id="identiteMsg" style="display:none;"></p>
+      <p style="margin:14px 0 0 0;">
+        <button id="enregistrerBtn" class="bouton bouton-connexion">Enregistrer mes informations</button>
+      </p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="valeur" id="coursValeur">0</div>
+          <div class="libelle" id="coursLibelle">cours suivis</div>
+          <div class="barre"><div class="remplissage" id="coursBarre" style="width:0%;"></div></div>
+        </div>
+        <div class="stat">
+          <div class="valeur" id="exercicesValeur">0</div>
+          <div class="libelle" id="exercicesLibelle">exercices réalisés</div>
+          <div class="barre"><div class="remplissage" id="exercicesBarre" style="width:0%;"></div></div>
+        </div>
+      </div>
+
+      <h3 class="titre-section">Progression par module</h3>
+      <div id="listeModules"></div>
+
+      <p style="text-align:center; margin-top:26px;">
+        <button id="logoutBtn" class="bouton bouton-deconnexion">Se déconnecter</button>
+      </p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p><i class="fa-solid fa-graduation-cap"></i> DigitalEduc - Votre plateforme de formation en informatique</p>
+  <p class="copyright">Copyright DigitalEduc - 2026 - Developed By MADtech</p>
+</footer>
+
+<script type="module" src="firebase-config-1.js"></script>
+<script type="module" src="suivi-progression.js"></script>
 <script type="module">
   import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  // Liste de TOUS les cours/exercices de votre site.
-  // Ajoutez ici chaque ID que vous utilisez avec markItemComplete()
-  // ailleurs sur le site, avec un nom lisible pour l'affichage.
-  const TOUS_LES_CONTENUS = {
-    "cours-html-1": "Cours : Introduction au HTML",
-    "cours-css-1": "Cours : Introduction au CSS",
-    "exercice-html-1": "Exercice : Ma première page HTML"
-    // Ajoutez vos autres cours/exercices ici...
-  };
+  const ecranChargement = document.getElementById('chargement');
+  const ecranInvite = document.getElementById('inviteSection');
+  const ecranConnecte = document.getElementById('connecteSection');
 
-  // Protection de la page : si personne n'est connecté, on renvoie vers la connexion
+  function construireListeModules(details) {
+    const conteneur = document.getElementById('listeModules');
+    conteneur.innerHTML = "";
+    for (const [cle, info] of Object.entries(details)) {
+      const pourcentage = info.cours > 0 ? Math.round((info.coursSuivis / info.cours) * 100) : 0;
+      const exoEtat = info.exerciceFait
+        ? '<span class="fait">✓ Exercice réalisé</span>'
+        : '<span class="a-faire">À faire</span>';
+
+      const item = document.createElement('div');
+      item.className = 'module-item';
+      item.innerHTML = `
+        <div class="module-entete">
+          <span class="module-nom">${info.nom}</span>
+          <span class="module-compte">${info.coursSuivis} / ${info.cours} vidéos</span>
+        </div>
+        <div class="module-barre"><div class="module-remplissage" style="width:${pourcentage}%;"></div></div>
+        <div class="module-exo">Exercice : ${exoEtat}</div>
+      `;
+      conteneur.appendChild(item);
+    }
+  }
+
   onAuthStateChanged(window.firebaseAuth, async (user) => {
+    ecranChargement.style.display = 'none';
     if (!user) {
-      window.location.href = "/connexion.html";
+      ecranConnecte.style.display = 'none';
+      ecranInvite.style.display = 'block';
       return;
     }
-    document.getElementById('userInfo').textContent = "Connecté en tant que : " + user.email;
 
-    const progress = await window.getUserProgress();
-    const total = Object.keys(TOUS_LES_CONTENUS).length;
-    const termines = Object.keys(progress).filter(id => progress[id]).length;
-    const pourcentage = total > 0 ? Math.round((termines / total) * 100) : 0;
+    ecranInvite.style.display = 'none';
+    ecranConnecte.style.display = 'block';
+    document.getElementById('emailAffiche').textContent = user.email;
 
-    document.getElementById('progressSection').style.display = 'block';
-    document.getElementById('progressBar').style.width = pourcentage + '%';
-    document.getElementById('progressText').textContent =
-      `${termines} / ${total} terminés (${pourcentage}%)`;
+    // Affiche prénom + nom au-dessus de l'email.
+    // On privilégie le prénom et le nom enregistrés à l'inscription
+    // (Firestore) plutôt que le displayName qui peut contenir un pseudo.
+    const prenomInput = document.getElementById('prenomInput');
+    const nomInput = document.getElementById('nomInput');
+    let prenom = "";
+    let nom = "";
+    const profil = await window.getProfilUtilisateur();
+    if (profil && (profil.prenom || profil.nom)) {
+      prenom = String(profil.prenom || "").trim();
+      nom = String(profil.nom || "").trim();
+    } else if (user.displayName) {
+      const mots = user.displayName.trim().split(/\s+/);
+      prenom = mots[0] || "";
+      nom = mots.slice(1).join(" ");
+    }
+    document.getElementById('nomPrenomAffiche').textContent = [prenom, nom].filter(Boolean).join(" ") || user.email;
+    prenomInput.value = prenom;
+    nomInput.value = nom;
 
-    const list = document.getElementById('progressList');
-    Object.entries(TOUS_LES_CONTENUS).forEach(([id, label]) => {
-      const li = document.createElement('li');
-      li.textContent = (progress[id] ? "✅ " : "⬜ ") + label;
-      list.appendChild(li);
-    });
+    const details = await window.getProgressionDetail();
+    let coursSuivis = 0;
+    let exercicesFaits = 0;
+    for (const info of Object.values(details)) {
+      coursSuivis += info.coursSuivis;
+      exercicesFaits += info.exerciceFait ? 1 : 0;
+    }
+
+    const totalCours = window.TOTAL_COURS;
+    const totalExercices = window.TOTAL_EXERCICES;
+    const pcCours = totalCours > 0 ? Math.round((coursSuivis / totalCours) * 100) : 0;
+    const pcExercices = totalExercices > 0 ? Math.round((exercicesFaits / totalExercices) * 100) : 0;
+
+    document.getElementById('coursValeur').textContent = coursSuivis;
+    document.getElementById('coursLibelle').textContent = "cours suivis sur " + totalCours;
+    document.getElementById('coursBarre').style.width = pcCours + "%";
+    document.getElementById('exercicesValeur').textContent = exercicesFaits;
+    document.getElementById('exercicesLibelle').textContent = "exercices réalisés sur " + totalExercices;
+    document.getElementById('exercicesBarre').style.width = pcExercices + "%";
+
+    construireListeModules(details);
   });
 
   document.getElementById('logoutBtn').addEventListener('click', async () => {
     await window.signOutUser();
-    window.location.href = "/";
+    window.location.href = "index.html";
+  });
+
+  document.getElementById('enregistrerBtn').addEventListener('click', async () => {
+    const message = document.getElementById('identiteMsg');
+    const prenom = document.getElementById('prenomInput').value.trim();
+    const nom = document.getElementById('nomInput').value.trim();
+    if (!prenom && !nom) {
+      message.className = "msg-identite-erreur";
+      message.textContent = "Renseignez au moins le prénom ou le nom.";
+      message.style.display = "block";
+      return;
+    }
+    try {
+      await window.updateUserProfil(prenom, nom);
+      message.className = "msg-identite-succes";
+      message.textContent = "Prénom et nom enregistrés. Ils sont maintenant affichés partout sur le site.";
+      message.style.display = "block";
+      document.getElementById('nomPrenomAffiche').textContent = [prenom, nom].filter(Boolean).join(" ") || document.getElementById('emailAffiche').textContent;
+    } catch (erreur) {
+      message.className = "msg-identite-erreur";
+      message.textContent = "Erreur : " + erreur.message;
+      message.style.display = "block";
+    }
   });
 </script>
 </body>

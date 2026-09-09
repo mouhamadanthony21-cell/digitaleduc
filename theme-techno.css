@@ -1,0 +1,786 @@
+/* =========================================================
+   THEME IMMERSIF TECHNOLOGIQUE - DigitalEduc
+   Chargé EN DERNIER sur toutes les pages (après responsive.css)
+   pour garantir la cascade.
+   Palette : dégradé bleu #00a2ff → bleu foncé, fond noir
+   bleuté, police Poppins/Inter, motif tech en arrière-plan.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ---------------------------------------------------------
+   1. FOND GLOBAL + MOTIF TECHNIQUE
+   --------------------------------------------------------- */
+body {
+    background-color: #ffffff !important;
+    background-image:
+        radial-gradient(ellipse 900px 500px at 85% -10%, rgba(0, 162, 255, 0.08), transparent 60%),
+        radial-gradient(ellipse 700px 450px at 5% 110%, rgba(0, 108, 204, 0.10), transparent 60%),
+        linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, #ffffff 0%, #f4f8ff 50%, #eef4ff 100%) !important;
+    background-size: auto, auto, 46px 46px, 46px 46px, auto !important;
+    background-attachment: fixed !important;
+    font-family: 'Poppins', 'Inter', 'Segoe UI', 'Arial', sans-serif !important;
+    color: #1c2431 !important;
+}
+
+/* Particules/points décoratifs très discrets */
+body::before {
+    content: "" !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-image:
+        radial-gradient(rgba(56, 189, 248, 0.25) 1px, transparent 1.5px),
+        radial-gradient(rgba(0, 162, 255, 0.18) 1px, transparent 1.5px) !important;
+    background-size: 240px 240px, 380px 380px !important;
+    background-position: 30px 20px, 140px 120px !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+    opacity: 0.5 !important;
+}
+
+body > *:not(nav):not(footer) {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Toutes les typographies premium */
+h1, h2, h3, h4, h5, h6, p, a, li, span, button, input, .box, .badge-pdf, .exercise-title {
+    font-family: 'Poppins', 'Inter', 'Segoe UI', 'Arial', sans-serif !important;
+}
+
+/* ---------------------------------------------------------
+   2. DÉGRADÉS BLEUS SUR LES TITRES IMPORTANTS
+   --------------------------------------------------------- */
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+    .modules h2,
+    .center-container h1,
+    .left-container h1,
+    .cours h2,
+    .banner-title,
+    .boite h1,
+    .family-title,
+    .educ .left-container h1 strong,
+    h2 {
+        background: linear-gradient(120deg, #004e9e 0%, #0077d6 45%, #00a2ff 100%) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        color: #0059b3 !important;
+    }
+}
+
+/* ---------------------------------------------------------
+   3. TEXTES SUR FACTURE CLAIRE (lisibilité)
+   --------------------------------------------------------- */
+.left-container p,
+.banner-description,
+.center-container p,
+.educ .left-container p,
+.family-count,
+.family-title,
+.code,
+.sous-titre {
+    color: #3a4658 !important;
+}
+
+.eyebrow {
+    color: #0284c7 !important;
+    font-weight: 600 !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    font-size: 13px !important;
+}
+
+/* ---------------------------------------------------------
+   4. SECTIONS / BANNIÈRES : fonds blancs avec liseré bleu
+   --------------------------------------------------------- */
+.educ,
+.white-container,
+.card-banner,
+.boite {
+    background: linear-gradient(165deg, #ffffff, #f2f8ff) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(0, 162, 255, 0.22) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 18px 50px rgba(2, 8, 20, 0.16) !important;
+}
+
+/* Bandeau de titre des pages modules/cours : léger dégradé bleuté.
+   Occupant toute la largeur de la page, avec le titre + son séparateur
+   centrés à l'intérieur. */
+.white-container {
+    background: linear-gradient(135deg, #eaf4ff, #ffffff) !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.modules {
+    background: linear-gradient(180deg, #ffffff, #eff7ff) !important;
+    border-top: 1px solid rgba(0, 162, 255, 0.15) !important;
+    border-bottom: 1px solid rgba(0, 162, 255, 0.15) !important;
+}
+
+/* ---------------------------------------------------------
+   5. CARTES MODULES / COURS : blanches + surbrillance bleue
+   --------------------------------------------------------- */
+.bloc {
+    background: linear-gradient(165deg, #ffffff 0%, #f2f8ff 100%) !important;
+    border: 1px solid rgba(0, 162, 255, 0.22) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 24px rgba(2, 8, 20, 0.12) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.bloc::before {
+    background: linear-gradient(180deg, #00a2ff, #0a4d8c) !important;
+}
+
+.bloc:hover {
+    transform: translateY(-6px) !important;
+    border-color: rgba(0, 162, 255, 0.55) !important;
+    box-shadow: 0 16px 40px rgba(0, 162, 255, 0.28), 0 8px 24px rgba(2, 8, 20, 0.18) !important;
+}
+
+.icon-box {
+    background: linear-gradient(135deg, rgba(0, 162, 255, 0.16), rgba(0, 76, 153, 0.16)) !important;
+    color: #0a5db8 !important;
+    box-shadow: 0 0 16px rgba(0, 162, 255, 0.18) !important;
+}
+
+.bloc h3 {
+    color: #1c2431 !important;
+}
+
+.bloc-arrow,
+.bloc .code {
+    color: #3a4658 !important;
+}
+
+.bloc-arrow {
+    color: #0dabff !important;
+}
+
+/* Cartes Exercices */
+.module-card {
+    background: linear-gradient(165deg, #ffffff 0%, #f2f8ff 100%) !important;
+    border: 1px solid rgba(0, 162, 255, 0.22) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 24px rgba(2, 8, 20, 0.12) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.module-card:hover {
+    transform: translateY(-5px) !important;
+    border-color: rgba(0, 162, 255, 0.55) !important;
+    box-shadow: 0 16px 40px rgba(0, 162, 255, 0.26), 0 8px 24px rgba(2, 8, 20, 0.18) !important;
+}
+
+.card-header h2,
+.exercise-title,
+.course-link,
+.status-afaire,
+.Corrigé,
+.Exo {
+    color: #1c2431 !important;
+}
+
+.course-link {
+    color: #0dabff !important;
+}
+
+.exercise-title a:hover {
+    color: #0dabff !important;
+}
+
+.course-link:hover {
+    color: #004e9e !important;
+}
+
+.status-corrige {
+    background: rgba(30, 142, 62, 0.14) !important;
+    color: #1e8e3e !important;
+}
+
+.status-afaire {
+    background: rgba(94, 113, 140, 0.14) !important;
+    color: #3a4658 !important;
+}
+
+.badge-pdf {
+    background: rgba(229, 62, 62, 0.14) !important;
+    color: #c62828 !important;
+}
+
+.exercise-done-btn {
+    background: rgba(0, 162, 255, 0.12) !important;
+    color: #0a5db8 !important;
+    border: 1.5px solid #0a5db8 !important;
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+}
+
+.exercise-done-btn:hover {
+    background: linear-gradient(135deg, #00a2ff, #0a5db8) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 18px rgba(0, 162, 255, 0.4) !important;
+}
+
+/* ---------------------------------------------------------
+   6. BOUTONS : dégradés bleus + élévation au survol
+   --------------------------------------------------------- */
+button,
+.btn-contact,
+.bouton,
+.bouton-lien,
+.renvoyer,
+.btn-contact {
+    background: linear-gradient(135deg, #00a2ff 0%, #0a5db8 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 6px 20px rgba(0, 162, 255, 0.35) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease !important;
+}
+
+button:hover,
+.btn-contact:hover,
+.bouton:hover,
+.bouton-lien:hover,
+.renvoyer:hover,
+.btn-contact:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 30px rgba(0, 162, 255, 0.5) !important;
+    filter: brightness(1.08) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+/* Bouton account déjà géré dans design-navbar-footer.css ;
+   on renforce avec un dégradé premium */
+.account-btn {
+    background: linear-gradient(135deg, #00a2ff, #0a5db8) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 6px 18px rgba(0, 162, 255, 0.4) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease !important;
+}
+
+.account-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 26px rgba(0, 162, 255, 0.5) !important;
+    filter: brightness(1.1) !important;
+}
+
+/* ---------------------------------------------------------
+   7. LIENS GÉNÉRAUX : soulignement animé bleu
+   --------------------------------------------------------- */
+a {
+    transition: color 0.3s ease !important;
+}
+
+.family-tag {
+    background: rgba(0, 162, 255, 0.10) !important;
+    color: #0a5db8 !important;
+    border: 1px solid rgba(0, 162, 255, 0.30) !important;
+    border-radius: 8px !important;
+}
+
+.family-head {
+    border-bottom: 1px solid rgba(0, 162, 255, 0.20) !important;
+}
+
+/* ---------------------------------------------------------
+   8. VIDÉOS : coins arrondis + liseré bleu
+   --------------------------------------------------------- */
+.videos iframe {
+    border-radius: 14px !important;
+    border: 1px solid rgba(56, 189, 248, 0.25) !important;
+    box-shadow: 0 10px 30px rgba(2, 8, 20, 0.5) !important;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.videos iframe:hover {
+    border-color: rgba(0, 162, 255, 0.6) !important;
+    box-shadow: 0 14px 40px rgba(0, 162, 255, 0.28) !important;
+}
+
+/* ---------------------------------------------------------
+   9. LIGNES DE SÉPARATION DÉCORATIVES
+   --------------------------------------------------------- */
+.underline,
+.underline2,
+.underlinex {
+    background: linear-gradient(90deg, #00a2ff, #0a5db8) !important;
+    height: 4px !important;
+    border-radius: 2px !important;
+    box-shadow: 0 4px 14px rgba(0, 162, 255, 0.5) !important;
+}
+
+/* Séparateur ornemental SVG des titres de section : ligne fine effilée
+   en pointe de chaque côté + petit losange centré, couleur #00a2ff.
+   Composant réutilisable : fichier separateur-titre.svg */
+.underline {
+    background: url("separateur-titre.svg") no-repeat center !important;
+    background-color: transparent !important;
+    background-size: contain !important;
+    height: 12px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Séparateur ornemental sous le titre de module (bandeau) */
+.titre-underline {
+    width: 240px;
+    height: 18px;
+    margin: 14px auto 0 auto;
+    background: url("separateur-titre.svg") no-repeat center;
+    background-size: contain;
+}
+
+/* ---------------------------------------------------------
+   10. PAGES AUTHENTIFICATION (formulaires)
+   --------------------------------------------------------- */
+.box {
+    background: linear-gradient(165deg, #ffffff, #f2f8ff) !important;
+    border: 1px solid rgba(0, 162, 255, 0.22) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 24px 60px rgba(2, 8, 20, 0.18) !important;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+    .box h2 {
+        color: #004e9e !important;
+        background: linear-gradient(120deg, #004e9e, #0077d6 60%, #00a2ff) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+}
+
+.box input {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 162, 255, 0.25) !important;
+    color: #1c2431 !important;
+    border-radius: 10px !important;
+    padding: 12px !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.box input:focus {
+    border-color: #00a2ff !important;
+    box-shadow: 0 0 0 3px rgba(0, 162, 255, 0.18) !important;
+}
+
+.box .bouton-lien,
+.box .bouton,
+.box .renvoyer {
+    background: linear-gradient(135deg, #00a2ff, #0a5db8) !important;
+}
+
+.info-email {
+    background: rgba(0, 162, 255, 0.08) !important;
+    border: 1px solid rgba(0, 162, 255, 0.25) !important;
+    color: #0a5db8 !important;
+}
+
+/* ---------------------------------------------------------
+   11. PAGES PROFIL / STATS
+   --------------------------------------------------------- */
+.boite {
+    color: #1c2431 !important;
+}
+
+.statistiques {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 24px !important;
+    max-width: 1280px !important;
+    margin: 0 auto !important;
+    padding: 0 20px !important;
+}
+
+.statistiques .card {
+    background: linear-gradient(165deg, #ffffff, #f2f8ff) !important;
+    border: 1px solid rgba(0, 162, 255, 0.22) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 24px rgba(2, 8, 20, 0.12) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+    text-align: center !important;
+    flex: 1 1 220px !important;
+    max-width: 280px !important;
+    padding: 36px 24px !important;
+}
+
+.statistiques .card:hover {
+    transform: translateY(-5px) !important;
+    border-color: rgba(0, 162, 255, 0.55) !important;
+    box-shadow: 0 16px 40px rgba(0, 162, 255, 0.28) !important;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+    .statistiques .card h2 {
+        background: linear-gradient(120deg, #004e9e, #0077d6 55%, #00a2ff) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+}
+
+.statistiques .card p {
+    color: #3a4658 !important;
+}
+
+.stat,
+.module-item {
+    background: linear-gradient(165deg, #ffffff, #f2f8ff) !important;
+    border: 1px solid rgba(0, 162, 255, 0.22) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 24px rgba(2, 8, 20, 0.12) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.stat:hover,
+.module-item:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 14px 34px rgba(0, 162, 255, 0.25) !important;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+    .stat .valeur {
+        background: linear-gradient(120deg, #004e9e, #0077d6 55%, #00a2ff) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+}
+
+/* ---------------------------------------------------------
+   12. NAVIGATION BURGER (un burger par lien)
+   --------------------------------------------------------- */
+/* Navbar blanche : chip logo subtil */
+nav .logo {
+    background: rgba(13, 171, 255, 0.06) !important;
+    border: 1px solid rgba(13, 171, 255, 0.20) !important;
+    border-radius: 14px !important;
+    padding: 4px 10px !important;
+    box-shadow: 0 4px 14px rgba(2, 8, 20, 0.08) !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+nav .logo:hover {
+    border-color: rgba(0, 162, 255, 0.6) !important;
+    box-shadow: 0 8px 22px rgba(0, 162, 255, 0.25) !important;
+}
+
+/* Chaque lien Accueil / Cours / Exercices : forme très arrondie
+   comme le bouton COMPTE (14px), fond blanc au lieu du fond noir */
+nav li a {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 12px 24px !important;
+    min-width: 74px !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 14px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    background: #ffffff !important;
+    color: #1c2431 !important;
+    box-shadow: 0 6px 20px rgba(2, 8, 20, 0.35) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Pas de barres burger sur les liens */
+nav li a::before,
+nav li a:hover::before,
+nav li a.active::before {
+    display: none !important;
+    content: none !important;
+}
+
+nav li a span {
+    font-size: 16px !important;
+    font-weight: bold !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
+
+/* Espacement entre les trois boutons (desktop) */
+@media (min-width: 992px) {
+    nav ul {
+        gap: 18px !important;
+    }
+}
+
+nav li a i {
+    font-size: 15px !important;
+    color: inherit !important;
+}
+
+/* Accueil : bouton bleu plein */
+nav li a[href="index.html"] {
+    background: #00a2ff !important;
+    color: #ffffff !important;
+    border-color: #00a2ff !important;
+    box-shadow: 6px 6px 20px rgba(0, 162, 255, 0.35) !important;
+}
+
+/* Icône du bouton Accueil toujours blanche et visible
+   (sinon .active force #0dabff sur fond bleu = invisible) */
+nav li a[href="index.html"] i,
+nav li a[href="index.html"].active i {
+    color: #ffffff !important;
+    display: inline-block !important;
+    visibility: visible !important;
+}
+
+/* Cours et Exercices : sur navbar sombre, fond translucide + texte clair */
+nav li a[href="Cours.html"],
+nav li a[href="Exercices.html"] {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 0 6px 20px rgba(2, 8, 20, 0.25) !important;
+}
+
+nav li a[href="index.html"]:hover {
+    background: #0a95e0 !important;
+    border-color: #0a95e0 !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 26px rgba(0, 162, 255, 0.45) !important;
+    transform: translateY(-2px) !important;
+}
+
+nav li a[href="Cours.html"]:hover,
+nav li a[href="Exercices.html"]:hover {
+    background: rgba(255, 255, 255, 0.16) !important;
+    color: #ffffff !important;
+    border-color: rgba(0, 162, 255, 0.8) !important;
+    box-shadow: 0 8px 22px rgba(0, 162, 255, 0.25) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Bouton COMPTE : chip burger */
+nav .account-btn {
+    background: linear-gradient(135deg, #00a2ff 0%, #0a5db8 100%) !important;
+    border-radius: 14px !important;
+    padding: 9px 16px !important;
+    gap: 6px !important;
+    flex-direction: row !important;
+}
+
+nav .account-btn i {
+    display: inline-flex !important;
+    margin-right: 0 !important;
+}
+
+/* Menu compte dans le style clair */
+.account-menu {
+    background: linear-gradient(180deg, #ffffff, #f2f8ff) !important;
+    border: 1px solid rgba(13, 171, 255, 0.30) !important;
+    box-shadow: 0 18px 50px rgba(2, 8, 20, 0.18) !important;
+    padding: 10px !important;
+    min-width: 240px !important;
+}
+
+/* ---- Compte CONNECTÉ : les infos de l'utilisateur actif ---- */
+.acct-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 10px 12px !important;
+    background: rgba(13, 171, 255, 0.08) !important;
+    border: 1px solid rgba(13, 171, 255, 0.25) !important;
+    border-radius: 12px !important;
+    margin-bottom: 8px !important;
+}
+
+.acct-avatar {
+    flex: 0 0 auto !important;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #00a2ff, #0a5db8) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(0, 162, 255, 0.4) !important;
+}
+
+.acct-infos {
+    min-width: 0 !important;
+    flex: 1 !important;
+}
+
+.acct-nom {
+    color: #1c2431 !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.acct-email {
+    color: #5a6a7d !important;
+    font-size: 12px !important;
+    margin-top: 2px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.acct-divider {
+    height: 1px !important;
+    background: rgba(2, 8, 20, 0.10) !important;
+    margin: 8px 6px !important;
+}
+
+/* Compte NON connecté : les deux boutons Se connecter / S'inscrire */
+.acct-boutons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 4px 2px !important;
+}
+
+.account-menu a.acct-bouton {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 11px 14px !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+}
+
+.account-menu a.acct-bouton-principal {
+    background: linear-gradient(135deg, #00a2ff, #0a5db8) !important;
+}
+
+.account-menu a.acct-bouton-principal:hover {
+    background: linear-gradient(135deg, #0a95e0, #084a94) !important;
+    color: #ffffff !important;
+}
+
+.account-menu a.acct-bouton-secondaire {
+    background: rgba(13, 171, 255, 0.06) !important;
+    border: 1px solid rgba(13, 171, 255, 0.25) !important;
+    color: #0a5db8 !important;
+}
+
+.account-menu a.acct-bouton-secondaire:hover {
+    background: rgba(13, 171, 255, 0.12) !important;
+    border-color: rgba(13, 171, 255, 0.5) !important;
+    color: #0a5db8 !important;
+}
+
+.account-menu a {
+    color: #1c2431 !important;
+    border-bottom: 1px solid rgba(2, 8, 20, 0.08) !important;
+}
+
+.account-menu a:hover {
+    background: rgba(0, 162, 255, 0.10) !important;
+    color: #0a5db8 !important;
+}
+
+/* ---------------------------------------------------------
+   13. FOOTER BURGER (colonnes pliables)
+   --------------------------------------------------------- */
+footer h3 {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    user-select: none !important;
+}
+
+footer h3 .burger-icone {
+    display: none !important;
+}
+
+footer .colonne1 ul,
+footer .colonne2 ul,
+footer .colonne3 ul,
+footer .les-logos {
+    transition: max-height 0.35s ease, opacity 0.3s ease !important;
+    overflow: hidden !important;
+}
+
+@media (max-width: 767.98px) {
+    footer .colonne1 ul,
+    footer .colonne2 ul,
+    footer .colonne3 ul,
+    footer .les-logos {
+        max-height: 0 !important;
+        opacity: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    footer .colonne1 ul.open,
+    footer .colonne2 ul.open,
+    footer .colonne3 ul.open,
+    footer .les-logos.open {
+        max-height: 480px !important;
+        opacity: 1 !important;
+        margin-top: 6px !important;
+    }
+}
+
+/* ---------------------------------------------------------
+   14. DIVERS (listes de cours, tableaux, ensemble)
+   --------------------------------------------------------- */
+/* En-têtes de cartes Exercices : fond blanc (au lieu des teintes sombres) */
+.card-header,
+.card-header.bg-maths,
+.card-header.bg-culture,
+.card-header.bg-bureautique,
+.card-header.bg-infographie,
+.card-header.bg-wordpress,
+.card-header.bg-algo,
+.card-header.bg-prog,
+.card-header.bg-archi-oril,
+.card-header.bg-win,
+.card-header.bg-linux,
+.card-header.bg-si,
+.card-header.bg-merise,
+.card-header.bg-sql,
+.card-header.bg-reseaux,
+.card-header.bg-ccna,
+.card-header.bg-cyber {
+    background: linear-gradient(135deg, #ffffff, #eff7ff) !important;
+    color: #1c2431 !important;
+    border-bottom: 1px solid rgba(0, 162, 255, 0.20) !important;
+}
+
+.card-header .header-icon {
+    background-color: rgba(0, 162, 255, 0.14) !important;
+    color: #0a5db8 !important;
+}
+
+hr,
+.under {
+    border-color: rgba(56, 189, 248, 0.18) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}

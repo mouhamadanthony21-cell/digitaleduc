@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script>
+window.addEventListener('load', function () {
+  var f = document.getElementById('f');
+  function measure() {
+    var d, w, body, de, cw, sw, over, offenders = '';
+    try {
+      d = f.contentDocument;
+      w = d.defaultView;
+      body = d.body;
+      de = d.documentElement;
+      cw = de.clientWidth;
+      sw = Math.max(de.scrollWidth, body ? body.scrollWidth : 0);
+      over = sw - cw;
+      if (over > 0) {
+        var js = "JSON.stringify([].map.call(document.querySelectorAll('*'),function(el){" +
+          "var r=el.getBoundingClientRect();if(r.width===0&&r.height===0)return null;" +
+          "var cw=document.documentElement.clientWidth;" +
+          "var dR=r.right-(cw+1);var dL=-r.left-1;" +
+          "if(!(dR>0||dL>0))return null;" +
+          "var p=el.parentElement,scr=false;" +
+          "while(p){var o=getComputedStyle(p).overflowX;if(o==='auto'||o==='scroll'||o==='hidden'){scr=true;break;}p=p.parentElement;}" +
+          "if(scr)return null;" +
+          "var cls=String(el.className||'');var id=el.id||'';" +
+          "return {t:el.tagName,c:cls.slice(0,45),i:id,l:Math.round(r.left),r:Math.round(r.right),w:Math.round(r.width)};" +
+          "}).filter(Boolean).slice(0,10))";
+        offenders = w.eval(js);
+      }
+      document.getElementById('out').textContent =
+        'SCROLL=' + sw + ' CLIENT=' + cw + ' OVER=' + over + ' OFFS=' + offenders;
+    } catch (e) {
+      document.getElementById('out').textContent = 'ERR:' + e.message;
+    }
+  }
+  f.onload = function () { setTimeout(measure, 150); };
+  f.src = decodeURIComponent((location.search.split('u=')[1] || 'index.html'));
+});
+</script>
+</head>
+<body style="margin:0">
+<iframe id="f" width="1400" height="900"></iframe>
+<pre id="out" style="position:fixed;bottom:0;left:0;max-width:99%;background:#fff;border:1px solid #ccc;font-size:12px">WAIT</pre>
+</body>
+</html>

@@ -1,0 +1,601 @@
+
+/* =========================================================
+   RESPONSIVE GLOBAL - DigitalEduc
+   =========================================================
+   Ce fichier est chargé APRÈS les styles inline de chaque page
+   (le lien est placé juste avant </head>).
+
+   Philosophie : on garde EXACTEMENT la même disposition que sur
+   ordinateur sur toutes les tailles d'écran (mêmes rangées,
+   mêmes colonnes côte à côte, mêmes ordres), en réduisant
+   simplement la taille des éléments sur petit écran :
+     - la barre de navigation reste sur UNE SEULE LIGNE
+       (logo / Accueil / Cours / Exercices / COMPTE), sans menu
+       hamburger, juste plus compacte ;
+     - les blocs "texte + image" restent côte à côte ;
+     - les grilles de modules restent multi-colonnes ;
+     - les vidéos restent en rangée ;
+     - le footer garde ses colonnes côte à côte.
+
+   Breakpoints :
+     Desktop  : min-width 992px
+     Tablette : 576px -> 991.98px
+     Mobile   : max-width 575.98px
+   ========================================================= */
+
+/* ---------- 1. Garde-fous globaux (anti-débordement) ----------
+   ATTENTION : ces garde-fous ne doivent s'appliquer QUE sur
+   tablette et mobile. Sur DESKTOP (> 992px), ils écrasaient le
+   style original (bannière 1505px réduite à 100vw, body
+   min-height:1100px remplacé par 100vh, logo déformé...).
+   Ils sont donc désormais SCOPÉS à la tablette/mobile et le bloc
+   "3. DESKTOP" restaure explicitement le style de bureau. */
+@media (max-width: 991.98px) {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box !important;
+  }
+
+  html,
+  body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Les éléments média ne dépassent jamais leur conteneur */
+  img,
+  iframe,
+  video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Hauteur minimum du corps : unité relative au viewport
+     au lieu des min-height fixes (ex : 2210px, 3530px). */
+  body {
+    min-height: 100vh !important;
+  }
+}
+
+/* ---------- 2. Contenus adaptés (base, toutes largeurs) ---------- */
+
+/* Logos de la barre : on neutralise les largeurs forcées en px
+   ou en % (index.html impose width:100%/% sur .image-principale).
+   Limitée au mobile pour ne pas casser la taille du logo desktop. */
+@media (max-width: 991.98px) {
+  nav .logo img,
+  nav img.DE,
+  nav img.image-principale {
+    width: auto !important;
+    height: auto !important;
+  }
+}
+
+/* Bannière des pages modules : largeur pleine sur mobile,
+   padding compact et fluide. */
+@media (max-width: 991.98px) {
+  .white-container {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    margin: 0 0 50px !important;
+    padding: clamp(22px, 5vw, 50px) !important;
+  }
+
+  /* Lignes décoratives qui bloquaient le viewport */
+  .underlinex {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin-top: 50px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .underline2 {
+    max-width: 90vw !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Vidéos : largeur fluide, hauteur par le ratio 16:9.
+     Sur mobile, la rangée compacte passe à 2 vidéos côte à côte. */
+  .videos {
+    padding: clamp(10px, 2vw, 20px) !important;
+  }
+
+  .videos iframe {
+    width: min(320px, 90vw) !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    max-width: 100% !important;
+  }
+
+  /* Grilles de modules : centrées, sans débordement. */
+  .modules-grid {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* ---------- 3. DESKTOP (> 992px) ----------
+   RESTAURE le style initial de bureau défini dans le <style>
+   inline des pages, que les garde-fous globaux avaient écrasés :
+   bannière pleine largeur, min-height d'origine (1100px, 2210px,
+   3530px...), logo à sa taille native, bordures arrondies. */
+@media (min-width: 992px) {
+  html,
+  body {
+    overflow-x: hidden !important;
+  }
+
+  nav {
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  nav ul {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
+
+  /* Liens (15px), logo (46px) et COMPTE : tailles unifiées
+     dans design-navbar-footer.css */
+  .account-btn {
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  /* Les éléments média ne dépassent jamais leur conteneur */
+  img,
+  iframe,
+  video {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Lignes décoratives : jamais plus larges que le viewport */
+  .underlinex {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Bannière des modules : padding ne déborde pas */
+  .white-container {
+    box-sizing: border-box !important;
+  }
+}
+
+/* ---------- 4. TABLETTE (576px -> 992px) + MOBILE ----------
+   Sur ces écrans, Accueil / Cours / Exercices sont regroupés
+   dans UN SEUL bouton MENU cliquable ; logo et COMPTE restent
+   visibles sur une seule ligne. Desktop garde les 3 liens
+   affichés (voir bloc 3). */
+@media (max-width: 991.98px) {
+  /* Barre de navigation : une seule ligne (logo, COMPTE, MENU) */
+  nav {
+    flex-wrap: nowrap !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 12px 8px 12px !important;
+    position: sticky !important;
+    top: 0 !important;
+    flex-wrap: wrap !important;
+    height: auto !important;
+  }
+
+  nav .logo {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  nav .logo img,
+  nav img.DE,
+  nav img.image-principale {
+    height: 42px !important;
+    width: auto !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+  }
+
+  /* Pousse COMPTE vers la droite */
+  nav .account-dropdown {
+    margin-left: auto !important;
+    position: static !important;
+  }
+
+  /* COMPTE : jamais étiré par les règles génériques sur <button> */
+  .account-btn {
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  /* Les 3 liens restent toujours visibles, centrés sur leur ligne */
+  nav ul {
+    display: flex !important;
+    flex-basis: 100% !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    padding: 4px 0 2px 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  nav.open ul {
+    display: flex !important;
+  }
+
+  nav li {
+    width: auto !important;
+    text-align: center !important;
+  }
+
+  nav ul a {
+    display: inline-flex !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 7px 12px !important;
+    font-size: 14px !important;
+  }
+
+  /* Menu COMPTE : ancré à droite de la barre pour ne rien couper */
+  .account-menu {
+    top: calc(100% + 10px) !important;
+    right: 10px !important;
+    left: auto !important;
+    width: min(94vw, 300px) !important;
+    min-width: 0 !important;
+  }
+
+  /* Blocs "texte + image" : restent côte à côte comme sur desktop */
+  .educ-container {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 44px 20px !important;
+    gap: 24px !important;
+  }
+
+  .left-container {
+    flex: 0 0 55% !important;
+    width: auto !important;
+  }
+
+  .right-container {
+    flex: 0 0 40% !important;
+    width: auto !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  /* Bannière carte des exercices : côte à côte */
+  .card-banner {
+    flex-direction: row !important;
+    text-align: left !important;
+    padding: 30px 28px !important;
+    gap: 20px !important;
+  }
+
+  .banner-content {
+    max-width: 60% !important;
+  }
+
+  .banner-illustration {
+    max-width: 40% !important;
+    justify-content: flex-end !important;
+  }
+
+  /* Grilles de modules : côte à côte, 2 colonnes sur tablette */
+  .modules-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  /* Typographies adaptées */
+  .center-container h1 {
+    font-size: clamp(1.1rem, 3.5vw, 1.6rem) !important;
+  }
+
+  .cours h2 {
+    font-size: clamp(1rem, 3vw, 1.3rem) !important;
+    margin-top: 18px !important;
+  }
+
+  .modules h2 {
+    font-size: clamp(1.3rem, 3.5vw, 1.9rem) !important;
+  }
+
+  .left-container h1 {
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem) !important;
+  }
+
+  .banner-title {
+    font-size: clamp(1.3rem, 3vw, 1.7rem) !important;
+  }
+
+  /* Pied de page : colonnes côte à côte comme sur desktop.
+     Forcé aussi pour index.html (son propre style ≤768px les
+     empile) afin d'avoir la même disposition partout. */
+  footer {
+    justify-content: center !important;
+    gap: 20px !important;
+  }
+
+  .colonne1,
+  .colonne2,
+  .colonne3,
+  .colonne4 {
+    flex: 1 1 46% !important;
+    min-width: 160px !important;
+    margin: 8px 10px !important;
+  }
+}
+
+/* ---------- 5. MOBILE (< 576px) ----------
+   Même disposition que desktop, éléments fortement compactés. */
+@media (max-width: 575.98px) {
+  /* Barre de navigation : une seule ligne (logo, COMPTE, MENU) */
+  nav {
+    gap: 4px !important;
+    padding: 8px 10px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  nav .logo img,
+  nav img.DE,
+  nav img.image-principale {
+    max-width: 72px !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .account-btn {
+    padding: 7px 12px !important;
+    font-size: 12px !important;
+  }
+
+  /* Panneau des liens : aéré, liens lisibles au clic */
+  nav ul {
+    padding: 12px !important;
+    gap: 4px !important;
+  }
+
+  nav ul a {
+    font-size: 15px !important;
+    padding: 9px 12px !important;
+  }
+
+  .account-menu .acct-boutons {
+    flex-wrap: wrap !important;
+  }
+
+  .account-menu a.acct-bouton {
+    flex: 1 1 100% !important;
+    max-width: none !important;
+  }
+
+  .account-menu .acct-email {
+    word-break: break-all !important;
+  }
+
+  /* Bannière des modules : padding fortement réduit */
+  .white-container {
+    padding: 16px 12px !important;
+    margin-bottom: 36px !important;
+  }
+
+  .center-container h1 {
+    font-size: clamp(0.95rem, 4vw, 1.15rem) !important;
+  }
+
+  /* Vidéos : 2 par ligne côte à côte (même disposition que desktop) */
+  .videos {
+    gap: 10px !important;
+    padding: 8px !important;
+  }
+
+  .videos iframe {
+    width: calc(50% - 5px) !important;
+    aspect-ratio: 16 / 9 !important;
+  }
+
+  .cours h2 {
+    font-size: clamp(1rem, 4vw, 1.2rem) !important;
+    margin-top: 14px !important;
+  }
+
+  /* Blocs "texte + image" : côte à côte, compactés */
+  .educ-container {
+    flex-direction: row !important;
+    padding: 24px 12px !important;
+    gap: 12px !important;
+  }
+
+  .left-container h1 {
+    font-size: clamp(1.15rem, 4.5vw, 1.5rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  .left-container p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Bannière carte des exercices : côte à côte compactée */
+  .card-banner {
+    flex-direction: row !important;
+    text-align: left !important;
+    padding: 20px 14px !important;
+    gap: 12px !important;
+  }
+
+  .banner-title {
+    font-size: 1.05rem !important;
+  }
+
+  .banner-description {
+    font-size: 12.5px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Grilles de modules : 2 colonnes côte à côte sur mobile */
+  .modules-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .modules h2 {
+    font-size: clamp(1.05rem, 4.5vw, 1.35rem) !important;
+  }
+
+  /* Cartes Cours → petits modules */
+  .modules-grid .bloc {
+    padding: 12px 10px !important;
+    border-radius: 10px !important;
+  }
+
+  .modules-grid .bloc::before {
+    width: 3px !important;
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+  }
+
+  .modules-grid .bloc .icon-box {
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 7px !important;
+    font-size: 12px !important;
+  }
+
+  .modules-grid .bloc .code {
+    font-size: 8px !important;
+  }
+
+  .modules-grid .bloc h3 {
+    font-size: 12px !important;
+    margin-top: 8px !important;
+  }
+
+  .modules-grid .bloc .bloc-arrow {
+    font-size: 9px !important;
+    margin-top: 6px !important;
+  }
+
+  /* Cartes Exercices → modules */
+  .module-card {
+    border-radius: 12px !important;
+  }
+
+  .module-card .card-header {
+    padding: 10px 10px !important;
+    gap: 8px !important;
+  }
+
+  .module-card .header-icon {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .module-card .card-header h2 {
+    font-size: 0.8rem !important;
+  }
+
+  .module-card .card-body {
+    padding: 10px !important;
+    gap: 10px !important;
+  }
+
+  .module-card .exercise-item {
+    flex-wrap: wrap !important;
+    row-gap: 4px !important;
+  }
+
+  .module-card .exercise-title {
+    font-size: 0.72rem !important;
+  }
+
+  .module-card .exercise-done-btn {
+    font-size: 0.65rem !important;
+    padding: 6px 8px !important;
+  }
+
+  .module-card .course-link {
+    font-size: 0.7rem !important;
+  }
+
+  /* Pied de page : colonnes côte à côte (2 par ligne) */
+  footer {
+    justify-content: center !important;
+    gap: 14px !important;
+    padding: 40px 20px 60px !important;
+  }
+
+  .colonne1,
+  .colonne2,
+  .colonne3,
+  .colonne4 {
+    min-width: 130px !important;
+    flex-basis: 44% !important;
+    margin: 6px 4px !important;
+  }
+
+  footer h3 {
+    font-size: 16px !important;
+  }
+
+  .les-logos {
+    justify-content: flex-start !important;
+  }
+
+  .les-logos img {
+    width: 42px !important;
+    height: 42px !important;
+    padding: 3px !important;
+  }
+
+  /* Page profil : mêmes rangées que desktop, compactées */
+  .boite {
+    padding: 18px 12px !important;
+    max-width: 100% !important;
+  }
+
+  .boite h1 {
+    font-size: 20px !important;
+  }
+
+  .stats {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .stat {
+    padding: 12px !important;
+  }
+
+  .stat .valeur {
+    font-size: 20px !important;
+  }
+
+  .champs-nom {
+    flex-direction: row !important;
+    gap: 8px !important;
+  }
+
+  .module-item {
+    padding: 10px !important;
+  }
+}

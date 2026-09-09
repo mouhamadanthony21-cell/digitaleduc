@@ -1,11 +1,13 @@
+﻿
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" translate="no">
 <head>
+    <meta name="google" content="notranslate">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cours</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="design-navbar-footer.css">
     <style>
         body {
             min-height: 3530px;
@@ -272,9 +274,6 @@
             padding: 30px 20px 70px 20px;
             position: relative;
             text-align: center;
-            width: auto;
-            margin-left: 5px;
-            margin-right: 5px;
         }
 
         .colonne1, .colonne2, .colonne3 {
@@ -410,6 +409,7 @@
   display: block;
 }
     </style>
+    <link rel="stylesheet" href="responsive.css">    <link rel="stylesheet" href="theme-techno.css">
 </head>
 <body>
 
@@ -418,18 +418,18 @@
             <img src="logo DE.png" alt="Logo de DigitalEduc" class="DE" width="130px" height="100px">
         </div>
         <ul>
-            <li><a href="index.html" target="_blank" class="active"><i class="fas fa-home"></i> Accueil</a></li>
-            <li><a href="Cours.html" target="_blank"><i class="fas fa-book"></i> Cours</a></li>
-            <li><a href="Exercices.html" target="_blank"><i class="fas fa-tasks"></i> Exercices</a></li>
+            <li><a href="index.html" target="_blank" class="active"><i class="fas fa-home"></i> <span>Accueil</span></a></li>
+            <li><a href="Cours.html" target="_blank"><i class="fas fa-book"></i> <span>Cours</span></a></li>
+            <li><a href="Exercices.html" target="_blank"><i class="fas fa-tasks"></i> <span>Exercices</span></a></li>
         </ul>
         <div class="account-dropdown">
             <button class="account-btn" onclick="document.getElementById('accountMenu').classList.toggle('show')">
-                <i class="fa fa-user"></i> COMPTE
+                <i class="fa fa-user"></i> <span>COMPTE</span>
             </button>
             <div id="accountMenu" class="account-menu">
-                <a href="/connexion.html">Connexion</a>
-                <a href="/inscription.html">Inscription</a>
-                <a href="/profil.html">Mon profil</a>
+                <a href="connexion.html">Connexion</a>
+                <a href="inscription.html">Inscription</a>
+                <a href="profil-1.html">Mon profil</a>
             </div>
         </div>
     </nav>
@@ -465,12 +465,12 @@
                     <a href="Maths.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-calculator"></i></div><span class="code">MTH-01</span></div>
                         <h3>Maths</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">32 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="Digitale.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-globe"></i></div><span class="code">CLD-02</span></div>
                         <h3>Culture Digitale</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">23 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
             </div>
@@ -485,17 +485,17 @@
                     <a href="Bureautique.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-folder-open"></i></div><span class="code">BUR-03</span></div>
                         <h3>Bureautique</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">26 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="Infographie.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-palette"></i></div><span class="code">INF-04</span></div>
                         <h3>Infographie</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">34 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="WordPress.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-brands fa-wordpress"></i></div><span class="code">WDP-05</span></div>
                         <h3>Initiation WordPress</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">17 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
             </div>
@@ -510,12 +510,12 @@
                     <a href="Algorithmique.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-gears"></i></div><span class="code">ALG-06</span></div>
                         <h3>Algorithmique</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">21 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="Programmation.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-code"></i></div><span class="code">PRG-07</span></div>
                         <h3>Programmation</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">73 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
             </div>
@@ -530,47 +530,47 @@
                     <a href="Ordinateurs.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-microchip"></i></div><span class="code">ARC-08</span></div>
                         <h3>Architecture des Ordinateurs</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">12 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="Windows.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-brands fa-windows"></i></div><span class="code">WIN-09</span></div>
                         <h3>Administration Windows</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">3 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="Linux.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-brands fa-linux"></i></div><span class="code">LIN-10</span></div>
                         <h3>Introduction au Système Linux</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">111 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="SI.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-server"></i></div><span class="code">SYI-11</span></div>
                         <h3>Système d'Information</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">2 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="Merise.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-diagram-project"></i></div><span class="code">MER-12</span></div>
                         <h3>MERISE</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">4 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="BDD-SQL.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-database"></i></div><span class="code">SQL-13</span></div>
                         <h3>Gestion d'une Base de Données avec SQL</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">30 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="Réseaux.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-network-wired"></i></div><span class="code">RES-14</span></div>
                         <h3>Architecture des Réseaux</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">18 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="CCNA.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-ethernet"></i></div><span class="code">CCN-15</span></div>
                         <h3>CCNA</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">90 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                     <a href="Cybersécurité.html" target="_blank" class="bloc">
                         <div class="bloc-top"><div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div><span class="code">CYB-16</span></div>
                         <h3>Cybersécurité</h3>
-                        <span class="bloc-arrow">Ouvrir <i class="fa-solid fa-arrow-right"></i></span>
+                        <span class="bloc-arrow">37 <span>cours</span> - <span>Ouvrir</span> <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
             </div>
@@ -580,15 +580,15 @@
     <hr class="under">
     <footer>
         <div class="colonne1">
-            <h3><i class="fa-solid fa-book"></i> Ressources</h3>
+            <h3><i class="fa-solid fa-book"></i> <span>Ressources</span></h3>
             <ul>
-                <li><a href="https://openlibrary.org/" target="_blank"><i class="fa-solid fa-angle-right"></i> Documentation</a></li>
-                <li><a href="https://www.zdnet.fr" target="_blank"><i class="fa-solid fa-angle-right"></i> Actualités du numérique</a></li>
-                <li><a href="https://openclassrooms.com/forum/" target="_blank"><i class="fa-solid fa-angle-right"></i> Forum d'OpenClassrooms</a></li>
+                <li><a href="https://openlibrary.org/" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Documentation</span></a></li>
+                <li><a href="https://www.zdnet.fr" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Actualités du numérique</span></a></li>
+                <li><a href="https://openclassrooms.com/forum/" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Forum d'OpenClassrooms</span></a></li>
             </ul>
         </div>
         <div class="colonne2">
-            <h3><i class="fa-solid fa-tools"></i> Outils nécessaires</h3>
+            <h3><i class="fa-solid fa-tools"></i> <span>Outils nécessaires</span></h3>
             <ul>
                 <li><a href="https://www.xm1math.net/algobox/" target="_blank"><i class="fa-solid fa-angle-right"></i> Algobox</a></li>
                 <li><a href="https://code.visualstudio.com/download" target="_blank"><i class="fa-solid fa-angle-right"></i> Visual Studio Code</a></li>
@@ -598,15 +598,15 @@
             </ul>
         </div>
         <div class="colonne3">
-            <h3><i class="fa-solid fa-info-circle"></i> A propos</h3>
+            <h3><i class="fa-solid fa-info-circle"></i> <span>A propos</span></h3>
             <ul>
-                <li><a href="Chiffres.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Nos chiffres</a></li>
-                <li><a href="Mission.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Notre mission</a></li>
-                <li><a href="Contacts.html" target="_blank"><i class="fa-solid fa-angle-right"></i> Contacts</a></li>
+                <li><a href="Chiffres.html" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Nos chiffres</span></a></li>
+                <li><a href="Mission.html" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Notre mission</span></a></li>
+                <li><a href="Contacts.html" target="_blank"><i class="fa-solid fa-angle-right"></i> <span>Contacts</span></a></li>
             </ul>
         </div>
         <div class="colonne4">
-            <h3><i class="fa-solid fa-graduation-cap"></i>Envie d'une formation professionnelle ?</h3>
+            <h3><i class="fa-solid fa-graduation-cap"></i><span>Envie d'une formation professionnelle ?</span></h3>
             <div class="les-logos">
                 <a href="https://dit.sn" target="_blank"><img src="icône DIT.png" alt="DIT"></a>
                 <a href="https://www.estm.sn" target="_blank"><img src="icône ESTM.png" alt="ESTM"></a>
@@ -619,5 +619,7 @@
         <h3 class="titre-footer">Copyright DigitalEduc - 2026 - Developed By MADtech</h3>
     </footer>
 
+<script type="module" src="firebase-config-1.js"></script>
+<script type="module" src="suivi-progression.js"></script>
 </body>
 </html>

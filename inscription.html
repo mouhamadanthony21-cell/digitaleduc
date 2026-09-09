@@ -1,56 +1,90 @@
+﻿
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" translate="no">
 <head>
+    <meta name="google" content="notranslate">
 <meta charset="UTF-8">
-<title>Inscription</title>
-<style>
-  body { font-family: Arial, sans-serif; background:#f4f6f9; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
-  .box { background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:300px; }
-  h2 { text-align:center; margin-top:0; }
-  input { width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; }
-  button { width:100%; padding:10px; background:#2b7de9; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold; margin-top:10px; }
-  button:hover { background:#1e63c4; }
-  .msg { text-align:center; color:red; font-size:14px; min-height:18px; }
-  a { display:block; text-align:center; margin-top:10px; color:#2b7de9; text-decoration:none; }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription | DigitalEduc</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="theme-techno.css">
 </head>
 <body>
-
 <div class="box">
-  <h2>Créer un compte</h2>
+  <h2><i class="fa-solid fa-user-plus"></i> <span>Créer un compte</span></h2>
   <form id="signupForm">
-    <input type="email" id="email" placeholder="Adresse email" required>
-    <input type="password" id="password" placeholder="Mot de passe (6 caractères min.)" required minlength="6">
-    <p class="msg" id="errorMsg"></p>
-    <button type="submit">S'inscrire</button>
+    <input type="text" id="prenom" placeholder="Prénom" required autocomplete="given-name">
+    <input type="text" id="nom" placeholder="Nom" required autocomplete="family-name">
+    <input type="email" id="email" placeholder="Adresse email" required autocomplete="email">
+    <div class="champ-password">
+      <input type="password" id="password" placeholder="Mot de passe (6 caractères min.)" required minlength="6" autocomplete="new-password">
+      <i class="fa-regular fa-eye bascule-password" title="Afficher / masquer le mot de passe"></i>
+    </div>
+    <p class="msg msg-erreur" id="errorMsg"></p>
+    <button type="submit" id="submitBtn">S'inscrire</button>
   </form>
-  <a href="/connexion.html">Déjà un compte ? Se connecter</a>
+  <a href="#" id="forgotLink"><i class="fa-solid fa-key"></i> <span>Mot de passe oublié ?</span></a>
+  <a href="connexion.html"><span>Déjà un compte ? Se connecter</span></a>
 </div>
 
-<script type="module" src="/firebase-config.js"></script>
+<script type="module" src="firebase-config-1.js"></script>
 <script type="module">
+  // Oeil : afficher / masquer le mot de passe
+  document.querySelectorAll('.bascule-password').forEach((icone) => {
+    icone.addEventListener('click', () => {
+      const champ = icone.parentElement.querySelector('input');
+      const montre = champ.type === 'text';
+      champ.type = montre ? 'password' : 'text';
+      icone.classList.toggle('fa-eye', montre);
+      icone.classList.toggle('fa-eye-slash', !montre);
+    });
+  });
+
+  const errorMsg = document.getElementById('errorMsg');
+
+  function afficherErreur(texte) {
+    errorMsg.className = "msg msg-erreur";
+    errorMsg.textContent = texte;
+  }
+
+  function afficherSucces(texte) {
+    errorMsg.className = "msg msg-succes";
+    errorMsg.textContent = texte;
+  }
+
   document.getElementById('signupForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const prenom = document.getElementById('prenom').value;
+    const nom = document.getElementById('nom').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const errorMsg = document.getElementById('errorMsg');
+    errorMsg.className = "msg";
     errorMsg.textContent = "";
 
     try {
-      await window.createUserWithEmailAndPassword(email, password);
-      window.location.href = "/profil.html";
+      await window.createCompteAvecProfil(email, password, prenom, nom);
+      window.location.href = "profil-1.html";
     } catch (err) {
       // Messages d'erreur traduits pour l'utilisateur
       if (err.code === "auth/email-already-in-use") {
-        errorMsg.textContent = "Cet email est déjà utilisé.";
+        afficherErreur("Cet email est déjà utilisé. Essayez de vous connecter.");
       } else if (err.code === "auth/invalid-email") {
-        errorMsg.textContent = "Email invalide.";
+        afficherErreur("Email invalide.");
       } else if (err.code === "auth/weak-password") {
-        errorMsg.textContent = "Mot de passe trop faible.";
+        afficherErreur("Mot de passe trop faible (6 caractères minimum).");
+      } else if (err.code === "auth/too-many-requests") {
+        afficherErreur("Trop de tentatives. Réessayez plus tard.");
       } else {
-        errorMsg.textContent = "Erreur : " + err.message;
+        afficherErreur("Erreur : " + err.message);
       }
     }
+  });
+
+  const forgotLink = document.getElementById('forgotLink');
+  forgotLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    // Réinitialisation du mot de passe par email : direction la page dédiée.
+    window.location.href = "mot-de-passe-oublie.html";
   });
 </script>
 </body>

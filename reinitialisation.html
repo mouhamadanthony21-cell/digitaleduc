@@ -1,0 +1,130 @@
+﻿
+<!DOCTYPE html>
+<html lang="fr" translate="no">
+<head>
+    <meta name="google" content="notranslate">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réinitialisation du mot de passe | DigitalEduc</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="theme-techno.css">
+</head>
+<body>
+<div class="box">
+  <h2><i class="fa-solid fa-key"></i> <span>Nouveau mot de passe</span></h2>
+  <p class="sous-titre">Choisissez un nouveau mot de passe pour votre compte.</p>
+
+  <div id="infoEmail" class="info-email" style="display:none;"></div>
+
+  <!-- Formulaire principal -->
+  <form id="resetForm" style="display:none;">
+    <div class="champ-password">
+      <input type="password" id="nouveauMotDePasse" placeholder="Nouveau mot de passe (6 caractères min.)" required minlength="6" autocomplete="new-password">
+      <i class="fa-regular fa-eye bascule-password" title="Afficher / masquer le mot de passe"></i>
+    </div>
+    <div class="champ-password">
+      <input type="password" id="confirmationMotDePasse" placeholder="Confirmer le nouveau mot de passe" required minlength="6" autocomplete="new-password">
+      <i class="fa-regular fa-eye bascule-password" title="Afficher / masquer le mot de passe"></i>
+    </div>
+    <p class="msg msg-erreur" id="msg"></p>
+    <button type="submit">Réinitialiser mon mot de passe</button>
+  </form>
+
+  <!-- Succès -->
+  <div id="succesSection" style="display:none;">
+    <p class="msg msg-succes"><i class="fa-solid fa-circle-check"></i> Votre mot de passe a été réinitialisé avec succès.</p>
+    <div class="centre">
+      <a href="connexion.html" class="bouton-lien">Se connecter</a>
+    </div>
+  </div>
+
+  <!-- Lien invalide / expiré -->
+  <div id="erreurSection" style="display:none;">
+    <p class="msg msg-erreur" id="erreurTexte"></p>
+    <div class="centre" style="margin-top:14px;">
+      <a href="mot-de-passe-oublie.html" class="renvoyer">Renvoyer un email de réinitialisation</a>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="firebase-config-1.js"></script>
+<script type="module">
+  const parametres = new URLSearchParams(window.location.search);
+  const mode = parametres.get("mode");
+  const code = parametres.get("oobCode");
+
+  const formulaire = document.getElementById('resetForm');
+  const message = document.getElementById('msg');
+  const infoEmail = document.getElementById('infoEmail');
+  const succesSection = document.getElementById('succesSection');
+  const erreurSection = document.getElementById('erreurSection');
+  const erreurTexte = document.getElementById('erreurTexte');
+
+  // Oeil : afficher / masquer le mot de passe
+  document.querySelectorAll('.bascule-password').forEach((icone) => {
+    icone.addEventListener('click', () => {
+      const champ = icone.parentElement.querySelector('input');
+      const montre = champ.type === 'text';
+      champ.type = montre ? 'password' : 'text';
+      icone.classList.toggle('fa-eye', montre);
+      icone.classList.toggle('fa-eye-slash', !montre);
+    });
+  });
+
+  function bloquer(masc, texte) {
+    formulaire.style.display = 'none';
+    succesSection.style.display = 'none';
+    erreurSection.style.display = 'block';
+    erreurTexte.textContent = texte;
+  }
+
+  if (mode !== 'resetPassword' || !code) {
+    bloquer("", "Lien de réinitialisation invalide. Veuillez demander un nouvel email.");
+  } else {
+    // On vérifie que le code est toujours valide
+    window.verifyPasswordResetCode(code)
+      .then((email) => {
+        infoEmail.style.display = 'block';
+        infoEmail.textContent = "Compte concerné : " + email;
+        formulaire.style.display = 'block';
+      })
+      .catch(() => {
+        bloquer("", "Ce lien est expiré ou a déjà été utilisé. Veuillez demander un nouvel email de réinitialisation.");
+      });
+  }
+
+  formulaire.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    message.textContent = "";
+    const motDePasse = document.getElementById('nouveauMotDePasse').value;
+    const confirmation = document.getElementById('confirmationMotDePasse').value;
+
+    if (motDePasse.length < 6) {
+      message.textContent = "Le mot de passe doit contenir au moins 6 caractères.";
+      return;
+    }
+    if (motDePasse !== confirmation) {
+      message.textContent = "Les deux mots de passe ne correspondent pas.";
+      return;
+    }
+
+    try {
+      await window.confirmPasswordReset(code, motDePasse);
+      formulaire.style.display = 'none';
+      erreurSection.style.display = 'none';
+      infoEmail.style.display = 'none';
+      succesSection.style.display = 'block';
+    } catch (erreur) {
+      if (erreur.code === "auth/weak-password") {
+        message.textContent = "Mot de passe trop faible.";
+      } else if (erreur.code === "auth/invalid-action-code" || erreur.code === "auth/expired-action-code") {
+        message.textContent = "Ce lien est expiré ou invalide.";
+        bloquer("", "Ce lien est expiré ou invalide. Veuillez demander un nouvel email de réinitialisation.");
+      } else {
+        message.textContent = "Erreur : " + erreur.message;
+      }
+    }
+  });
+</script>
+</body>
+</html>
