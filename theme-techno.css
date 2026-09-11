@@ -714,33 +714,8 @@ footer h3 .burger-icone {
     display: none !important;
 }
 
-footer .colonne1 ul,
-footer .colonne2 ul,
-footer .colonne3 ul,
-footer .les-logos {
-    transition: max-height 0.35s ease, opacity 0.3s ease !important;
-    overflow: hidden !important;
-}
-
-@media (max-width: 767.98px) {
-    footer .colonne1 ul,
-    footer .colonne2 ul,
-    footer .colonne3 ul,
-    footer .les-logos {
-        max-height: 0 !important;
-        opacity: 0 !important;
-        margin-top: 0 !important;
-    }
-
-    footer .colonne1 ul.open,
-    footer .colonne2 ul.open,
-    footer .colonne3 ul.open,
-    footer .les-logos.open {
-        max-height: 480px !important;
-        opacity: 1 !important;
-        margin-top: 6px !important;
-    }
-}
+/* Les colonnes du footer restent TOUJOURS dépliées sur toutes les
+   tailles d'écran : aucun élément ne doit disparaître sur mobile. */
 
 /* ---------------------------------------------------------
    14. DIVERS (listes de cours, tableaux, ensemble)

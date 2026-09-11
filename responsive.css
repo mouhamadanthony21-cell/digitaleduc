@@ -23,6 +23,38 @@
      Mobile   : max-width 575.98px
    ========================================================= */
 
+/* ---------- 0. BASE GLOBALE (toutes tailles, sans effet de bord)
+   Appliquée partout : box-sizing, pas de barre de défilement
+   horizontale, marges du corps normalisées (les pages imposaient
+   des marges de 10px sur Exercices.html) et médias fluides. */
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+
+html {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+body {
+  max-width: 100% !important;
+  overflow-x: clip !important;
+}
+
+body,
+nav,
+footer {
+  margin: 0 !important;
+}
+
+img,
+iframe,
+video,
+svg,
+canvas {
+  max-width: 100% !important;
+}
+
 /* ---------- 1. Garde-fous globaux (anti-débordement) ----------
    ATTENTION : ces garde-fous ne doivent s'appliquer QUE sur
    tablette et mobile. Sur DESKTOP (> 992px), ils écrasaient le
@@ -37,10 +69,14 @@
     box-sizing: border-box !important;
   }
 
-  html,
-  body {
+  html {
     max-width: 100% !important;
     overflow-x: hidden !important;
+  }
+
+  body {
+    max-width: 100% !important;
+    overflow-x: clip !important;
   }
 
   /* Les éléments média ne dépassent jamais leur conteneur */
@@ -51,10 +87,26 @@
     height: auto !important;
   }
 
-  /* Hauteur minimum du corps : unité relative au viewport
-     au lieu des min-height fixes (ex : 2210px, 3530px). */
+  /* Hauteur du corps : on annule les min-height fixes des pages
+     (ex : 1100px, 2210px, 3530px) SANS imposer 100vh, pour que
+     la page s'arrête au footer : pas d'espace blanc après. */
   body {
+    min-height: 0 !important;
+  }
+
+  /* Exception pages en flex-colonne avec <main> (ex : profil-1.html) :
+     le body remplit l'écran et le footer reste collé en bas,
+     aucun espace blanc après le footer.
+     100svh/100dvh : 100vh est trop grand sur mobile quand la barre
+     d'URL est visible (Chrome Android). */
+  body:has(> main) {
     min-height: 100vh !important;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
+  }
+
+  body:has(> main) footer {
+    margin-top: auto !important;
   }
 }
 
@@ -122,9 +174,12 @@
    bannière pleine largeur, min-height d'origine (1100px, 2210px,
    3530px...), logo à sa taille native, bordures arrondies. */
 @media (min-width: 992px) {
-  html,
-  body {
+  html {
     overflow-x: hidden !important;
+  }
+
+  body {
+    overflow-x: clip !important;
   }
 
   nav {
@@ -597,5 +652,201 @@
 
   .module-item {
     padding: 10px !important;
+  }
+}
+
+/* ---------- 6. COMPLÉMENTS PERFECT RESPONSIVE ----------
+   Disposition identique à celle du bureau sur tous les écrans,
+   avec un rendu propre pour les pages simples (Contacts,
+   Mission, Nos chiffres) et les cartes d'exercices. */
+
+/* Tablette et mobile : cartes Exercices sur 2 colonnes
+   confortables (contenu dense : badge, lien PDF, statut). */
+@media (max-width: 991.98px) {
+  .modules-grid:has(> .module-card) {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  /* Page Contacts : formulaire et cartes fluides, sans débordement */
+  .contact-form {
+    max-width: 100% !important;
+  }
+
+  .contact-info-section {
+    padding: 0 14px !important;
+  }
+
+  .info-cards-container {
+    gap: 16px !important;
+  }
+
+  .info-card {
+    max-width: 100% !important;
+  }
+
+  /* Page Mission : boîte de texte confortable */
+  .mission {
+    padding: 28px 22px !important;
+  }
+
+  /* Page Nos chiffres : cartes centrées */
+  .statistiques {
+    padding: 0 14px !important;
+  }
+}
+
+/* Mobile : rendu compact mais professionnel */
+@media (max-width: 575.98px) {
+  /* Cartes Exercices : 1 colonne pleine largeur (lisibles) */
+  .modules-grid:has(> .module-card) {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Contacts */
+  .contact-form {
+    padding: 24px 16px !important;
+    margin-bottom: 40px !important;
+  }
+
+  .info-card {
+    flex: 1 1 100% !important;
+  }
+
+  .contact-info-section .section-title {
+    font-size: 1.35rem !important;
+  }
+
+  body h1 {
+    font-size: 1.7rem !important;
+    margin: 34px 16px 24px 16px !important;
+  }
+
+  /* Mission */
+  .mission {
+    margin: 22px auto 42px auto !important;
+    padding: 22px 16px !important;
+  }
+
+  /* Nos chiffres : titres du corps lusibles sur petit écran */
+  .statistiques .card h2 {
+    font-size: 1.6rem !important;
+  }
+
+  /* Page profil : tableau de stats sur 1 colonne sur très petit */
+  @media (max-width: 380px) {
+    .stats {
+      grid-template-columns: 1fr !important;
+    }
+  }
+}
+
+/* ---------- 7. MENU NAVIGATION HAMBURGER (téléphone uniquement)
+   Le bouton à trois traits est injecté en JS (suivi-progression.js),
+   affiché UNIQUEMENT sur téléphone, tout à droite de la barre.
+   Accueil / Cours / Exercices passent dans le panneau déroulant ;
+   le bouton COMPTE reste visible à côté. */
+.nav-burger {
+  display: none !important; /* visible seulement sur téléphone */
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 4px !important;
+  flex: 0 0 44px !important;
+  width: 44px !important;
+  height: 44px !important;
+  margin: 0 0 0 8px !important;
+  padding: 10px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+  box-shadow: 0 6px 18px rgba(2, 8, 20, 0.3) !important;
+  transition: background 0.3s ease, transform 0.3s ease !important;
+}
+
+.nav-burger:hover {
+  background: rgba(13, 171, 255, 0.2) !important;
+  transform: none !important;
+}
+
+.nav-burger span {
+  display: block !important;
+  width: 22px !important;
+  height: 3px !important;
+  margin: 0 !important;
+  background: #ffffff !important;
+  border-radius: 2px !important;
+  transition: transform 0.3s ease, opacity 0.3s ease !important;
+}
+
+/* Trois traits -> croix quand le menu est ouvert */
+nav.open .nav-burger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg) !important;
+}
+
+nav.open .nav-burger span:nth-child(2) {
+  opacity: 0 !important;
+}
+
+nav.open .nav-burger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg) !important;
+}
+
+/* Règles appliquées au téléphone uniquement */
+@media (max-width: 575.98px) {
+  .nav-burger {
+    display: inline-flex !important;
+  }
+
+  nav {
+    flex-wrap: nowrap !important;
+  }
+
+  /* Les 3 liens : panneau déroulant sous la barre, fermé par défaut */
+  nav ul {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    padding: 14px !important;
+    margin: 0 !important;
+    background: #1c2431 !important;
+    border-top: 2px solid #0dabff !important;
+    border-radius: 0 0 14px 14px !important;
+    box-shadow: 0 18px 40px rgba(2, 8, 20, 0.35) !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: max-height 0.35s ease, opacity 0.3s ease, visibility 0.3s ease !important;
+    z-index: 1000 !important;
+  }
+
+  nav.open ul {
+    max-height: 400px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  nav ul li {
+    width: 100% !important;
+  }
+
+  nav ul li a {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Le menu COMPTE reste au-dessus du panneau s'il est ouvert */
+  .account-menu {
+    z-index: 1200 !important;
   }
 }

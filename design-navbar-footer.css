@@ -177,6 +177,51 @@ nav a.active i {
     flex-shrink: 0;
 }
 
+/* ---------- STICKY FOOTER ----------
+   Le footer reste collé en bas de l'écran même quand le contenu
+   de la page est court (aucun espace blanc en dessous). */
+
+/* 1. Le <html> définit la référence de hauteur ; le body utilise
+   min-height (pas height) pour grandir avec son contenu et rester
+   scrollable quand la page est plus haute que l'écran. */
+html {
+    height: 100% !important;
+}
+
+html,
+body {
+    margin: 0 !important;
+}
+
+/* 2. Body en colonne : les sections s'empilent et le footer est
+   poussé à la fin. Sélecteur html body (spécificité 0.0.2) pour
+   l'emporter sur responsive.css (body { min-height: 0 !important }). */
+html body {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100% !important;
+}
+
+/* 3. Conteneur du contenu principal (pages avec <main>,
+   ex : profil-1.html) : occupe tout l'espace restant pour
+   repousser le footer en bas. */
+main {
+    flex: 1 0 auto !important;
+}
+
+/* 4. Le footer ne doit jamais être compressé. */
+footer {
+    flex-shrink: 0 !important;
+}
+
+/* 5. Pages SANS balise <main> (index, Chiffres, Mission, Cours,
+   Exercices…) : pas de conteneur unique à cibler, on pousse alors
+   le footer en bas grâce à sa marge automatique dans le body
+   en colonne. body > footer vainc footer { margin: 0 !important }. */
+body > footer {
+    margin-top: auto !important;
+}
+
 /* ---------- FOOTER ---------- */
 footer {
     display: flex !important;

@@ -14,9 +14,14 @@
     margin: 0;
     font-family: 'Arial', 'Helvetica', sans-serif;
     background: #f0f0f0;
-    min-height: 100vh;
+    /* flex-colonne + min-height : le footer reste toujours collé en bas,
+       sur mobile comme sur PC. Pile de repli : 100vh (compatible partout)
+       sert de secours si le navigateur ne connaît ni svh ni dvh. */
     display: flex;
     flex-direction: column;
+    min-height: 100vh !important;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
   }
 
   main { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px; }
@@ -87,7 +92,7 @@
 
   footer {
     background-color: #2f3640; color: #ffffff; padding: 30px 20px 70px 20px;
-    text-align: center; margin-top: auto;
+    text-align: center; margin-top: auto !important;
   }
   footer p { margin: 5px 0; font-size: 13px; color: #cfd4dc; }
   footer .copyright { font-size: 14px; font-weight: bold; color: #ffffff; margin-top: 14px; }

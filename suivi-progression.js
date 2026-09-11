@@ -268,31 +268,53 @@ function initialiserNavigationBurger() {
       if (!dropdown || !dropdown.contains(menu)) menu.classList.remove("show");
     });
   });
+}
 
-  // Chaque titre de colonne du footer devient un burger pliable
-  document.querySelectorAll("footer h3").forEach((titre) => {
-    if (titre.classList.contains("titre-footer")) return;
-    if (titre.querySelector(".burger-icone")) return;
+// ------------------------------------------------------------
+// MENU HAMBURGER DU NAVBAR (affiché uniquement sur téléphone)
+// Le bouton à trois traits est injecté automatiquement à l'extrême
+// droite de la barre et ouvre Accueil / Cours / Exercices.
+// ------------------------------------------------------------
+function initialiserBurgerNav() {
+  const nav = document.querySelector("nav");
+  if (!nav) return;
+  if (nav.querySelector(".nav-burger")) return;
 
-    const icone = document.createElement("span");
-    icone.className = "burger-icone";
-    titre.prepend(icone);
+  const burger = document.createElement("button");
+  burger.type = "button";
+  burger.className = "nav-burger";
+  burger.setAttribute("aria-label", "Ouvrir le menu de navigation");
+  burger.setAttribute("aria-expanded", "false");
+  burger.title = "Menu";
 
-    titre.setAttribute("role", "button");
-    titre.style.cursor = "pointer";
-    titre.addEventListener("click", () => {
-      titre.classList.toggle("open");
-      const ul = titre.parentElement.querySelector("ul");
-      if (ul) ul.classList.toggle("open");
-      if (titre.parentElement.classList.contains("colonne4")) {
-        const logos = titre.parentElement.querySelector(".les-logos");
-        if (logos) logos.classList.toggle("open");
-      }
-    });
+  for (let i = 0; i < 3; i++) burger.appendChild(document.createElement("span"));
+
+  nav.appendChild(burger);
+
+  const fermer = () => {
+    nav.classList.remove("open");
+    burger.setAttribute("aria-expanded", "false");
+  };
+
+  burger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const ouvert = nav.classList.toggle("open");
+    burger.setAttribute("aria-expanded", ouvert ? "true" : "false");
+  });
+
+  // Ferme le menu quand on clique sur un lien de navigation
+  nav.querySelectorAll("ul a").forEach((lien) => {
+    lien.addEventListener("click", fermer);
+  });
+
+  // Ferme le menu au clic en dehors de la barre
+  document.addEventListener("click", (e) => {
+    if (!nav.contains(e.target) && nav.classList.contains("open")) fermer();
   });
 }
 
 initialiserNavigationBurger();
+initialiserBurgerNav();
 
 window.getProgressionDetail = async () => {
   const progression = (await window.getUserProgress()) || {};
