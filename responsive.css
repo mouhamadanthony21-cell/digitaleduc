@@ -87,18 +87,31 @@ canvas {
     height: auto !important;
   }
 
-  /* Hauteur du corps : on annule les min-height fixes des pages
-     (ex : 1100px, 2210px, 3530px) SANS imposer 100vh, pour que
-     la page s'arrête au footer : pas d'espace blanc après. */
-  body {
-    min-height: 0 !important;
+  /* Hauteur du corps : on neutralise la chaîne height:100% -> min-height:100%
+     du sticky-footer (design-navbar-footer.css). Sur mobile/tablette la barre
+     d'adresse et la barre de menu sont dynamiques : 100% ne suit pas la
+     hauteur réellement visible et pouvait laisser un espace blanc SCELLABLE
+     après le footer. On repasse le body en min-height avec des unités de
+     viewport dynamiques (dvh/svh/lvh se recalent pendant le défilement) :
+     la page s'arrête donc exactement au bas du footer.
+     Fallback : 100vh reste valable sur les navigateurs sans dvh. */
+  html {
+    height: auto !important;
   }
 
-  /* Exception pages en flex-colonne avec <main> (ex : profil-1.html) :
-     le body remplit l'écran et le footer reste collé en bas,
-     aucun espace blanc après le footer.
-     100svh/100dvh : 100vh est trop grand sur mobile quand la barre
-     d'URL est visible (Chrome Android). */
+  html body {
+    min-height: 100vh !important;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
+  }
+
+  /* Le footer est TOUJOURS poussé au bas : aucun espace blanc sous le
+     footer quand le contenu est plus court que l'écran. */
+  body > footer {
+    margin-top: auto !important;
+  }
+
+  /* Pages avec <main> (ex : profil-1.html) : le body remplit l'écran. */
   body:has(> main) {
     min-height: 100vh !important;
     min-height: 100svh !important;
@@ -149,16 +162,40 @@ canvas {
   }
 
   /* Vidéos : largeur fluide, hauteur par le ratio 16:9.
-     Sur mobile, la rangée compacte passe à 2 vidéos côte à côte. */
+     IMPORTANT : suivi-progression.js enveloppe chaque vidéo dans
+     .progression-btn-wrap (div flex). La largeur est donc appliquée
+     à l'enveloppe (le vrai élément de la rangée), et la vidéo remplit
+     l'enveloppe ; sinon une largeur en % se résout contre une enveloppe
+     à largeur auto et la vidéo s'effondre (quasi invisible, impossible
+     à regarder sur téléphone/tablette). */
   .videos {
     padding: clamp(10px, 2vw, 20px) !important;
   }
 
-  .videos iframe {
+  .videos .progression-btn-wrap {
     width: min(320px, 90vw) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .videos iframe,
+  .videos video {
+    width: min(320px, 90vw) !important;
+  }
+
+  .videos .progression-btn-wrap iframe,
+  .videos .progression-btn-wrap video {
+    width: 100% !important;
+    max-width: none !important;
     height: auto !important;
     aspect-ratio: 16 / 9 !important;
-    max-width: 100% !important;
+    display: block !important;
+  }
+
+  .videos iframe,
+  .videos video {
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
   }
 
   /* Grilles de modules : centrées, sans débordement. */
@@ -454,14 +491,38 @@ canvas {
     font-size: clamp(0.95rem, 4vw, 1.15rem) !important;
   }
 
-  /* Vidéos : 2 par ligne côte à côte (même disposition que desktop) */
+  /* Vidéos : 2 par ligne côte à côte (même disposition que desktop).
+     La largeur de chaque colonne est portée par .progression-btn-wrap
+     (l'enveloppe créée par suivi-progression.js) et les vidéos remplissent
+     l'enveloppe : la règle seule sur l'iframe résolvait le pourcentage
+     contre une enveloppe à largeur auto et faisait s'effondrer les vidéos
+     (impossible de les regarder sur téléphone). */
   .videos {
     gap: 10px !important;
     padding: 8px !important;
   }
 
-  .videos iframe {
+  .videos .progression-btn-wrap {
     width: calc(50% - 5px) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex: 0 1 auto !important;
+  }
+
+  .videos .progression-btn-wrap iframe,
+  .videos .progression-btn-wrap video {
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    display: block !important;
+  }
+
+  /* Défaut (si suivi-progression.js n'a pas enveloppé) */
+  .videos iframe,
+  .videos video {
+    width: calc(50% - 5px) !important;
+    height: auto !important;
     aspect-ratio: 16 / 9 !important;
   }
 
