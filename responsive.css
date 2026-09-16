@@ -380,11 +380,13 @@ canvas {
   }
 
   .banner-content {
-    max-width: 60% !important;
+    flex: 1 1 55% !important;
+    max-width: 55% !important;
   }
 
   .banner-illustration {
-    max-width: 40% !important;
+    flex: 1 1 45% !important;
+    max-width: 45% !important;
     justify-content: flex-end !important;
   }
 
@@ -550,10 +552,21 @@ canvas {
 
   /* Bannière carte des exercices : côte à côte compactée */
   .card-banner {
-    flex-direction: row !important;
-    text-align: left !important;
-    padding: 20px 14px !important;
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 22px 16px !important;
     gap: 12px !important;
+  }
+
+  .banner-content {
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+  }
+
+  .banner-illustration {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    justify-content: center !important;
   }
 
   .banner-title {

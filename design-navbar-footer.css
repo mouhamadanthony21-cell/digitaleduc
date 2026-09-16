@@ -188,6 +188,16 @@ html {
     height: 100% !important;
 }
 
+/* Fond du <html> = couleur du footer : en dépassant la fin de la page
+   (effet bounce/overscroll sur macOS/mobile), le navigateur révèle le
+   fond de la page sous le footer. S'il est blanc, on voit une bande
+   claire sous le footer sombre. On le teinte donc de la même couleur
+   sombre que le footer, et on coupe le rebond dans les deux sens. */
+html {
+    background-color: #1c2431 !important;
+    overscroll-behavior-y: none !important;
+}
+
 html,
 body {
     margin: 0 !important;
