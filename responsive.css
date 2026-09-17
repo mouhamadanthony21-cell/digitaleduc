@@ -97,6 +97,9 @@ canvas {
      Fallback : 100vh reste valable sur les navigateurs sans dvh. */
   html {
     height: auto !important;
+    min-height: 100vh !important;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
   }
 
   html body {
@@ -105,10 +108,40 @@ canvas {
     min-height: 100dvh !important;
   }
 
+  /* Contexte flex FORCÉ : les règles qui suivent (margin-top:auto du
+     footer, ::after flexible) supposent que body est un conteneur flex
+     en colonne, mais ce display:flex dépendait du style inline de chaque
+     page (non garanti partout). On le force ici, indépendamment des pages. */
+  body {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
   /* Le footer est TOUJOURS poussé au bas : aucun espace blanc sous le
      footer quand le contenu est plus court que l'écran. */
   body > footer {
     margin-top: auto !important;
+  }
+
+  /* Pages SANS balise <main> (index, Cours, Exercices…) :
+     Quand le contenu est plus court que l'écran, le footer est poussé
+     en bas par sa marge automatique, mais l'espace restant SOUS le
+     footer montrait le fond blanc du body → bande blanche sous le
+     footer sur téléphone (Samsung A16, etc.) et tablette.
+     Fix : le footer reprend sa place juste après le contenu, et un
+     ::after sombre (même couleur que le footer) comble tout l'espace
+     restant de l'écran. Plus aucune bande blanche, sur tous les
+     appareils mobiles et les tablettes. */
+  body:not(:has(> main)) > footer {
+    margin-top: 0 !important;
+  }
+
+  body:not(:has(> main))::after {
+    content: "" !important;
+    display: block !important;
+    flex: 1 0 0 !important;
+    min-height: 0 !important;
+    background-color: #1c2431 !important;
   }
 
   /* Pages avec <main> (ex : profil-1.html) : le body remplit l'écran. */
@@ -922,5 +955,21 @@ nav.open .nav-burger span:nth-child(3) {
   /* Le menu COMPTE reste au-dessus du panneau s'il est ouvert */
   .account-menu {
     z-index: 1200 !important;
+  }
+}
+
+/* ---------- 8. ZONE GESTUELLE & SAFE AREA ----------
+   Sur les téléphones avec navigation gestuelle (Android 10+, Samsung)
+   ou avec encoche/home indicator (iPhone), le bas de l'écran est réservé
+   à la barre système. Le footer garde donc toujours une marge basse :
+   le texte de copyright ne touche jamais le bord de l'écran et aucune
+   bande n'apparaît sous le footer lors du défilement. */
+footer {
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+@media (max-width: 575.98px) {
+  footer {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }

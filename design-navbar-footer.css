@@ -181,11 +181,17 @@ nav a.active i {
    Le footer reste collé en bas de l'écran même quand le contenu
    de la page est court (aucun espace blanc en dessous). */
 
-/* 1. Le <html> définit la référence de hauteur ; le body utilise
-   min-height (pas height) pour grandir avec son contenu et rester
-   scrollable quand la page est plus haute que l'écran. */
+/* 1. Le <html> n'a AUCUNE hauteur fixe : il grandit avec son contenu
+   et fait au minimum la hauteur de la fenêtre (100vh, puis 100svh
+   et 100dvh pour suivre la barre d'adresse mobile). Plus de chaîne
+   height:100% -> min-height:100% : rien ne peut donc s'étendre sous
+   le footer (aucune zone blanche/bleue après lui, sur GitHub Pages
+   comme en local). */
 html {
-    height: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
 }
 
 /* Fond du <html> = couleur du footer : en dépassant la fin de la page
@@ -209,7 +215,9 @@ body {
 html body {
     display: flex !important;
     flex-direction: column !important;
-    min-height: 100% !important;
+    min-height: 100vh !important;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
 }
 
 /* 3. Conteneur du contenu principal (pages avec <main>,
