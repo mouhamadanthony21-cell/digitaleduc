@@ -132,11 +132,11 @@ canvas {
      ::after sombre (même couleur que le footer) comble tout l'espace
      restant de l'écran. Plus aucune bande blanche, sur tous les
      appareils mobiles et les tablettes. */
-  body:not(:has(> main)) > footer {
+  body.no-main > footer {
     margin-top: 0 !important;
   }
 
-  body:not(:has(> main))::after {
+  body.no-main::after {
     content: "" !important;
     display: block !important;
     flex: 1 0 0 !important;
@@ -145,13 +145,13 @@ canvas {
   }
 
   /* Pages avec <main> (ex : profil-1.html) : le body remplit l'écran. */
-  body:has(> main) {
+  body.has-main {
     min-height: 100vh !important;
     min-height: 100svh !important;
     min-height: 100dvh !important;
   }
 
-  body:has(> main) footer {
+  body.has-main footer {
     margin-top: auto !important;
   }
 }
@@ -770,7 +770,7 @@ canvas {
 /* Tablette et mobile : cartes Exercices sur 2 colonnes
    confortables (contenu dense : badge, lien PDF, statut). */
 @media (max-width: 991.98px) {
-  .modules-grid:has(> .module-card) {
+  .modules-grid.has-cards {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 16px !important;
   }
@@ -806,7 +806,7 @@ canvas {
 /* Mobile : rendu compact mais professionnel */
 @media (max-width: 575.98px) {
   /* Cartes Exercices : 1 colonne pleine largeur (lisibles) */
-  .modules-grid:has(> .module-card) {
+  .modules-grid.has-cards {
     grid-template-columns: 1fr !important;
   }
 
