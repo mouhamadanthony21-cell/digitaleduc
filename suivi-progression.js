@@ -138,6 +138,45 @@ if (!document.getElementById("suiviProgressionStyles")) {
     "}" +
     ".progression-btn-wrap iframe, .progression-btn-wrap video {" +
     "  max-width:100%; border-radius:8px;" +
+    "}" +
+    ".yt-click {" +
+    "  position:relative; width:min(560px,100%); max-width:100%;" +
+    "  aspect-ratio:16/9; border-radius:14px; overflow:hidden;" +
+    "  border:1px solid rgba(56,189,248,.25);" +
+    "  box-shadow:0 10px 30px rgba(2,8,20,.5);" +
+    "  background:#0d1117; cursor:pointer;" +
+    "  transition:box-shadow .3s ease, border-color .3s ease;" +
+    "}" +
+    ".yt-click:hover {" +
+    "  border-color:rgba(0,162,255,.6);" +
+    "  box-shadow:0 14px 40px rgba(0,162,255,.28);" +
+    "}" +
+    ".yt-click-miniature {" +
+    "  position:absolute; inset:0;" +
+    "  background-color:#0d1117; background-repeat:no-repeat;" +
+    "  background-position:center; background-size:cover;" +
+    "}" +
+    ".yt-click-play {" +
+    "  position:absolute; top:50%; left:50%;" +
+    "  transform:translate(-50%,-50%);" +
+    "  width:66px; height:46px; border-radius:12px;" +
+    "  background:rgba(28,28,30,.85);" +
+    "  display:flex; align-items:center; justify-content:center;" +
+    "  box-shadow:0 6px 18px rgba(0,0,0,.45);" +
+    "  transition:transform .15s ease, background .15s ease;" +
+    "}" +
+    ".yt-click:hover .yt-click-play {" +
+    "  background:rgba(200,20,20,.92);" +
+    "  transform:translate(-50%,-50%) scale(1.07);" +
+    "}" +
+    ".yt-click-play::before {" +
+    "  content:''; width:0; height:0; margin-left:4px;" +
+    "  border-left:20px solid #fff;" +
+    "  border-top:12px solid transparent;" +
+    "  border-bottom:12px solid transparent;" +
+    "}" +
+    "@media (max-width:991.98px) {" +
+    "  .yt-click { width:100%; }" +
     "}";
   document.head.appendChild(style);
 }
@@ -164,16 +203,89 @@ function rafraichirBoutonsCours(liste) {
   }).catch(() => {});
 }
 
+function preparerLectureInline(iframe) {
+  const src = iframe.getAttribute("src") || "";
+  const correspondance = src.match(/\/embed\/([\w-]+)/);
+  if (!correspondance) return null;
+  const videoId = correspondance[1];
+
+  let params = src.split("?")[1] || "";
+  params = params
+    .split("&")
+    .filter(function (p) {
+      const cle = p.split("=")[0];
+      return cle && cle !== "si" && cle !== "autoplay" && cle !== "playsinline";
+    })
+    .join("&");
+
+  const conteneur = document.createElement("div");
+  conteneur.className = "yt-click";
+  conteneur.setAttribute("role", "button");
+  conteneur.setAttribute("tabindex", "0");
+  conteneur.setAttribute("aria-label", "Lire la vidéo sur le site");
+
+  const miniature = document.createElement("div");
+  miniature.className = "yt-click-miniature";
+  miniature.style.backgroundImage =
+    "url('https://i.ytimg.com/vi/" + videoId + "/hqdefault.jpg')";
+
+  const lecteur = document.createElement("span");
+  lecteur.className = "yt-click-play";
+  lecteur.setAttribute("aria-hidden", "true");
+
+  conteneur.appendChild(miniature);
+  conteneur.appendChild(lecteur);
+
+  const jouer = function () {
+    let nouvelleSrc =
+      "https://www.youtube.com/embed/" + videoId + "?autoplay=1&playsinline=1";
+    if (params) nouvelleSrc += "&" + params;
+    nouvelleSrc += "&rel=0";
+
+    const iframeLecture = document.createElement("iframe");
+    iframeLecture.setAttribute("width", "560");
+    iframeLecture.setAttribute("height", "315");
+    iframeLecture.setAttribute("src", nouvelleSrc);
+    iframeLecture.setAttribute("title", iframe.getAttribute("title") || "Vidéo du cours");
+    iframeLecture.setAttribute("frameborder", "0");
+    iframeLecture.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+    iframeLecture.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+    iframeLecture.allowFullscreen = true;
+
+    conteneur.replaceWith(iframeLecture);
+  };
+
+  conteneur.addEventListener("click", jouer);
+  conteneur.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      jouer();
+    }
+  });
+
+  return conteneur;
+}
+
 const cleModule = cleModuleCourante();
 let boutonsCours = [];
 if (cleModule) {
   let index = 0;
 
-  document.querySelectorAll("iframe, video").forEach((element) => {
-    const estYouTube = element.tagName === "IFRAME" &&
-      (element.getAttribute("src") || "").indexOf("youtube.com/embed") !== -1;
-    const estVideo = element.tagName === "VIDEO";
+  document.querySelectorAll("iframe, video").forEach((el) => {
+    let element = el;
+    const estYouTube = el.tagName === "IFRAME" &&
+      (el.getAttribute("src") || "").indexOf("youtube.com/embed") !== -1;
+    const estVideo = el.tagName === "VIDEO";
     if (!estYouTube && !estVideo) return;
+
+    if (estYouTube) {
+      const visuel = preparerLectureInline(el);
+      if (visuel) {
+        el.parentNode.insertBefore(visuel, el);
+        el.parentNode.removeChild(el);
+        element = visuel;
+      }
+    }
 
     index++;
     const id = "cours-" + cleModule + "-" + index;
