@@ -973,3 +973,75 @@ footer {
     padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
+
+/* ---------- 9. VIDÉOS EN PLEIN ÉCRAN (toutes tailles) ----------
+   Problème corrigé : quand l'utilisateur passait la vidéo en plein
+   écran (bouton du lecteur YouTube sur téléphone), celle-ci restait
+   confinée à la taille de la colonne : les règles "vidéos fluides"
+   ci-dessus (width / height:auto / aspect-ratio:16/9 en !important)
+   s'appliquent AUSSI à l'élément passé en plein écran, qui se
+   retrouvait donc affiché comme une petite bande 16:9 au lieu de
+   remplir l'écran.
+
+   Ces règles neutralisent toutes les contraintes de taille quand
+   l'élément est en plein écran (position fixe + 100% de la fenêtre,
+   ratio libéré, coins/bordures retirés, fond noir). Les sélecteurs
+   reprennent exactement ceux des règles à annuler, avec la
+   pseudo-classe :fullscreen en plus : leur spécificité est donc
+   supérieure et ils l'emportent malgré les !important des autres
+   fichiers (responsive.css et theme-techno.css). */
+html body .videos .progression-btn-wrap iframe:fullscreen,
+html body .progression-btn-wrap video:fullscreen,
+html body .videos iframe:fullscreen,
+html body .videos video:fullscreen,
+html body iframe:fullscreen,
+html body video:fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background-color: #000000 !important;
+  transition: none !important;
+  z-index: 2147483647 !important;
+}
+
+/* Ancien Safari / iOS : pseudo-classe préfixée. Bloc séparé pour que
+   les navigateurs qui ne la connaissent pas ne perdent QUE cette règle
+   (une liste de sélecteurs invalide ferait perdre la règle entière). */
+html body iframe:-webkit-full-screen,
+html body video:-webkit-full-screen {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+}
+
+/* Fond noir derrière la vidéo en plein écran (barres latérales) */
+html body iframe:fullscreen::backdrop,
+html body video:fullscreen::backdrop {
+  background-color: #000000 !important;
+}

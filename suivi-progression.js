@@ -134,10 +134,22 @@ if (!document.getElementById("suiviProgressionStyles")) {
     "}" +
     ".progression-btn:disabled { opacity:.7; cursor:default; filter:none; }" +
     ".progression-btn-wrap {" +
+    "  position:relative;" +
     "  display:flex; flex-direction:column; align-items:center;" +
     "}" +
     ".progression-btn-wrap iframe, .progression-btn-wrap video {" +
     "  max-width:100%; border-radius:8px;" +
+    "}" +
+    ".video-fs-btn {" +
+    "  position:absolute; top:6px; right:6px; z-index:6;" +
+    "  width:32px; height:32px; padding:0; border-radius:50%;" +
+    "  display:inline-flex; align-items:center; justify-content:center;" +
+    "  background:rgba(10,15,24,.72); color:#fff;" +
+    "  border:1px solid rgba(255,255,255,.28); cursor:pointer;" +
+    "  box-shadow:0 2px 8px rgba(0,0,0,.45); opacity:.92;" +
+    "}" +
+    ".video-fs-btn:hover, .video-fs-btn:focus-visible {" +
+    "  background:rgba(0,162,255,.9); opacity:1; outline:none;" +
     "}" +
     ".yt-click {" +
     "  position:relative; width:min(560px,100%); max-width:100%;" +
@@ -177,6 +189,46 @@ if (!document.getElementById("suiviProgressionStyles")) {
     "}" +
     "@media (max-width:991.98px) {" +
     "  .yt-click { width:100%; }" +
+    "}" +
+    // ---------------------------------------------------------
+    // GRAND ÉCRAN : la vidéo occupe toute la fenêtre
+    // ---------------------------------------------------------
+    "html.plein-ecran-verrouille," +
+    "html.plein-ecran-verrouille body { overflow:hidden !important; }" +
+    // Sélecteurs très spécifiques + !important pour passer devant les
+    // règles de dimensionnement de responsive.css et theme-techno.css.
+    // La classe .video-plein-ecran est posée dans les deux cas : plein
+    // écran réel du navigateur ET plein écran simulé (iOS).
+
+    "html body .progression-btn-wrap.video-plein-ecran {" +
+    "  position:fixed !important; top:0 !important; right:0 !important;" +
+    "  bottom:0 !important; left:0 !important;" +
+    "  width:auto !important; height:auto !important;" +
+    "  min-width:0 !important; max-width:none !important;" +
+    "  margin:0 !important; padding:10px !important; box-sizing:border-box !important;" +
+    "  z-index:2147483000 !important; background:#000000 !important;" +
+    "  display:flex !important; flex-direction:column !important;" +
+    "  align-items:center !important; justify-content:center !important;" +
+    "  gap:12px !important; border-radius:0 !important; flex:0 0 auto !important;" +
+    "}" +
+    "html body .progression-btn-wrap.video-plein-ecran > iframe," +
+    "html body .progression-btn-wrap.video-plein-ecran > video," +
+    "html body .progression-btn-wrap.video-plein-ecran > .yt-click {" +
+    "  flex:1 1 auto !important; width:100% !important; max-width:100% !important;" +
+    "  height:auto !important; max-height:100% !important; min-height:0 !important;" +
+    "  aspect-ratio:auto !important; display:block !important;" +
+    "  border-radius:0 !important; border:0 !important; box-shadow:none !important;" +
+    "}" +
+    // Les .mp4 sont letterboxés (pas de déformation) ; les iframes
+    // YouTube s'adaptent d'elles-mêmes et centrent la vidéo.
+    "html body .progression-btn-wrap.video-plein-ecran > video {" +
+    "  object-fit:contain !important; background:#000000 !important;" +
+    "}" +
+    // En plein écran, le bouton de sortie est plus grand et contrasté.
+    "html body .progression-btn-wrap.video-plein-ecran > .video-fs-btn {" +
+    "  top:16px !important; right:16px !important;" +
+    "  width:42px !important; height:42px !important; opacity:1 !important;" +
+    "  background:rgba(220,38,38,.9) !important;" +
     "}";
   document.head.appendChild(style);
 }
@@ -202,6 +254,204 @@ function rafraichirBoutonsCours(liste) {
     });
   }).catch(() => {});
 }
+
+// ------------------------------------------------------------
+// GRAND ÉCRAN DES VIDÉOS
+// Sur téléphone, le lecteur doit pouvoir quitter la petite colonne
+// de la grille : un bouton discret est posé en haut à droite de
+// chaque vidéo. Il passe successivement par :
+//   1. l'API Fullscreen du navigateur, appliquée à l'enveloppe de la
+//      vidéo (et non à la vidéo seule) afin de conserver à l'écran le
+//      bouton de sortie et le bouton "Marquer comme visionné" ;
+//   2. le lecteur plein écran natif, réservé aux fichiers <video> sur
+//      iPhone / iPad ;
+//   3. un plein écran simulé (vidéo affichée en position fixe sur toute
+//      la fenêtre), seul recours viable pour une iframe YouTube sur
+//      iOS, où l'API Fullscreen n'est pas exposée.
+// La taille réelle en plein écran est gérée par les règles
+// ":fullscreen" de responsive.css (quand la vidéo elle-même est en
+// plein écran) et par ".video-plein-ecran" pour le mode simulé.
+// ------------------------------------------------------------
+const ICONE_PLEIN_ECRAN =
+  '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">' +
+  '<path fill="currentColor" d="M4 9V4h5v2H6v3H4zm11-5h5v5h-2V6h-3V4zM4 15h2v3h3v2H4v-5z' +
+  'm14 0h2v5h-5v-2h3v-3z"/></svg>';
+
+const ICONE_REDUIRE =
+  '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">' +
+  '<path fill="currentColor" d="M9 4v5H4V7h3V4h2zm6 0v2h3v2h-5V4h2zM4 15h5v5H7v-3H4v-2zm11 0h5v2h-3v3h-2v-5z"/></svg>';
+
+const METHODES_PLEIN_ECRAN = [
+  "requestFullscreen",
+  "webkitRequestFullscreen",
+  "mozRequestFullScreen",
+  "msRequestFullscreen"
+];
+
+// Vidéo actuellement dans le lecteur plein écran natif (iOS).
+let videoPleinEcranNatif = null;
+
+// Enveloppe affichée en plein écran simulé (quand l'API Fullscreen et
+// le lecteur natif sont tous deux indisponibles). Elle doit être
+// mémorisée : synchroniserPleinEcran() relit l'état réel affiché et
+// ne peut pas retrouver ce mode tout seul.
+let enveloppePleinEcranSimule = null;
+
+function elementPleinEcran() {
+  return (
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement ||
+    null
+  );
+}
+
+// La vidéo (ou la vignette pas encore lancée) portée par une enveloppe.
+function mediaDeLEveloppe(enveloppe) {
+  return enveloppe.querySelector("iframe, video");
+}
+
+// Aligne l'état des boutons sur ce qui est réellement affiché en
+// plein écran (API du navigateur, lecteur natif ou mode simulé).
+function synchroniserPleinEcran() {
+  const courant = elementPleinEcran();
+
+  document.querySelectorAll(".progression-btn-wrap").forEach((enveloppe) => {
+    const actif =
+      enveloppe === enveloppePleinEcranSimule ||
+      courant === enveloppe ||
+      enveloppe.contains(videoPleinEcranNatif);
+    enveloppe.classList.toggle("video-plein-ecran", actif);
+
+    const bouton = enveloppe.querySelector(".video-fs-btn");
+    if (!bouton) return;
+    const libelle = actif
+      ? "Quitter le grand écran"
+      : "Visionner la vidéo en grand écran";
+    bouton.innerHTML = actif ? ICONE_REDUIRE : ICONE_PLEIN_ECRAN;
+    bouton.setAttribute("aria-label", libelle);
+    bouton.setAttribute("aria-pressed", actif ? "true" : "false");
+    bouton.title = actif ? "Quitter le grand écran (Échap)" : "Grand écran";
+  });
+
+  // Le défilement de la page n'est à bloquer qu'en plein écran simulé :
+  // l'API Fullscreen s'en charge déjà, et le lecteur natif reste visible.
+  const simule = !courant &&
+    !!document.querySelector(".progression-btn-wrap.video-plein-ecran");
+  document.documentElement.classList.toggle("plein-ecran-verrouille", simule);
+}
+
+// Derniers recours : lecteur natif iOS, puis plein écran simulé.
+function pleinEcranDeSecours(enveloppe, media) {
+  if (media && typeof media.webkitEnterFullscreen === "function") {
+    try {
+      media.webkitEnterFullscreen();
+      return;
+    } catch (erreur) { /* lecteur natif indisponible : mode simulé */ }
+  }
+  enveloppePleinEcranSimule = enveloppe;
+  enveloppe.classList.add("video-plein-ecran");
+  synchroniserPleinEcran();
+}
+
+function entrerPleinEcran(enveloppe, media) {
+  // Une nouvelle demande prend le dessus sur un éventuel mode simulé.
+  enveloppePleinEcranSimule = null;
+  enveloppe.classList.remove("video-plein-ecran");
+  for (const methode of METHODES_PLEIN_ECRAN) {
+    if (typeof enveloppe[methode] !== "function") continue;
+    try {
+      const requete = enveloppe[methode].call(enveloppe, { navigationUI: "hide" });
+      if (requete && typeof requete.catch === "function") {
+        requete.catch(() => pleinEcranDeSecours(enveloppe, media));
+      }
+      return;
+    } catch (erreur) {
+      pleinEcranDeSecours(enveloppe, media);
+      return;
+    }
+  }
+  pleinEcranDeSecours(enveloppe, media);
+}
+
+function sortirPleinEcran(enveloppe) {
+  const courant = elementPleinEcran();
+  if (courant) {
+    const quitter =
+      courant.exitFullscreen ||
+      courant.webkitExitFullscreen ||
+      courant.mozCancelFullScreen ||
+      courant.msExitFullscreen;
+    if (typeof quitter === "function") {
+      try {
+        const requete = quitter.call(courant);
+        if (requete && typeof requete.catch === "function") {
+          requete.catch(() => {});
+        }
+      } catch (erreur) { /* le navigateur gère la sortie */ }
+    }
+  }
+  if (enveloppePleinEcranSimule === enveloppe) enveloppePleinEcranSimule = null;
+  enveloppe.classList.remove("video-plein-ecran");
+  synchroniserPleinEcran();
+}
+
+[
+  "fullscreenchange",
+  "webkitfullscreenchange",
+  "mozfullscreenchange",
+  "MSFullscreenChange"
+].forEach((evenement) =>
+  document.addEventListener(evenement, synchroniserPleinEcran)
+);
+
+document.addEventListener("webkitbeginfullscreen", (evenement) => {
+  videoPleinEcranNatif = evenement.target;
+  synchroniserPleinEcran();
+}, true);
+
+document.addEventListener("webkitendfullscreen", () => {
+  videoPleinEcranNatif = null;
+  synchroniserPleinEcran();
+}, true);
+
+// Bouton de grand écran d'une vidéo, posé en haut à droite.
+// Si la vidéo n'est pas encore lancée (vignette), le bouton lance
+// d'abord la lecture : un seul appui donne le cours en grand écran.
+function creerBoutonPleinEcran(enveloppe, lire) {
+  const bouton = document.createElement("button");
+  bouton.type = "button";
+  bouton.className = "video-fs-btn";
+  bouton.title = "Grand écran";
+  bouton.setAttribute("aria-label", "Visionner la vidéo en grand écran");
+  bouton.setAttribute("aria-pressed", "false");
+  bouton.innerHTML = ICONE_PLEIN_ECRAN;
+
+  bouton.addEventListener("click", (evenement) => {
+    evenement.preventDefault();
+    evenement.stopPropagation();
+
+    if (enveloppe.classList.contains("video-plein-ecran") || elementPleinEcran()) {
+      sortirPleinEcran(enveloppe);
+      return;
+    }
+
+    if (lire && !mediaDeLEveloppe(enveloppe)) lire();
+    entrerPleinEcran(enveloppe, mediaDeLEveloppe(enveloppe));
+  });
+
+  return bouton;
+}
+
+// La touche Échap quitte le plein écran simulé (celui de l'API est
+// déjà pris en charge par le navigateur).
+document.addEventListener("keydown", (evenement) => {
+  if (evenement.key !== "Escape" && evenement.key !== "Esc") return;
+  const simule = document.querySelector(".progression-btn-wrap.video-plein-ecran");
+  if (!simule || elementPleinEcran()) return;
+  sortirPleinEcran(simule);
+});
 
 function preparerLectureInline(iframe) {
   const src = iframe.getAttribute("src") || "";
@@ -236,7 +486,12 @@ function preparerLectureInline(iframe) {
   conteneur.appendChild(miniature);
   conteneur.appendChild(lecteur);
 
+  // Remplacer la vignette par le lecteur, une seule fois : le bouton
+  // "Grand écran" appelle aussi "lire" lorsqu'il lance la lecture.
+  let dejaLance = false;
   const jouer = function () {
+    if (dejaLance) return;
+    dejaLance = true;
     let nouvelleSrc =
       "https://www.youtube.com/embed/" + videoId + "?autoplay=1&playsinline=1";
     if (params) nouvelleSrc += "&" + params;
@@ -248,8 +503,9 @@ function preparerLectureInline(iframe) {
     iframeLecture.setAttribute("src", nouvelleSrc);
     iframeLecture.setAttribute("title", iframe.getAttribute("title") || "Vidéo du cours");
     iframeLecture.setAttribute("frameborder", "0");
-    iframeLecture.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+    iframeLecture.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen");
     iframeLecture.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+    iframeLecture.setAttribute("allowfullscreen", "");
     iframeLecture.allowFullscreen = true;
 
     conteneur.replaceWith(iframeLecture);
@@ -263,7 +519,7 @@ function preparerLectureInline(iframe) {
     }
   });
 
-  return conteneur;
+  return { element: conteneur, lire: jouer };
 }
 
 const cleModule = cleModuleCourante();
@@ -273,6 +529,7 @@ if (cleModule) {
 
   document.querySelectorAll("iframe, video").forEach((el) => {
     let element = el;
+    let lire = null;
     const estYouTube = el.tagName === "IFRAME" &&
       (el.getAttribute("src") || "").indexOf("youtube.com/embed") !== -1;
     const estVideo = el.tagName === "VIDEO";
@@ -281,9 +538,10 @@ if (cleModule) {
     if (estYouTube) {
       const visuel = preparerLectureInline(el);
       if (visuel) {
-        el.parentNode.insertBefore(visuel, el);
+        el.parentNode.insertBefore(visuel.element, el);
         el.parentNode.removeChild(el);
-        element = visuel;
+        element = visuel.element;
+        lire = visuel.lire;
       }
     }
 
@@ -309,8 +567,18 @@ if (cleModule) {
     element.parentNode.insertBefore(enveloppe, element);
     enveloppe.appendChild(element);
     enveloppe.appendChild(bouton);
+
+    // Bouton de grand écran, posé en haut à droite de la vidéo.
+    // Si la vidéo n'est pas encore lancée (vignette), le bouton lance
+    // d'abord la lecture : un seul appui donne le cours en grand écran.
+    enveloppe.appendChild(creerBoutonPleinEcran(enveloppe, lire));
+
     boutonsCours.push(bouton);
   });
+
+  // Aligne une éventuelle première fois l'état des boutons grand écran
+  // (utile au retour via le cache du navigateur).
+  synchroniserPleinEcran();
 
   if (index !== CONTENUS[cleModule].cours) {
     console.warn(
