@@ -1045,3 +1045,59 @@ html body iframe:fullscreen::backdrop,
 html body video:fullscreen::backdrop {
   background-color: #000000 !important;
 }
+
+/* ---------- 10. BOUTONS "OUTILS NÉCESSAIRES" (Infographie) ----------
+   Problème : .liens (page Infographie) est une rangée de boutons .btn
+   (padding 12px 20px, police 18px) SANS flex-wrap. Trois boutons ne
+   tiennent pas sur la largeur d'un téléphone : ils débordaient de
+   l'écran et le dernier ("Illustrator") était coupé.
+
+   Correction : la rangée passe en flex-wrap, les boutons deviennent
+   fluides (largeur calculée sur le viewport, jamais plus larges que
+   l'écran) et leur texte se réduit au lieu de forcer le débordement. */
+@media (max-width: 991.98px) {
+  .liens {
+    flex-wrap: wrap !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 0 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .liens .btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    flex: 1 1 140px !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 11px 14px !important;
+    font-size: clamp(0.85rem, 3.6vw, 1.05rem) !important;
+    text-align: center !important;
+    line-height: 1.25 !important;
+  }
+}
+
+/* Téléphone : 2 boutons par ligne, jamais plus larges que l'écran */
+@media (max-width: 575.98px) {
+  .liens {
+    gap: 8px !important;
+    padding: 0 8px !important;
+  }
+
+  .liens .btn {
+    flex: 1 1 calc(50% - 4px) !important;
+    padding: 10px 8px !important;
+    font-size: clamp(0.8rem, 3.9vw, 0.95rem) !important;
+  }
+}
+
+/* Très petits téléphones (≤ 380px) : 1 bouton par ligne, lisible */
+@media (max-width: 380px) {
+  .liens .btn {
+    flex: 1 1 100% !important;
+  }
+}

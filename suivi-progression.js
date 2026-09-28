@@ -377,24 +377,34 @@ function entrerPleinEcran(enveloppe, media) {
 
 function sortirPleinEcran(enveloppe) {
   const courant = elementPleinEcran();
+  let sortieDemandee = false;
+
   if (courant) {
+    // ATTENTION : exitFullscreen est une méthode de Document, pas de
+    // l'élément en plein écran. C'est le document entier qui la possède.
+    const doc = courant.ownerDocument || document;
     const quitter =
-      courant.exitFullscreen ||
-      courant.webkitExitFullscreen ||
-      courant.mozCancelFullScreen ||
-      courant.msExitFullscreen;
+      doc.exitFullscreen ||
+      doc.webkitExitFullscreen ||
+      doc.mozCancelFullScreen ||
+      doc.msExitFullscreen;
     if (typeof quitter === "function") {
       try {
-        const requete = quitter.call(courant);
+        const requete = quitter.call(doc);
+        sortieDemandee = true;
         if (requete && typeof requete.catch === "function") {
-          requete.catch(() => {});
+          // Si le navigateur refuse, on restaure l'affichage tel qu'il est.
+          requete.catch(() => synchroniserPleinEcran());
         }
       } catch (erreur) { /* le navigateur gère la sortie */ }
     }
   }
+
   if (enveloppePleinEcranSimule === enveloppe) enveloppePleinEcranSimule = null;
   enveloppe.classList.remove("video-plein-ecran");
-  synchroniserPleinEcran();
+  // Après une vraie demande de sortie, l'événement fullscreenchange
+  // remettra l'état au propre : inutile de le recalculer ici.
+  if (!sortieDemandee) synchroniserPleinEcran();
 }
 
 [
