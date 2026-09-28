@@ -144,6 +144,45 @@ canvas {
     background-color: #1c2431 !important;
   }
 
+  /* MÊME REMPLISSAGE POUR TOUTES LES PAGES (y compris celles sans
+     la classe .no-main : Chiffres, Mission, Contacts, profil-1) :
+     si jamais de la place reste sous le footer, elle est peinte
+     dans la couleur du footer et non en blanc. */
+  body::after {
+    content: "" !important;
+    display: block !important;
+    flex: 1 0 0 !important;
+    min-height: 0 !important;
+    background-color: #1c2431 !important;
+  }
+
+  /* FIN DE PAGE : AUCUNE BANDE BLANCHE SOUS LE FOOTER
+     Sur téléphone, deux mechanisms rebrouillaient le fond blanc
+     sous le footer sombre :
+       1. body { background-attachment: fixed } (theme-techno.css) :
+          le fond blanc du body reste peint sur le canvas du
+          navigateur mobile, y compris sous le footer pendant le
+          rebond de fin de page (overscroll) -> bande blanche.
+          Sur mobile on repasse en 'scroll' : le fond blanc est alors
+          limite a la boite du body, qui s'arrete au bas du footer.
+       2. Le rebond lui-meme : on le neutralise sur le html ET sur
+          le body (la regle ne portait que sur html).
+     Le html reste peint en #1c2431 (design-navbar-footer.css) : si
+     le navigateur depasse malgre tout la fin du document, c'est la
+     couleur du footer qui apparait, pas du blanc. */
+  html,
+  body {
+    overscroll-behavior-y: none !important;
+  }
+
+  /* theme-techno.css est charge APRES responsive.css et impose
+     lui-meme background-attachment: fixed !important : on passe par
+     le selecteur "html body" (specificite superieure) pour que la
+     valeur "scroll" l'emporte sur les mobiles. */
+  html body {
+    background-attachment: scroll !important;
+  }
+
   /* Pages avec <main> (ex : profil-1.html) : le body remplit l'écran. */
   body.has-main {
     min-height: 100vh !important;
