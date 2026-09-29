@@ -87,14 +87,12 @@ canvas {
     height: auto !important;
   }
 
-  /* Hauteur du corps : on neutralise la chaîne height:100% -> min-height:100%
-     du sticky-footer (design-navbar-footer.css). Sur mobile/tablette la barre
-     d'adresse et la barre de menu sont dynamiques : 100% ne suit pas la
-     hauteur réellement visible et pouvait laisser un espace blanc SCELLABLE
-     après le footer. On repasse le body en min-height avec des unités de
-     viewport dynamiques (dvh/svh/lvh se recalent pendant le défilement) :
-     la page s'arrête donc exactement au bas du footer.
-     Fallback : 100vh reste valable sur les navigateurs sans dvh. */
+  /* Hauteur du corps : le sticky-footer est désormais géré UNE SEULE
+     FOIS pour TOUTES les tailles dans design-navbar-footer.css
+     (html/body en flex colonne, min-height 100svh puis 100dvh, et un
+     ::after sombre qui remplit l'espace restant sous le footer).
+     On ne fait ici que réaffirmer les unités de viewport pour ne pas
+     être écrasé par un éventuel style inline de page. */
   html {
     height: auto !important;
     min-height: 100vh !important;
@@ -108,52 +106,14 @@ canvas {
     min-height: 100dvh !important;
   }
 
-  /* Contexte flex FORCÉ : les règles qui suivent (margin-top:auto du
-     footer, ::after flexible) supposent que body est un conteneur flex
-     en colonne, mais ce display:flex dépendait du style inline de chaque
-     page (non garanti partout). On le force ici, indépendamment des pages. */
-  body {
+  /* Contexte flex FORCÉ : indépendant du style inline de chaque page
+     (un body non-flex laissait le ::after de fin de page à 0px de
+     haut, et la place restante sous le footer se retrouvait peinte
+     dans le fond clair de la page). */
+  html body {
+    display: -webkit-flex !important;
     display: flex !important;
     flex-direction: column !important;
-  }
-
-  /* Le footer est TOUJOURS poussé au bas : aucun espace blanc sous le
-     footer quand le contenu est plus court que l'écran. */
-  body > footer {
-    margin-top: auto !important;
-  }
-
-  /* Pages SANS balise <main> (index, Cours, Exercices…) :
-     Quand le contenu est plus court que l'écran, le footer est poussé
-     en bas par sa marge automatique, mais l'espace restant SOUS le
-     footer montrait le fond blanc du body → bande blanche sous le
-     footer sur téléphone (Samsung A16, etc.) et tablette.
-     Fix : le footer reprend sa place juste après le contenu, et un
-     ::after sombre (même couleur que le footer) comble tout l'espace
-     restant de l'écran. Plus aucune bande blanche, sur tous les
-     appareils mobiles et les tablettes. */
-  body.no-main > footer {
-    margin-top: 0 !important;
-  }
-
-  body.no-main::after {
-    content: "" !important;
-    display: block !important;
-    flex: 1 0 0 !important;
-    min-height: 0 !important;
-    background-color: #1c2431 !important;
-  }
-
-  /* MÊME REMPLISSAGE POUR TOUTES LES PAGES (y compris celles sans
-     la classe .no-main : Chiffres, Mission, Contacts, profil-1) :
-     si jamais de la place reste sous le footer, elle est peinte
-     dans la couleur du footer et non en blanc. */
-  body::after {
-    content: "" !important;
-    display: block !important;
-    flex: 1 0 0 !important;
-    min-height: 0 !important;
-    background-color: #1c2431 !important;
   }
 
   /* FIN DE PAGE : AUCUNE BANDE BLANCHE SOUS LE FOOTER
@@ -183,16 +143,10 @@ canvas {
     background-attachment: scroll !important;
   }
 
-  /* Pages avec <main> (ex : profil-1.html) : le body remplit l'écran. */
-  body.has-main {
-    min-height: 100vh !important;
-    min-height: 100svh !important;
-    min-height: 100dvh !important;
-  }
-
-  body.has-main footer {
-    margin-top: auto !important;
-  }
+  /* Pages avec <main> (ex : profil-1.html) : plus rien de spécial ici.
+     <main> occupe l'espace restant (design-navbar-footer.css) et le
+     ::after sombre remplit ce qui resterait sous le footer, exactement
+     comme sur les pages sans <main>. */
 }
 
 /* ---------- 2. Contenus adaptés (base, toutes largeurs) ---------- */

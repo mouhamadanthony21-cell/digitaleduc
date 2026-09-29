@@ -177,67 +177,79 @@ nav a.active i {
     flex-shrink: 0;
 }
 
-/* ---------- STICKY FOOTER ----------
-   Le footer reste collé en bas de l'écran même quand le contenu
-   de la page est court (aucun espace blanc en dessous). */
+/* =========================================================
+   ---------- STICKY FOOTER : FIN DE PAGE SANS ZONE CLAIRE
+   =========================================================
+   Règle unique, valable sur TOUTES les tailles d'écran (il n'y a
+   plus de version "mobile" dans responsive.css qui_la contredise) :
 
-/* 1. Le <html> n'a AUCUNE hauteur fixe : il grandit avec son contenu
-   et fait au minimum la hauteur de la fenêtre (100vh, puis 100svh
-   et 100dvh pour suivre la barre d'adresse mobile). Plus de chaîne
-   height:100% -> min-height:100% : rien ne peut donc s'étendre sous
-   le footer (aucune zone blanche/bleue après lui, sur GitHub Pages
-   comme en local). */
+     le document se termine TOUJOURS au bas du footer, et tout ce
+     qui reste sous le footer est peint dans la couleur du footer.
+
+   1. <html> : au moins la hauteur de la fenêtre, SANS hauteur fixe
+      (plus de chaîne height:100% -> min-height:100%), et peint en
+      #1c2431 (la couleur du footer). Si le navigateur dépasse la
+      fin du document (rebond/overscroll, barre d'adresse mobile,
+      100dvh plus grand que la fenêtre réellement visible), c'est
+      donc la couleur du footer qui apparaît, jamais du blanc.
+   2. <body> : conteneur flex en colonne d'au moins une fenêtre.
+   3. <main> (pages qui en ont un) : occupe l'espace restant.
+   4. <footer> : juste après le contenu, jamais compressé.
+   5. body::after : dernier élément de la colonne, il absorbe TOUT
+      l'espace restant sous le footer et le peint en #1c2431.
+      C'est lui qui interdit l'apparition d'une bande claire
+      (fond blanc/bleuté de la page) après le footer.
+   ========================================================= */
+
 html {
     height: auto !important;
     min-height: 100vh !important;
     min-height: 100svh !important;
     min-height: 100dvh !important;
-}
-
-/* Fond du <html> = couleur du footer : en dépassant la fin de la page
-   (effet bounce/overscroll sur macOS/mobile), le navigateur révèle le
-   fond de la page sous le footer. S'il est blanc, on voit une bande
-   claire sous le footer sombre. On le teinte donc de la même couleur
-   sombre que le footer, et on coupe le rebond dans les deux sens. */
-html {
     background-color: #1c2431 !important;
+    background-image: none !important;
     overscroll-behavior-y: none !important;
 }
 
 html,
 body {
     margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* 2. Body en colonne : les sections s'empilent et le footer est
-   poussé à la fin. Sélecteur html body (spécificité 0.0.2) pour
-   l'emporter sur responsive.css (body { min-height: 0 !important }). */
 html body {
+    display: -webkit-flex !important;
     display: flex !important;
     flex-direction: column !important;
     min-height: 100vh !important;
     min-height: 100svh !important;
     min-height: 100dvh !important;
+    overscroll-behavior-y: none !important;
 }
 
-/* 3. Conteneur du contenu principal (pages avec <main>,
-   ex : profil-1.html) : occupe tout l'espace restant pour
-   repousser le footer en bas. */
 main {
     flex: 1 0 auto !important;
 }
 
-/* 4. Le footer ne doit jamais être compressé. */
 footer {
-    flex-shrink: 0 !important;
+    flex: 0 0 auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 
-/* 5. Pages SANS balise <main> (index, Chiffres, Mission, Cours,
-   Exercices…) : pas de conteneur unique à cibler, on pousse alors
-   le footer en bas grâce à sa marge automatique dans le body
-   en colonne. body > footer vainc footer { margin: 0 !important }. */
-body > footer {
-    margin-top: auto !important;
+/* Remplissage de fin de page : même couleur que le footer, il
+   descend jusqu'au bas de la fenêtre. flex-basis auto (0 par
+   défaut, l'élément est vide) + flex-grow 1 : il n'occupe que
+   l'espace réellement restant, et rien quand la page est déjà
+   plus haute que l'écran. */
+html body::after {
+    content: "" !important;
+    display: block !important;
+    -webkit-flex: 1 0 auto !important;
+    flex: 1 0 auto !important;
+    min-height: 0 !important;
+    background-color: #1c2431 !important;
+    background-image: none !important;
 }
 
 /* ---------- FOOTER ---------- */
