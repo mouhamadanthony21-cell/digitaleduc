@@ -1087,3 +1087,464 @@ html body video:fullscreen::backdrop {
     font-size: clamp(0.8rem, 3.9vw, 0.95rem) !important;
   }
 }
+
+/* =========================================================
+   11. RESPONSIVE FLUIDE — 360 / 480 / 768 / 1024 / 1280+
+   =========================================================
+   Ce bloc est le SEUL à piloter l'adaptation. Il complète les
+   sections 1 à 10 (qui restent valides) et applique trois règles
+   absentes jusqu'ici :
+
+     1. AUCUN DÉBORDEMENT : plus aucun élément ne dépasse de la
+        fenêtre, à aucune taille.
+     2. MENU BURGER jusqu'à 1024px (mobile ET tablette), menu
+        complet à partir de 1024px (PC) — le design PC actuel
+        (logo + Accueil + Cours + Exercices + COMPTE sur une
+        ligne) est conservé à l'identique.
+     3. CONFORT TACTIL : zone cliquable >= 44x44px et texte
+        >= 16px sur mobile et tablette.
+
+   Ordre de chargement : ce fichier est chargé AVANT
+   theme-techno.css, qui pose des règles en !important sur
+   `nav li a`, `nav .account-btn` et la typographie. Les sélecteurs
+   de la section 11 sont donc préfixés par `html body` pour avoir
+   une spécificité supérieure (0,0,4) et l'emporter malgré
+   l'ordre de chargement.
+   ========================================================= */
+
+/* ---------- 11.1 AUCUN DÉBORDEMENT (toutes tailles) ----------
+
+   1. `min-width: 0` sur les enfants directs du <body> :
+      le <body> est un conteneur flex en colonne, donc chaque
+      enfant est un "flex item" dont la largeur minimale
+      automatique vaut la largeur min-content de son contenu.
+      Un enfant au contenu large (texte long, valeur intrinsèque
+      d'une grille) ne pouvait donc jamais rétrécir sous la
+      largeur de l'écran et sortait du cadre. `min-width: 0`
+      supprime ce plancher sans jamais élargir quoi que ce soit
+      (donc aucun effet sur le rendu PC).
+
+   2. `.modules-grid { width: 100% }` : dans un conteneur flex
+      en colonne, la largeur d'un enfant `width: auto` est
+      résolue depuis sa largeur max-content AVANT l'étirement.
+      La grille Exercices (repeat(auto-fill, minmax(300px,1fr)))
+      prenait donc 4 colonnes = 1272px et débordait de
+       1024px. En `width: 100%` la largeur se résout contre le
+       <body> (défini) ; `max-width: 1400px` continue de borner
+       la grille sur grand écran, donc le centrage PC est
+       inchangé (1400px centrés en 1600px comme avant).
+
+       On ne force volontairement PAS `max-width: 100%` sur les
+       grilles : les pages définissent elles-mêmes leur largeur
+       maximale, et un `max-width` en `!important` l'écraserait
+       (la grille d'Exercices passerait de 1400px à toute la
+       largeur de l'écran, ce qui changerait le rendu bureau).
+       `width: 100%` suffit à empêcher le débordement, puisque le
+       `max-width` de la page continue de borner la grille.
+
+
+   3. `.underlinex { width: auto }` : ce séparateur décoratif
+      combinait `width: 100%` (imposé par la section 3) avec
+      des marges latérales (5px sur Cours, 15+20px sur
+      Exercices) : il débordait donc de 10 à 45px sur TOUTES les
+      tailles, y compris sur PC. `width: auto` le rend fluide :
+      il occupe la largeur disponible MINUS ses marges, donc il
+      ne peut plus déborder. Seule correction_visible : la barre
+      bleue estlarge de 10px (Cours) / 35px (Exercices) en
+      moins, ce qui supprime le débordement. */
+html body > * {
+  min-width: 0 !important;
+}
+
+html body .modules-grid {
+  width: 100% !important;
+}
+
+html body .underlinex {
+  width: auto !important;
+  max-width: 100% !important;
+}
+
+
+/* ---------- 11.2 NAVIGATION : BURGER < 1024px ---------- */
+
+/* Le bouton à trois traits existe déjà (injeté par
+   suivi-progression.js, cf. initialiserBurgerNav). On l'affiche
+   désormais sur mobile ET tablette, et on referme le panneau
+   déroulant sous 1024px. Au-delà de 1024px le menu complet
+   s'affiche sur une ligne, exactement comme aujourd'hui sur PC :
+   aucune de ces règles ne s'applique au-dessus de 1024px. */
+@media (max-width: 1023.98px) {
+  .nav-burger {
+    display: inline-flex !important;
+  }
+
+  html body nav {
+    flex-wrap: nowrap !important;
+    flex-direction: row !important;
+    gap: 8px !important;
+  }
+
+  /* Les 3 liens passent dans un panneau déroulant sous la barre.
+     `flex-basis: auto` annule le `flex-basis: 100%` du bloc
+     tablette (section 4) qui les étalait sur une 2e ligne. */
+  html body nav ul {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    flex-basis: auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    padding: 14px !important;
+    margin: 0 !important;
+    background: #1c2431 !important;
+    border: 2px solid #0dabff !important;
+    border-radius: 0 0 14px 14px !important;
+    box-shadow: 0 18px 40px rgba(2, 8, 20, 0.35) !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: max-height 0.35s ease, opacity 0.3s ease, visibility 0.3s ease !important;
+    z-index: 1000 !important;
+  }
+
+  html body nav.open ul {
+    max-height: 340px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  html body nav ul li {
+    width: 100% !important;
+  }
+
+  /* Les liens du panneau sont des cibles tactiles larges */
+  html body nav ul li a {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+    justify-content: flex-start !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+  }
+
+  /* Le menu COMPTE reste au-dessus du panneau s'il est ouvert */
+  html body .account-menu {
+    z-index: 1200 !important;
+  }
+}
+
+/* Tablette uniquement : le logo et le bouton COMPTE restent
+   visibles sur la ligne de la barre, les liens sont dans le
+   panneau. */
+@media (min-width: 576px) and (max-width: 1023.98px) {
+  html body nav {
+    padding: 10px 20px !important;
+  }
+
+  html body nav .logo img,
+  html body nav img.DE,
+  html body nav img.image-principale {
+    height: 44px !important;
+    width: auto !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+  }
+
+  html body nav .account-dropdown {
+    margin-left: auto !important;
+  }
+
+  html body nav .account-btn {
+    padding: 11px 20px !important;
+  }
+}
+
+/* ---------- 11.3 TEXTE >= 16px + ZONES TACTILES >= 44px ----------
+   Appliqué sur mobile ET tablette (< 1024px). Sur PC (>= 1024px)
+   aucune de ces règles n'est active : le rendu bureau est donc
+   strictement inchangé.
+
+   Les tailles sont exprimées en clamp() / rem pour rester
+   fluides : elles valent 16px au plus petit écran (360px) et ne
+   montent jamais au-dessus de 16px, la lisibilité mobile étant
+   le but. */
+@media (max-width: 1023.98px) {
+
+  /* ---- Typographie : plancher à 16px ----
+     On cible les sélecteurs réels mesurés dans l'audit, pas un
+     `*` global, pour ne pas toucher aux micro-tags décoratifs
+     (voir 11.5).
+
+     POINT DE SPÉCIFICITÉ : les pages déclarent leurs propres
+     règles dans un `<style>` du `<head>`, donc APRÈS les
+     feuilles liées, et certaines sont en `!important`
+     (ex. `.center-container h1` en section 6). Un sélecteur
+     `html body h1` n'a aucune classe : il perd face à
+     `.center-container h1`. On ajoute donc systématiquement la
+     classe de la page dans le sélecteur pour passer devant,
+     tout en gardant `!important`.
+     Les valeurs sont en `px` et non en `rem` : la racine du
+     document est à 16px mais les pages utilisent des
+     `clamp()` en `rem`, et un `rem` mal interprété ferait
+     retomber le texte sous le plancher demandé. */
+  html body p,
+  html body li,
+  html body label,
+  html body strong,
+  html body h3,
+  html body h4,
+  html body h5,
+  html body h6 {
+    font-size: 16px !important;
+  }
+
+  /* Titres : on garde la hiérarchie (h1 plus grand que le corps)
+     mais plus aucun titre ne descend sous 16px. */
+  html body h1 {
+    font-size: 24px !important;
+  }
+
+  html body h1.white-container,
+  html body .white-container h1,
+  html body .center-container h1,
+  html body .left-container h1,
+  html body .banner-content h1 {
+    font-size: 24px !important;
+  }
+
+  html body h2 {
+    font-size: 21px !important;
+  }
+
+  html body .left-container h2,
+  html body .center-container h2,
+  html body .white-container h2,
+  html body .banner-content h2 {
+    font-size: 21px !important;
+  }
+
+  html body footer .colonne1 ul li a,
+  html body footer .colonne2 ul li a,
+  html body footer .colonne3 ul li a,
+  html body footer .colonne4 ul li a,
+  html body footer a span {
+    font-size: 16px !important;
+  }
+
+  html body .titre-footer,
+  html body .titre-footer span,
+  html body footer .copyright,
+  html body p.copyright {
+    font-size: 16px !important;
+  }
+
+  html body .left-container p,
+  html body .banner-description,
+  html body .card-banner p,
+  html body p.disclaimer,
+  html body p.sous-titre,
+  html body p.msg,
+  html body .libelle {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Sur-titre de la bannière des pages de cours */
+  html body .left-container .eyebrow,
+  html body .eyebrow {
+    font-size: 16px !important;
+  }
+
+  /* Cartes de cours (Cours.html) : titres, descriptifs, libellés.
+     Le conteneur réel est `.family > .family-head` (pas `.bloc`). */
+  html body .modules-grid .bloc h3,
+  html body .family-head .family-tag,
+  html body .family-head .family-count,
+  html body .modules-grid .bloc .eyebrow {
+    font-size: 16px !important;
+  }
+
+  /* Cartes d'exercices (Exercices.html) */
+  html body .module-card .card-header h2,
+  html body .module-card .exercise-title,
+  html body .module-card .course-link,
+  html body .module-card .exercise-done-btn,
+  html body .module-card .status-tag,
+  html body .module-card .badge-pdf,
+  html body .module-card .header-icon + span {
+    font-size: 16px !important;
+  }
+
+  /* Étiquettes de famille : peut être dans `.family-head` comme
+     dans une carte isolée selon la page. */
+  html body .family-tag,
+  html body .family-count {
+    font-size: 16px !important;
+  }
+
+  /* Profil (profil-1.html) */
+  html body .profil-actions .bouton,
+  html body .boite .bouton,
+  html body .progression-btn-wrap .bouton {
+    font-size: 16px !important;
+  }
+
+  html body p.sous-titre,
+  html body .sous-titre {
+    font-size: 16px !important;
+  }
+
+  /* Boutons */
+  html body .btn-commencer,
+  html body .liens .btn,
+  html body .bouton,
+  html body .btn,
+  html body .account-btn {
+    font-size: 16px !important;
+  }
+
+  /* Boutons injectés par suivi-progression.js sur les lecteurs vidéo
+     (ils n'existent pas dans le HTML, donc aucune feuille ne les
+     cible par leur nom de classe). */
+  html body .progression-btn {
+    font-size: 16px !important;
+  }
+
+  /* ---- Pages d'authentification ----
+     Elles ne chargent PAS responsive.css (ni navbar ni footer).
+     Leur adaptation mobile est faite dans auth.css : y ajouter
+     cette feuille appliquerait des règles globales sans rapport
+     avec leur mise en page, et modifierait leur rendu bureau. */
+
+  /* ---- Zones tactiles : 44x44px minimum ----
+     On agit sur `min-height`/`min-width` (et non sur un padding
+     qui décalerait la mise en page) : la cible atteint 44px sans
+     modifier l'alignement ni les espacements verticaux du
+     design. */
+  html body .account-btn,
+  html body .nav-burger,
+  html body .btn-commencer,
+  html body .liens .btn,
+  html body .bouton,
+  html body .btn,
+  html body .module-card .exercise-done-btn,
+  html body .module-card .course-link,
+  html body a.renvoyer,
+  html body .champs-nom button {
+    min-height: 44px !important;
+  }
+
+  /* Boutons injectés par suivi-progression.js : "Marquer comme fait"
+     (182x35) et le bouton plein écran du lecteur (32x32). */
+  html body .progression-btn {
+    min-height: 44px !important;
+  }
+
+  html body .video-fs-btn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* Liens de listes (footer, cartes) : hauteur de boîte >= 44px
+     sans padding superposé, donc sans chevauchement entre deux
+     cibles consécutives. */
+  html body footer ul li a {
+    min-height: 44px !important;
+  }
+
+  /* La marge entre les liens du footer est absorbée par la
+     hauteur de 44px : le pied de page reste aussi compact. */
+  html body footer .colonne1 ul li,
+  html body footer .colonne2 ul li,
+  html body footer .colonne3 ul li {
+    margin-bottom: 0 !important;
+  }
+
+  /* Liens-boutons des cartes d'exercices (Exercice / Corrigé) :
+     ils n'avaient que 34px de LARGEUR. */
+  html body .exercise-item a,
+  html body a.Exo,
+  html body a.Corrigé {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Les lignes d'exercice peuvent se réorganiser sans débordement */
+  html body .module-card .exercise-item {
+    flex-wrap: wrap !important;
+    row-gap: 8px !important;
+  }
+}
+
+/* ---------- 11.4 360px / 480px : ajustements de confort ----------
+   Ce sont les deux tailles les plus étroites : on y resserre les
+   espacements et on force les grilles sur une colonne quand deux
+   colonnes ne tiennent plus. */
+@media (max-width: 480px) {
+  /* Cartes de cours : 2 colonnes jusqu'à 480px, 1 colonne en
+     dessous (une carte de cours carrée dans 155px devient
+     illisible). */
+  html body .modules-grid:not(.has-cards) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  html body .videos {
+    gap: 8px !important;
+    padding: 6px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  /* Grille des cartes de cours : 1 colonne, la carte garde son
+     format carré lisible. */
+  html body .modules-grid:not(.has-cards) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body .stats {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* ---------- 11.5 MICRO-TAGS DÉCORATIFS ----------
+   Les identifiants de module ("MTH-01") et le micro-libellé
+   "cours" sous la flèche sont de petites étiquettes. Elles ne
+   sont pas dans une zone de lecture de texte, mais elles restent
+   du texte : on les aligne donc sur le même plancher de 16px
+   que le reste, la carte de cours étant assez large (1 colonne
+   sous 380px, 2 colonnes au-dessus) pour l'accueillir sans
+   déformer la maquette. */
+@media (max-width: 1023.98px) {
+  html body .modules-grid .bloc .code,
+  html body .modules-grid .bloc .famille-cours span,
+  html body .modules-grid .bloc .bloc-sub,
+  html body .bloc-arrow > span {
+    font-size: 16px !important;
+  }
+}
+
+/* ---------- 11.6 1280px ET PLUS : design PC, rien à changer ----
+   AUCUNE règle n'est ajoutée ici, volontairement.
+
+   La section 11 ne comporte que des garde-fous « sans effet si tout
+   va bien » (largeur fluide, min-width: 0) et des règles confined
+   aux écrans < 1024px. Au-delà, la mise en page d'origine
+   s'applique telle quelle : c'est le moyen le plus sûr de garantir
+   que le design PC est préservé à l'identique.
+
+   Il avait été envisagé de borner la grille à 1400px sur grand
+   écran, mais cela aurait RÉDUIT et recentré la grille de
+   Cours.html (4 colonnes, `margin: 0`, sans max-width) : c'est
+   une modification du design de bureau, donc écarté. */

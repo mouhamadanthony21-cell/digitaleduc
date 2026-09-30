@@ -224,3 +224,69 @@ a:hover {
         padding: 34px;
     }
 }
+
+/* ......... MOBILE ET TABLETTE (< 1024px) .........
+   Confort de lecture et cibles tactiles, sans toucher au
+   rendu bureau (>= 1024px) qui reste identique.
+
+   - texte >= 16px : en dessous, iOS et Android zooment
+     automatiquement la page au focus d'un champ, ce qui rend
+     le formulaire illisible pendant la saisie ;
+   - zones cliquables >= 44x44px : la cible minimale
+     recommandée sur écran tactile ;
+   - `inline-flex` sur les liens du formulaire, qui sont en
+     `display: block` : la zone touche ainsi toute la largeur
+     du formulaire au lieu d'une seule ligne de texte. */
+@media (max-width: 1023.98px) {
+    .box h2,
+    .box h2 span {
+        font-size: 21px;
+    }
+
+    .sous-titre,
+    .msg,
+    .box a,
+    .box a span,
+    .box button,
+    .box .bouton,
+    .box .bouton-lien,
+    .box a.renvoyer,
+    .invite-icone + h2 {
+        font-size: 16px;
+    }
+
+    /* Champs de saisie : 16px pour éviter le zoom automatique
+       au focus, qui déforme la mise en page pendant la saisie. */
+    .box input,
+    .box select,
+    .box textarea {
+        font-size: 16px;
+    }
+
+    .box button,
+    .box .bouton,
+    .box .bouton-lien,
+    .box a.renvoyer {
+        min-height: 44px;
+    }
+
+    /* `.bouton`, `.bouton-lien` et `.renvoyer` sont des
+       `inline-block` centrés par `.centre` / `.actions` : on les
+       aligne verticalement sans changer leur largeur ni leur
+       centrage. */
+    .box .bouton,
+    .box .bouton-lien,
+    .box a.renvoyer {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+    }
+
+    .box a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+    }
+}

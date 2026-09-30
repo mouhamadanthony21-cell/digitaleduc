@@ -615,6 +615,7 @@ function mettreAJourBoutonsExercices(progression) {
 
 function rafraichirBoutonsExercices() {
   if (!boutonsExercices.length) return;
+  if (typeof window.getUserProgress !== "function") return;
   window.getUserProgress().then(mettreAJourBoutonsExercices).catch(() => {});
 }
 
@@ -638,7 +639,17 @@ function initialiserAffichage() {
   rafraichirBoutonsExercices();
 }
 
-if (window.firebaseAuth) {
+// La navigation est initialisée ICI, avant tout code dépendant de
+// Firebase. Le bouton burger doit exister même si Firebase n'est pas
+// chargé (CDN injoignable, hors ligne, bloqueur de pub) : sinon plus
+// aucun moyen de naviguer sur mobile, puisque les liens sont alors
+// regroupés derrière ce bouton. Les fonctions ci-dessous sont
+// remontées par le moteur JS, l'appel peut donc précéder leur
+// définition textuelle.
+initialiserNavigationBurger();
+initialiserBurgerNav();
+
+if (window.firebaseAuth && typeof window.firebaseAuth.onAuthStateChanged === "function") {
   window.firebaseAuth.onAuthStateChanged(() => initialiserAffichage());
 } else {
   initialiserAffichage();
@@ -703,8 +714,8 @@ function initialiserBurgerNav() {
   });
 }
 
-initialiserNavigationBurger();
-initialiserBurgerNav();
+// L'initialisation de la navigation a déjà été faite plus haut dans
+// ce fichier, AVANT le code Firebase (voir commentaire associé).
 
 window.getProgressionDetail = async () => {
   const progression = (await window.getUserProgress()) || {};
