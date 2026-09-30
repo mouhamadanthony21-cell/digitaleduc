@@ -178,41 +178,75 @@ nav a.active i {
 }
 
 /* =========================================================
-   ---------- STICKY FOOTER : FIN DE PAGE SANS ZONE CLAIRE
+   ---------- STICKY FOOTER : LE FOOTER TOUCHE LE BAS DE L'ÉCRAN
    =========================================================
-   Règle unique, valable sur TOUTES les tailles d'écran (il n'y a
-   plus de version "mobile" dans responsive.css qui_la contredise) :
+   Règle unique, valable sur TOUTES les tailles d'écran (responsive.css
+   ne la contredit plus) :
 
-     le document se termine TOUJOURS au bas du footer, et tout ce
-     qui reste sous le footer est peint dans la couleur du footer.
+     le <footer> est le DERNIER élément de la colonne flex du <body>, et
+     il occupe toute la place restante. Il n'existe donc plus aucune
+     bande de fond en dessous de lui.
 
-1. <html> : au moins la hauteur de la fenêtre, SANS hauteur fixe
-       (plus de chaîne height:100% -> min-height:100%), et peint en
-       #1c2431 (la couleur du footer). C'est lui qui couvre tout ce qui
-       reste sous le body : si le navigateur dépasse la fin du document
-       (rebond/overscroll, barre d'adresse mobile), c'est donc la couleur
-       du footer qui apparaît, jamais du blanc.
-   2. <body> : conteneur flex en colonne AVEC min-height égale à la
-       hauteur de la fenêtre (100dvh). Le body occupe donc TOUJOURS
-       toute la fenêtre visible : il n'existe plus de place vide SOUS
-       le footer, puisque le body descend jusqu'au bas de l'écran et
-       le footer est collé à ce bas d'écran.
-   3. <main> (pages qui en ont un) : occupe l'espace restant si une
-       page se trouve plus haute que la fenêtre.
-   4. <footer> : margin-top:auto le colle au BAS de la fenêtre quand la
-       page est plus courte que l'écran, et le laisse juste après le
-       contenu quand la page est plus longue. flex-shrink:0 l'empêche
-       d'être compressé. Comme il n'y a aucun élément après le footer,
-       il n'y a plus rien qui puisse laisser une bande vide en dessous.
+   AUCUNE COULEUR DE FOND N'EST POSÉE SUR <html> NI SUR <body> ICI.
+   Le fond clair à grille/points de theme-techno.css reste PEINT SUR LE
+   <body>, exactement comme avant. Comme <html> n'a pas de fond, ce fond
+   se propage au canvas du navigateur : c'est précisément pourquoi la
+   correction doit être GÉOMÉTRIQUE (le footer doit réellement atteindre
+   le bord bas) et pas une simple peinture de couleur.
+
+1. <html> : SANS `height` fixe, SANS `max-height`, SANS `overflow`.
+       Un `height: 100%` / `max-height` / `overflow` sur l'élément racine
+       le transforme en conteneur de défilement interne : le document est
+       alors découpé dans une boîte qui peut s'arrêter AVANT le bas de
+       l'écran, et la zone atteinte par le bas de cette boîte est peinte
+       avec le fond propagé (le fond clair à grille) au lieu du footer.
+       Seul un `min-height` est posé, et il est sans effet tant que le
+       contenu est plus haut que la fenêtre.
+2. <body> : conteneur FLEX EN COLONNE, `min-height: 100dvh`.
+       `min-height` (jamais `height`) : le body descend donc jusqu'au bas
+       de la fenêtre visible, et continue de grandir si la page est plus
+       longue. Plus de `height: 100%` ni de `max-height` nulle part.
+       ⚠ `100svh` a été VOLONTAIREMENT retiré de la chaîne de repli.
+       `svh` = la fenêtre quand la barre d'adresse du mobile est DÉPLOYÉE,
+       donc PLUS PETITE que la fenêtre visible dès que la barre se cache
+       (≈ 60 à 110 px de plus sur un téléphone). Si `dvh` n'est pas
+      _SUPPORTÉ par le navigateur du visiteur, la valeur qui reste en
+       place est `svh` : le body s'arrêtait alors à ce niveau et le bas
+       de l'écran restait vide — c'était la « bande claire sous le
+       footer ». La chaîne est donc : `100vh` (repli, = grande fenêtre,
+       jamais plus courte que l'écran) puis `100dvh` (viewport dynamique,
+       qui suit la barre d'adresse).
+3. Les enfants du <body> (nav, sections, hr, img, form...) gardent leur
+   taille naturelle (`flex: 0 1 auto`, leur valeur par défaut) : aucun
+   d'eux ne se dilate, donc aucune barre vide ne peut s'insérer ENTRE
+   deux blocs de contenu.
+4. <footer> : `flex: 1 0 auto` — il est le SEUL élément qui grandit, donc
+   son fond descend toujours jusqu'au bas du <body>, c'est-à-dire jusqu'au
+   bas de l'écran. `flex-shrink: 0` l'empêche d'être compressé.
+       ⚠ Pourquoi PAS `margin-top: auto` ici (la recette classique) ?
+       En flexbox, les marges `auto` absorbent l'espace libre AVANT que
+       `flex-grow` ne soit appliqué. Combinées, `margin-top: auto` prend
+       les 100 % de la place restante et `flex-grow: 1` ne reçoit RIEN.
+       Or sur téléphone la fenêtre grandit d'un coup quand la barre
+       d'adresse se cache en bas de page : cet espace supplémentaire se
+       retrouvait alors BELOW/au-dessus du footer au lieu d'être absorbé
+       par lui — d'où le fond clair visible sous le footer. Avec
+       `flex: 1 0 auto` seul, le footer réabsorbe immédiatement cet
+       espace et reste collé au bas de l'écran.
+       Rendu identique sur une page courte (le footer occupe le bas),
+       mais correct même quand la fenêtre grandit après coup.
+       `.titre-footer` est forcé en `position: static` plus bas : les
+       pages le déclarent en `position: absolute`, il n'est donc plus
+       concerné par le `position: relative` donné au footer.
    ========================================================= */
 
 html {
-    height: auto !important;
+    /* Pas de `height`, pas de `max-height`, pas d'`overflow` ici : rien
+       ne doit pouvoir tronquer la page avant le bas de l'écran. */
     min-height: 100vh !important;
-    min-height: 100svh !important;
     min-height: 100dvh !important;
-    background-color: #1c2431 !important;
-    background-image: none !important;
+    /* AUCUNE couleur de fond : celle de theme-techno.css (fond clair à
+       grille, posé sur le <body>) reste la seule, inchangée. */
     overscroll-behavior-y: none !important;
 }
 
@@ -228,11 +262,9 @@ html body {
     flex-direction: column !important;
     /* Le body descend jusqu'au bas de la fenêtre visible : c'est ce qui
        supprime la bande vide qui apparaissait sous le footer.
-       100vh d'abord (navigateurs anciens), puis 100svh, puis 100dvh :
-       100dvh suit la barre d'adresse du mobile, donc le footer finit
-       exactement au bas de l'écran même quand la barre se cache. */
+       100vh d'abord (repli, grande fenêtre), puis 100dvh qui suit la
+       barre d'adresse du mobile. PAS de 100svh : cf. le bloc ci-dessus. */
     min-height: 100vh !important;
-    min-height: 100svh !important;
     min-height: 100dvh !important;
     /* AUCUNE couleur de fond n'est posée ici : le fond clair à grille
        de theme-techno.css doit rester exactement tel quel. */
@@ -245,20 +277,22 @@ html body {
    alors sur l'ordre de chargement et la marge tombait a 0, ce qui
    annulait complètement le collage du footer en bas de l'ecran.
    "html body > footer" est plus spécifique et l'emporte toujours. */
+
+/* <main> (profil-1.html) : taille naturelle. C'est le FOOTER qui occupe
+   l'espace restant, donc <main> ne doit surtout pas grossir en même
+   temps que lui (l'espace libre serait partagé à parts égales et une
+   bande vide apparaîtrait entre le contenu et le footer). */
 html body > main {
-    flex: 1 0 auto !important;
+    flex: 0 0 auto !important;
 }
 
 html body > footer {
-    flex: 0 0 auto !important;
-    /* Colle le footer au bas de l'écran quand le contenu est plus court
-       que la fenêtre (c'est le "sticky footer"). Sur une page longue,
-       il n'y a pas d'espace libre : le footer reste juste après le
-       contenu, donc toujours en bas de la page, sans rien après lui. */
-    margin-top: auto !important;
+    /* Le SEUL élément qui absorbe l'espace libre : son fond atteint donc
+       toujours le bas du <body>, donc le bas de l'écran. */
+    flex: 1 0 auto !important;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
-    /* ⚠ CORRECTION 2026-09-30 — « bande bleu clair » sous le footer.
-       theme-techno.css peint un voile de particules en `position: fixed`
+    /* theme-techno.css peint un voile de particules en `position: fixed`
        + `z-index: 0` (body::before). Un <footer> en `position: static`
        est peint AVANT les éléments positionnés : le voile passait donc
        par-dessus tout le pied de page (points bleu clair à 50 %
@@ -267,10 +301,7 @@ html body > footer {
        (position + z-index), les particules restent visibles sur le fond
        clair du contenu mais ne touchent plus le footer.
        Le voile n'est PAS mis en z-index:-1 : il disparaîtrait derrière
-       le fond blanc du body et le motif serait perdu.
-       `.titre-footer` est forcé en `position: static` plus bas : les
-       pages le déclarent en `position: absolute`, il n'est donc plus
-       concerné par ce changement de contexte. */
+       le fond blanc du body et le motif serait perdu. */
     position: relative !important;
     z-index: 1 !important;
 }

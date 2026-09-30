@@ -35,13 +35,16 @@
    `overflow-x: hidden` sur l'élément racine en fait un conteneur de
    défilement (`overflow-y` calcule alors `auto`) : le document est
    alors découpé dans une boîte interne, et sur Chrome Android la zone
-   atteinte par le bas de cette boîte peut être peinte avec le fond du
+   atteinte par le bas de cette boîte est peinte avec le fond du
    <body> (le fond clair à grille) au lieu du fond du <footer> — d'où
-   la bande claire sous le pied de page. Les garde-fou ne servaient
-   qu'à masquer un débordement horizontal, dont la cause unique était
-   l'image de `.right-container` sur Cours.html (corrigée plus bas,
-   `min-width: 0`). Le débordement étant désormais nul, on ne rogne
-   plus rien : `max-width: 100%` suffit à garder la mise en page. */
+   la bande claire sous le pied de page. De même, un `height` fixe ou un
+   `max-height` sur <html>/<body> arrête la page avant le bas de l'écran.
+   Aucune de ces trois propriétés n'est donc posée sur l'élément racine :
+   `max-width: 100%` suffit à garder la mise en page, et la correction de
+   la fin de page est purement géométrique (voir le bloc « STICKY FOOTER »
+   de design-navbar-footer.css). Le débordement horizontal étant nul
+   (`.right-container` de Cours.html est corrigé plus bas avec
+   `min-width: 0`), il n'y a rien à rogner. */
 html {
   max-width: 100% !important;
 }
@@ -100,14 +103,17 @@ canvas {
        - <html> et <body> ont tous deux min-height:100dvh -> le body
          descend jusqu'au bas de l'écran, il n'existe donc plus de place
          SOUS le footer ;
-       - <footer> a margin-top:auto -> il est collé au bas de l'écran
-         quand la page est courte, et reste après le contenu quand la
-         page est longue.
-     On ne remet ici aucune hauteur qui pourrait contredire ces règles. */
+       - <footer> est le seul enfant qui grandit (flex:1 0 auto) -> son
+         fond atteint toujours le bas du body, donc le bas de l'écran,
+         même quand la barre d'adresse du mobile disparaît et agrandit
+         la fenêtre après coup.
+     On ne remet ici AUCUNE hauteur (ni `height`, ni `max-height`, ni
+     `overflow`) qui pourrait contredire ces règles ou tronquer la page.
+     ⚠ Pas de `100svh` : c'est la fenêtre barre d'adresse déployée, donc
+     plus petite que l'écran visible dès que la barre se cache — cela
+     laissait une bande de fond vide sous le footer sur les téléphones. */
   html {
-    height: auto !important;
     min-height: 100vh !important;
-    min-height: 100svh !important;
     min-height: 100dvh !important;
   }
 

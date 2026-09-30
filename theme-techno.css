@@ -26,24 +26,23 @@ body {
 }
 
 /* Particules/points décoratifs très discrets.
-   ⚠ DÉCAUAGE 2026-09-30 — bande claire sous le footer sur Chrome Android :
-   ce voile était en `position: fixed` + `height: 100%` + `z-index: 0`.
-   1. `height: 100%` se résolvait sur la fenêtre et non sur la hauteur
-      dynamique : on passe en `100dvh` + `inset` pour qu'il suive exactement
-      le viewport, sans jamais déborder.
-   2. `z-index: 0` le faisait passer AU-DESSUS du footer, car le <footer>
-      est en `position: static` (donc peint avant les éléments positionnés) :
-      les points bleu clair à 50% d'opacité teintaient tout le pied de page —
-      c'est la « bande bleu clair » visible sur le téléphone. Le footer est
-      désormais remonté au-dessus (voir design-navbar-footer.css :
-   `html body > footer { position: relative; z-index: 1 }`).
-   On ne peut PAS mettre `z-index: -1` ici : le pseudo passerait alors
-   derrière le fond blanc du body et les particules deviendraient
-   totalement invisibles. */
+   Voile en `position: fixed` : il est donc ancré sur la fenêtre et ne
+   participe pas à la hauteur du document.
+   ⚠ 2026-09-30 — `inset: 0` + `height: 100dvh` (et non `height: 100%`) :
+   `100%` se résolvait sur la fenêtre-haute et laissait un débordement
+   quand la barre d'adresse du mobile se cache. `100dvh` suit exactement
+   le viewport, `inset: 0` garantit les quatre bords à 0.
+   AUCUNE couleur n'est modifiée : mêmes dégradés, mêmes
+   `background-size` / `background-position` / opacité qu'avant.
+   `z-index: 0` le laisse sous le contenu ET sous le <footer> (remonté en
+   `position: relative; z-index: 1` par design-navbar-footer.css) : les
+   points restent visibles sur le fond clair du contenu mais ne touchent
+   jamais le pied de page. On ne peut pas le passer en `z-index: -1` : il
+   disparaîtrait derrière le fond blanc du body et le motif serait perdu. */
 body::before {
     content: "" !important;
     position: fixed !important;
-    inset: 0 0 auto 0 !important;
+    inset: 0 !important;
     width: 100% !important;
     height: 100dvh !important;
     background-image:
