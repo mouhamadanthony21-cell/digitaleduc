@@ -87,20 +87,18 @@ canvas {
     height: auto !important;
   }
 
-  /* Hauteur du corps : le sticky-footer est désormais géré UNE SEULE
-     FOIS pour TOUTES les tailles dans design-navbar-footer.css
-     (html/body en flex colonne, min-height 100svh puis 100dvh, et un
-     ::after sombre qui remplit l'espace restant sous le footer).
-     On ne fait ici que réaffirmer les unités de viewport pour ne pas
-     être écrasé par un éventuel style inline de page. */
+  /* FIN DE PAGE : le footer est toujours en bas, sans espace vide.
+     Le sticky footer est défini UNE SEULE FOIS dans
+     design-navbar-footer.css (avec !important, donc valable ici aussi) :
+       - <html> et <body> ont tous deux min-height:100dvh -> le body
+         descend jusqu'au bas de l'écran, il n'existe donc plus de place
+         SOUS le footer ;
+       - <footer> a margin-top:auto -> il est collé au bas de l'écran
+         quand la page est courte, et reste après le contenu quand la
+         page est longue.
+     On ne remet ici aucune hauteur qui pourrait contredire ces règles. */
   html {
     height: auto !important;
-    min-height: 100vh !important;
-    min-height: 100svh !important;
-    min-height: 100dvh !important;
-  }
-
-  html body {
     min-height: 100vh !important;
     min-height: 100svh !important;
     min-height: 100dvh !important;
@@ -143,10 +141,8 @@ canvas {
     background-attachment: scroll !important;
   }
 
-  /* Pages avec <main> (ex : profil-1.html) : plus rien de spécial ici.
-     <main> occupe l'espace restant (design-navbar-footer.css) et le
-     ::after sombre remplit ce qui resterait sous le footer, exactement
-     comme sur les pages sans <main>. */
+  /* Pages avec <main> (ex : profil-1.html) : rien de spécial ici, le
+     <main> occupe l'espace restant (design-navbar-footer.css). */
 }
 
 /* ---------- 2. Contenus adaptés (base, toutes largeurs) ---------- */
@@ -696,7 +692,7 @@ canvas {
   footer {
     justify-content: center !important;
     gap: 14px !important;
-    padding: 40px 20px 60px !important;
+    padding: 40px 20px 32px !important;
   }
 
   .colonne1,
@@ -963,7 +959,7 @@ footer {
 
 @media (max-width: 575.98px) {
   footer {
-    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 

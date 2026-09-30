@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 <!DOCTYPE html>
 <html lang="fr" translate="no">
 <head>
@@ -7,21 +7,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mon profil | DigitalEduc</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="design-navbar-footer.css?v=2">
+  <link rel="stylesheet" href="design-navbar-footer.css?v=3">
 <style>
   * { box-sizing: border-box; }
   body {
     margin: 0;
     font-family: 'Arial', 'Helvetica', sans-serif;
     background: #f0f0f0;
-    /* flex-colonne + min-height : le footer reste toujours collé en bas,
-       sur mobile comme sur PC. Pile de repli : 100vh (compatible partout)
-       sert de secours si le navigateur ne connaît ni svh ni dvh. */
+    /* flex-colonne : le footer se colle au contenu et la fin de page
+       est Complete, sans espace clair.
+       PAS DE min-height ici : un body plus haut que son contenu
+       laisserait une place vide sous le footer, peinte dans le fond
+       clair de la page. La hauteur minimale est portee par <html>
+       (design-navbar-footer.css), qui est peint dans la couleur du
+       footer et couvre tout le reste de l'ecran. */
     display: flex;
     flex-direction: column;
-    min-height: 100vh !important;
-    min-height: 100svh !important;
-    min-height: 100dvh !important;
   }
 
   main { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px; }
@@ -104,8 +105,8 @@
     nav a { font-size: 14px; }
   }
 </style>
-    <link rel="stylesheet" href="responsive.css?v=2">
-    <link rel="stylesheet" href="theme-techno.css?v=2">
+    <link rel="stylesheet" href="responsive.css?v=3">
+    <link rel="stylesheet" href="theme-techno.css?v=3">
 </head>
 <body class="has-main">
 

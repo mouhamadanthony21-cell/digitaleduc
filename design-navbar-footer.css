@@ -186,19 +186,24 @@ nav a.active i {
      le document se termine TOUJOURS au bas du footer, et tout ce
      qui reste sous le footer est peint dans la couleur du footer.
 
-   1. <html> : au moins la hauteur de la fenêtre, SANS hauteur fixe
-      (plus de chaîne height:100% -> min-height:100%), et peint en
-      #1c2431 (la couleur du footer). Si le navigateur dépasse la
-      fin du document (rebond/overscroll, barre d'adresse mobile,
-      100dvh plus grand que la fenêtre réellement visible), c'est
-      donc la couleur du footer qui apparaît, jamais du blanc.
-   2. <body> : conteneur flex en colonne d'au moins une fenêtre.
-   3. <main> (pages qui en ont un) : occupe l'espace restant.
-   4. <footer> : juste après le contenu, jamais compressé.
-   5. body::after : dernier élément de la colonne, il absorbe TOUT
-      l'espace restant sous le footer et le peint en #1c2431.
-      C'est lui qui interdit l'apparition d'une bande claire
-      (fond blanc/bleuté de la page) après le footer.
+1. <html> : au moins la hauteur de la fenêtre, SANS hauteur fixe
+       (plus de chaîne height:100% -> min-height:100%), et peint en
+       #1c2431 (la couleur du footer). C'est lui qui couvre tout ce qui
+       reste sous le body : si le navigateur dépasse la fin du document
+       (rebond/overscroll, barre d'adresse mobile), c'est donc la couleur
+       du footer qui apparaît, jamais du blanc.
+   2. <body> : conteneur flex en colonne AVEC min-height égale à la
+       hauteur de la fenêtre (100dvh). Le body occupe donc TOUJOURS
+       toute la fenêtre visible : il n'existe plus de place vide SOUS
+       le footer, puisque le body descend jusqu'au bas de l'écran et
+       le footer est collé à ce bas d'écran.
+   3. <main> (pages qui en ont un) : occupe l'espace restant si une
+       page se trouve plus haute que la fenêtre.
+   4. <footer> : margin-top:auto le colle au BAS de la fenêtre quand la
+       page est plus courte que l'écran, et le laisse juste après le
+       contenu quand la page est plus longue. flex-shrink:0 l'empêche
+       d'être compressé. Comme il n'y a aucun élément après le footer,
+       il n'y a plus rien qui puisse laisser une bande vide en dessous.
    ========================================================= */
 
 html {
@@ -221,35 +226,35 @@ html body {
     display: -webkit-flex !important;
     display: flex !important;
     flex-direction: column !important;
+    /* Le body descend jusqu'au bas de la fenêtre visible : c'est ce qui
+       supprime la bande vide qui apparaissait sous le footer.
+       100vh d'abord (navigateurs anciens), puis 100svh, puis 100dvh :
+       100dvh suit la barre d'adresse du mobile, donc le footer finit
+       exactement au bas de l'écran même quand la barre se cache. */
     min-height: 100vh !important;
     min-height: 100svh !important;
     min-height: 100dvh !important;
     overscroll-behavior-y: none !important;
 }
 
-main {
+/* Sélecteur "html body > ..." (et non "footer" seul) : responsive.css
+   charge APRES ce fichier applique `footer { margin: 0 !important }`
+   avec la meme specificite que `footer { ... }`. La cascade departage
+   alors sur l'ordre de chargement et la marge tombait a 0, ce qui
+   annulait complètement le collage du footer en bas de l'ecran.
+   "html body > footer" est plus spécifique et l'emporte toujours. */
+html body > main {
     flex: 1 0 auto !important;
 }
 
-footer {
+html body > footer {
     flex: 0 0 auto !important;
-    margin-top: 0 !important;
+    /* Colle le footer au bas de l'écran quand le contenu est plus court
+       que la fenêtre (c'est le "sticky footer"). Sur une page longue,
+       il n'y a pas d'espace libre : le footer reste juste après le
+       contenu, donc toujours en bas de la page, sans rien après lui. */
+    margin-top: auto !important;
     margin-bottom: 0 !important;
-}
-
-/* Remplissage de fin de page : même couleur que le footer, il
-   descend jusqu'au bas de la fenêtre. flex-basis auto (0 par
-   défaut, l'élément est vide) + flex-grow 1 : il n'occupe que
-   l'espace réellement restant, et rien quand la page est déjà
-   plus haute que l'écran. */
-html body::after {
-    content: "" !important;
-    display: block !important;
-    -webkit-flex: 1 0 auto !important;
-    flex: 1 0 auto !important;
-    min-height: 0 !important;
-    background-color: #1c2431 !important;
-    background-image: none !important;
 }
 
 /* ---------- FOOTER ---------- */
