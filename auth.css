@@ -10,7 +10,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* 100vh d'abord (navigateurs anciens), puis 100dvh : sur téléphone,
+       100vh est plus grand que la zone visible (barre d'adresse) et
+       laissait une bande vide sous le formulaire. */
     min-height: 100vh;
+    min-height: 100dvh;
     margin: 0;
     padding: 20px;
     box-sizing: border-box;

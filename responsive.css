@@ -948,18 +948,57 @@ nav.open .nav-burger span:nth-child(3) {
 }
 
 /* ---------- 8. ZONE GESTUELLE & SAFE AREA ----------
-   Sur les téléphones avec navigation gestuelle (Android 10+, Samsung)
+   Les pages déclarent maintenant
+     <meta name="viewport" content="... viewport-fit=cover">
+   ce qui autorise le site à s'étendre sous la zone de caméra (encoche /
+   poinçon du Samsung Galaxy A16) et sous la barre gestuelle, et rend
+   `env(safe-area-inset-*)` non nul. Deux conséquences :
+     - la barre de navigation reçoit un padding haut égal à l'encoche,
+       sinon le logo passe dessous (la barre est en `position: sticky`);
+     - le footer reçoit un padding bas (voir plus bas) : son texte ne
+       touche jamais la barre système.
+   Sans `viewport-fit=cover`, `env(safe-area-inset-*)` vaut toujours 0 et
+   tous ces padding sont sans effet. */
+html body nav {
+  padding-top: calc(14px + env(safe-area-inset-top, 0px)) !important;
+}
+
+@media (max-width: 1023.98px) {
+  html body nav {
+    padding-top: calc(10px + env(safe-area-inset-top, 0px)) !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  html body nav {
+    padding-top: calc(8px + env(safe-area-inset-top, 0px)) !important;
+  }
+}
+
+/* Sur les téléphones avec navigation gestuelle (Android 10+, Samsung)
    ou avec encoche/home indicator (iPhone), le bas de l'écran est réservé
    à la barre système. Le footer garde donc toujours une marge basse :
    le texte de copyright ne touche jamais le bord de l'écran et aucune
-   bande n'apparaît sous le footer lors du défilement. */
+   bande n'apparaît sous le footer lors du défilement.
+
+   Sur Android, quand on arrive en bas de la page, Chrome fait descendre
+   sa barre d'adresse en BAS de l'écran : elle se superpose alors au
+   contenu sur ~56px (hauteur de l'omnibox). Sans marge suffisante, elle
+   masquerait la ligne de copyright. D'où les 56px sur mobile, qui laissent
+   cette zone exactement de la couleur du footer (donc invisible) tout en
+   gardant le copyright au-dessus de la barre.
+   La COULEUR de cette barre est fixée par <meta name="theme-color"> dans
+   chaque page : sans elle, Chrome peignait sa barre en BLANC, ce qui
+   apparaissait comme une bande blanche sous le footer — invisible en
+   "Inspecter" sur téléphone, car le mode emulation n'affiche pas l'UI
+   du navigateur. */
 footer {
   padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 @media (max-width: 575.98px) {
   footer {
-    padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 

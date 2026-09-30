@@ -25,19 +25,33 @@ body {
     color: #1c2431 !important;
 }
 
-/* Particules/points décoratifs très discrets */
+/* Particules/points décoratifs très discrets.
+   ⚠ DÉCAUAGE 2026-09-30 — bande claire sous le footer sur Chrome Android :
+   ce voile était en `position: fixed` + `height: 100%` + `z-index: 0`.
+   1. `height: 100%` se résolvait sur la fenêtre et non sur la hauteur
+      dynamique : on passe en `100dvh` + `inset` pour qu'il suive exactement
+      le viewport, sans jamais déborder.
+   2. `z-index: 0` le faisait passer AU-DESSUS du footer, car le <footer>
+      est en `position: static` (donc peint avant les éléments positionnés) :
+      les points bleu clair à 50% d'opacité teintaient tout le pied de page —
+      c'est la « bande bleu clair » visible sur le téléphone. Le footer est
+      désormais remonté au-dessus (voir design-navbar-footer.css :
+   `html body > footer { position: relative; z-index: 1 }`).
+   On ne peut PAS mettre `z-index: -1` ici : le pseudo passerait alors
+   derrière le fond blanc du body et les particules deviendraient
+   totalement invisibles. */
 body::before {
     content: "" !important;
     position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
+    inset: 0 0 auto 0 !important;
     width: 100% !important;
-    height: 100% !important;
+    height: 100dvh !important;
     background-image:
         radial-gradient(rgba(56, 189, 248, 0.25) 1px, transparent 1.5px),
         radial-gradient(rgba(0, 162, 255, 0.18) 1px, transparent 1.5px) !important;
     background-size: 240px 240px, 380px 380px !important;
     background-position: 30px 20px, 140px 120px !important;
+    background-color: transparent !important;
     pointer-events: none !important;
     z-index: 0 !important;
     opacity: 0.5 !important;

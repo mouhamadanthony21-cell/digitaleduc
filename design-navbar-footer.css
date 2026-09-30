@@ -234,6 +234,13 @@ html body {
     min-height: 100vh !important;
     min-height: 100svh !important;
     min-height: 100dvh !important;
+    /* Filet de sécurité : theme-techno.css pose un `background-color`
+       BLANC sur le body. Le dégradé blanc qu'il superpose est opaque et
+       couvre toute la boîte, donc ce filet ne change RIEN à l'affichage
+       — il garantit seulement que si le dégradé n'est jamais peint
+       (mode économie d'énergie, navigateur allégé, zoom bizarre), la
+       zone sous le footer est SOMBRE et non blanche. */
+    background-color: #1c2431 !important;
     overscroll-behavior-y: none !important;
 }
 
@@ -255,6 +262,22 @@ html body > footer {
        contenu, donc toujours en bas de la page, sans rien après lui. */
     margin-top: auto !important;
     margin-bottom: 0 !important;
+    /* ⚠ CORRECTION 2026-09-30 — « bande bleu clair » sous le footer.
+       theme-techno.css peint un voile de particules en `position: fixed`
+       + `z-index: 0` (body::before). Un <footer> en `position: static`
+       est peint AVANT les éléments positionnés : le voile passait donc
+       par-dessus tout le pied de page (points bleu clair à 50 %
+       d'opacité), et sa partie basse se lisait comme une bande claire
+       après le footer. En remontant le footer au-dessus du voile
+       (position + z-index), les particules restent visibles sur le fond
+       clair du contenu mais ne touchent plus le footer.
+       Le voile n'est PAS mis en z-index:-1 : il disparaîtrait derrière
+       le fond blanc du body et le motif serait perdu.
+       `.titre-footer` est forcé en `position: static` plus bas : les
+       pages le déclarent en `position: absolute`, il n'est donc plus
+       concerné par ce changement de contexte. */
+    position: relative !important;
+    z-index: 1 !important;
 }
 
 /* ---------- FOOTER ---------- */
