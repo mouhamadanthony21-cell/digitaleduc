@@ -234,13 +234,8 @@ html body {
     min-height: 100vh !important;
     min-height: 100svh !important;
     min-height: 100dvh !important;
-    /* Filet de sécurité : theme-techno.css pose un `background-color`
-       BLANC sur le body. Le dégradé blanc qu'il superpose est opaque et
-       couvre toute la boîte, donc ce filet ne change RIEN à l'affichage
-       — il garantit seulement que si le dégradé n'est jamais peint
-       (mode économie d'énergie, navigateur allégé, zoom bizarre), la
-       zone sous le footer est SOMBRE et non blanche. */
-    background-color: #1c2431 !important;
+    /* AUCUNE couleur de fond n'est posée ici : le fond clair à grille
+       de theme-techno.css doit rester exactement tel quel. */
     overscroll-behavior-y: none !important;
 }
 

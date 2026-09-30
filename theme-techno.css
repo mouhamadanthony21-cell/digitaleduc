@@ -51,7 +51,6 @@ body::before {
         radial-gradient(rgba(0, 162, 255, 0.18) 1px, transparent 1.5px) !important;
     background-size: 240px 240px, 380px 380px !important;
     background-position: 30px 20px, 140px 120px !important;
-    background-color: transparent !important;
     pointer-events: none !important;
     z-index: 0 !important;
     opacity: 0.5 !important;

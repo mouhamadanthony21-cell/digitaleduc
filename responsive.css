@@ -31,14 +31,23 @@
   box-sizing: border-box !important;
 }
 
+/* Aucun `overflow-x` sur <html> ni sur <body>.
+   `overflow-x: hidden` sur l'élément racine en fait un conteneur de
+   défilement (`overflow-y` calcule alors `auto`) : le document est
+   alors découpé dans une boîte interne, et sur Chrome Android la zone
+   atteinte par le bas de cette boîte peut être peinte avec le fond du
+   <body> (le fond clair à grille) au lieu du fond du <footer> — d'où
+   la bande claire sous le pied de page. Les garde-fou ne servaient
+   qu'à masquer un débordement horizontal, dont la cause unique était
+   l'image de `.right-container` sur Cours.html (corrigée plus bas,
+   `min-width: 0`). Le débordement étant désormais nul, on ne rogne
+   plus rien : `max-width: 100%` suffit à garder la mise en page. */
 html {
   max-width: 100% !important;
-  overflow-x: hidden !important;
 }
 
 body {
   max-width: 100% !important;
-  overflow-x: clip !important;
 }
 
 body,
@@ -71,12 +80,10 @@ canvas {
 
   html {
     max-width: 100% !important;
-    overflow-x: hidden !important;
   }
 
   body {
     max-width: 100% !important;
-    overflow-x: clip !important;
   }
 
   /* Les éléments média ne dépassent jamais leur conteneur */
@@ -233,14 +240,6 @@ canvas {
    bannière pleine largeur, min-height d'origine (1100px, 2210px,
    3530px...), logo à sa taille native, bordures arrondies. */
 @media (min-width: 992px) {
-  html {
-    overflow-x: hidden !important;
-  }
-
-  body {
-    overflow-x: clip !important;
-  }
-
   nav {
     flex-wrap: nowrap !important;
     justify-content: space-between !important;
@@ -372,23 +371,34 @@ canvas {
     min-width: 0 !important;
   }
 
-  /* Blocs "texte + image" : restent côte à côte comme sur desktop */
+  /* Blocs "texte + image" : restent côte à côte comme sur desktop.
+     `flex: 0 1 …` et non `0 0 …` : avec `flex-shrink: 0`, deux items
+    large de 55% + 40% PLUS le `gap` de 24px dépassent toujours la largeur
+     du conteneur (95% + 24px), donc le second item sortait de l'écran —
+     Cours.html débordait de 14px en 360px et de 38px en 320px, rogné
+     silencieusement par `overflow-x`. En autorisant le rétrécissement
+     (le `1`), les deux items se partagent la place disponible et le
+     rapport 55/40 du design est conservé. `min-width: 0` empêche le
+     plancher automatique based on la largeur naturelle de l'image. */
   .educ-container {
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
     padding: 44px 20px !important;
     gap: 24px !important;
+    min-width: 0 !important;
   }
 
   .left-container {
-    flex: 0 0 55% !important;
+    flex: 0 1 55% !important;
     width: auto !important;
+    min-width: 0 !important;
   }
 
   .right-container {
-    flex: 0 0 40% !important;
+    flex: 0 1 40% !important;
     width: auto !important;
+    min-width: 0 !important;
     display: flex !important;
     justify-content: center !important;
   }
