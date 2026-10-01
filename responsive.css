@@ -583,6 +583,24 @@ canvas {
     line-height: 1.2 !important;
   }
 
+  /* Le titre ne doit jamais deborder de sa colonne. Sur telephone la colonne
+     texte ne fait que ~150-200px, et le fond degrade est clippe sur la boite
+     de l'element (background-clip: text + -webkit-text-fill-color: transparent) :
+     tout caractere qui deborde de la boite n'est donc peint par aucun fond et
+     devient invisible. C'est ce qui faisait disparaitre le "e" final de
+     "Des cours d'informatique".
+     Specificite superieure pour passer devant la regle "24px" plus bas dans ce
+     fichier, qui ecrasait le clamp() prevu ci-dessus.
+     overflow-wrap sert de filet de securite si une police chargee est plus
+     large que prevu : le mot se coupe au lieu de devenir invisible. */
+  html body .educ .left-container h1 {
+    font-size: clamp(1.15rem, 4.5vw, 1.5rem) !important;
+    line-height: 1.2 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    overflow-wrap: break-word !important;
+  }
+
   .left-container p {
     font-size: 13px !important;
     line-height: 1.5 !important;
