@@ -771,3 +771,8 @@ hr,
         animation-duration: 0.01ms !important;
     }
 }
+
+/* TEST-DIAGNOSTIC - A SUPPRIMER */
+html  { background: red !important; }
+body  { background: blue !important; background-image: none !important; }
+footer { outline: 4px solid lime !important; outline-offset: -4px !important; }
