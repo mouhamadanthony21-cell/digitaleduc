@@ -551,5 +551,29 @@
     </footer>
 <script type="module" src="firebase-config-1.js"></script>
 <script type="module" src="suivi-progression.js"></script>
+<script>
+window.addEventListener('load', () => setTimeout(() => {
+  const f = document.querySelector('footer');
+  const fb = f.getBoundingClientRect().bottom + scrollY;
+  const out = ['footerBas=' + Math.round(fb) + ' bodyBas=' +
+    Math.round(document.body.getBoundingClientRect().bottom + scrollY) +
+    ' doc=' + document.documentElement.scrollHeight + ' fenetre=' + innerHeight];
+  const a = getComputedStyle(document.body, '::after');
+  out.push('body::after content=' + a.content + ' h=' + a.height + ' display=' + a.display);
+  document.querySelectorAll('body *').forEach(el => {
+    if (f.contains(el) || el.id === 'dbg') return;
+    const cs = getComputedStyle(el);
+    if (cs.position === 'fixed') return;
+    const r = el.getBoundingClientRect();
+    if (r.bottom + scrollY > fb + 2)
+      out.push(el.tagName + '#' + el.id + '.' + el.className + ' h=' + Math.round(r.height) + ' pos=' + cs.position);
+  });
+  const d = document.createElement('pre');
+  d.id = 'dbg';
+  d.style.cssText = 'position:fixed;top:120px;left:0;right:0;z-index:99999;background:#000;color:#0f0;font:11px monospace;padding:6px;white-space:pre-wrap;max-height:50vh;overflow:auto';
+  d.textContent = out.join('\n');
+  document.body.appendChild(d);
+}, 3000));
+</script>
 </body>
 </html>
