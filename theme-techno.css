@@ -772,7 +772,30 @@ hr,
     }
 }
 
-/* TEST-DIAGNOSTIC - A SUPPRIMER */
-html  { background: red !important; }
-body  { background: blue !important; background-image: none !important; }
-footer { outline: 4px solid lime !important; outline-offset: -4px !important; }
+/* IFRAMES INJECTES PAR GOOGLE/FIREBASE (gapi) ---------------------------------
+   Google Authentication (Firebase) injecte dans le <body>, APRES le
+   <footer>, des <iframe> de collecte (id "I0_...", "IO_...", nom "I0_...").
+   Ils sont styles en inline par la librairie, mais deux regles de ce
+   projet ecrasaient ces styles inline et les laissaient occuper ~150px
+   de hauteur dans le flux normal du body -> une bande de fond clair
+   visible SOUS le footer sur telephone :
+     - `body > *:not(nav):not(footer) { position: relative !important }`
+       (ci-dessus dans ce fichier) les sortait du positionnement absolu ;
+     - `iframe { height: auto !important }` (responsive.css) leur
+       redonnait une hauteur.
+   On les neutralise hors du flux, en 1x1 px, hors ecran : elles
+   restent fonctionnelles pour Firebase, sans plus aucune place dans la
+   page. AUCUNE couleur n'est touchee. */
+html body > iframe[id^="I0_"],
+html body > iframe[id^="IO_"],
+html body > iframe[name^="I0_"] {
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    max-width: none !important;
+    border: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
