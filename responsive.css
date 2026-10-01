@@ -583,37 +583,25 @@ canvas {
     line-height: 1.2 !important;
   }
 
-  /* Le titre ne doit jamais deborder de sa colonne. Sur telephone la colonne
-     texte ne fait que ~150-200px, et le fond degrade est clippe sur la boite
-     de l'element (background-clip: text + -webkit-text-fill-color: transparent) :
-     tout caractere qui deborde de la boite n'est donc peint par aucun fond et
-     devient invisible. C'est ce qui faisait disparaitre le "e" final de
-     "Des cours d'informatique".
-     Specificite superieure pour passer devant la regle "24px" plus bas dans ce
-     fichier, qui ecrasait le clamp() prevu ci-dessus.
-     overflow-wrap sert de filet de securite si une police chargee est plus
-     large que prevu : le mot se coupe au lieu de devenir invisible. */
+  /* Le titre ne doit jamais deborder de sa colonne, sinon le degrade
+     (background-clip: text) ne peint plus rien au-dela de la boite et les
+     caracteres concernes deviennent totalement invisibles : c'est ainsi que le
+     "e" final de "Des cours d'informatique" disparait sur telephone.
+     Sur petit ecran la colonne texte ne fait que ~150-200px, or le mot
+     "d'informatique" demande 142px en Poppins : on rend donc toute la largeur a
+     la colonne (marges laterales remises a zero) et on respecte la taille
+     responsive prevue ici, que la regle "24px" plus bas dans ce fichier
+     ecrasait. Le degrade est conserve, comme sur la page Exercice.
+     Specificite superieure pour passer devant cette regle de 24px.
+     overflow-wrap reste en filet de securite : si une police est plus large que
+     prevu (ou si la taille de texte du systeme est augmentee), le mot se coupe
+     sur une nouvelle ligne au lieu de deborder hors du degrade. */
   html body .educ .left-container h1 {
     font-size: clamp(1.15rem, 4.5vw, 1.5rem) !important;
     line-height: 1.2 !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
     overflow-wrap: break-word !important;
-  }
-
-  /* Filet de securite absolute : sur petit ecran le titre ne doit PAS pouvoir
-     devenir invisible. Le degrade de theme-techno.css repose sur
-     "background-clip: text" + "-webkit-text-fill-color: transparent" : tout
-     caractere qui deborde de la boite de l'element n'est peint par aucun fond
-     et s'efface completement. C'est ainsi qu'un caractere a disparu du titre
-     sur telephone ("Des cours d'informatiqu"). Sur petit ecran on retire donc
-     le remplissage transparent et on garde la couleur de repli #0059b3 deja
-     definie par le degrade : le texte reste peint, quoi qu'il arrive.
-     Le degrade est conserve a partir de 576px, ou la colonne est assez large. */
-  html body .educ .left-container h1,
-  html body .educ .left-container h1 strong {
-    background-image: none !important;
-    -webkit-text-fill-color: #0059b3 !important;
   }
 
   .left-container p {
