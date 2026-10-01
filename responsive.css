@@ -601,6 +601,21 @@ canvas {
     overflow-wrap: break-word !important;
   }
 
+  /* Filet de securite absolute : sur petit ecran le titre ne doit PAS pouvoir
+     devenir invisible. Le degrade de theme-techno.css repose sur
+     "background-clip: text" + "-webkit-text-fill-color: transparent" : tout
+     caractere qui deborde de la boite de l'element n'est peint par aucun fond
+     et s'efface completement. C'est ainsi qu'un caractere a disparu du titre
+     sur telephone ("Des cours d'informatiqu"). Sur petit ecran on retire donc
+     le remplissage transparent et on garde la couleur de repli #0059b3 deja
+     definie par le degrade : le texte reste peint, quoi qu'il arrive.
+     Le degrade est conserve a partir de 576px, ou la colonne est assez large. */
+  html body .educ .left-container h1,
+  html body .educ .left-container h1 strong {
+    background-image: none !important;
+    -webkit-text-fill-color: #0059b3 !important;
+  }
+
   .left-container p {
     font-size: 13px !important;
     line-height: 1.5 !important;
